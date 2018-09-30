@@ -2,7 +2,7 @@
 
 A pacakge for Geo-Visualization in R
 
-ROpenLayers leverages the power of [OpenLayers](https://openlayers.org/) JavaScript libraries and web-based Mapservers to enable informative visualization. 
+ROpenLayers leverages the power of [OpenLayers](https://openlayers.org/) JavaScript libraries and web-based map servers to enable informative visualization. 
 
 ## What this package does
 
