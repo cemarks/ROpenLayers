@@ -35,7 +35,13 @@
 #' # ol_map2HTML(mymap,"SanDiego.html", nice.format=TRUE)
 #' ## Open in browser (not run)
 #' # browseURL("SanDiego.html")
-ol_map2HTML <- function(ol.map.obj,file.name,file.path=".",page.name="ROpenLayers Map",image.path="images",nice.format=TRUE){
+ol_map2HTML <- function(
+    ol.map.obj,
+    file.name,file.path=".",
+    page.name="ROpenLayers Map",
+    image.path="images",
+    nice.format=FALSE
+){
     if(grepl("/",file.name)){
         warning("File name string contains path identifier.  This could result in broken image links.")
         str.sp <- strsplit(file.name,"/")[[1]]
@@ -460,7 +466,7 @@ write_style <- function(width,height,display.scale=FALSE,layer.control=FALSE,sca
     write_function("width: 200px;")
     inid <- inid -2
     write_function("}")
-    write_function(".tooltip{")
+    write_function(".ol-tooltip{")
     inid <- inid + 2
     write_tooltip_css(tooltips.param.vector,nice.format,initial.indent=inid)
     inid <- inid -2
@@ -533,7 +539,7 @@ write_body_html <- function(display.scale=FALSE,
     if(tooltips.bool){
         write_function("<div id=\"map\" class=\"map\">")
         inid <- inid + 2
-        write_function("<div id=\"tooltip\" class=\"tooltip\"></div>")
+        write_function("<div id=\"map-tooltip\" class=\"ol-tooltip\"></div>")
         inid <- inid -2
         write_function("</div>")
     } else {
@@ -624,10 +630,10 @@ write_body_script <- function(ol.map.obj,layer.control,image.path,nice.format=TR
         }
     }
     if(ol.map.obj[['tooltips']]){
-        write_function("var tooltip = document.getElementById('tooltip');")
+        write_function("var ol_tooltip = document.getElementById('map-tooltip');")
         write_function("var overlay = new ol.Overlay({")
         inid <- inid + 2
-        write_function("element: tooltip,")
+        write_function("element: ol_tooltip,")
         write_function(sprintf("offset: [%i, %i],",
             as.integer(ol.map.obj[['tooltips.param.vector']]['offsetX']),
             as.integer(ol.map.obj[['tooltips.param.vector']]['offsetY'])))
@@ -636,7 +642,7 @@ write_body_script <- function(ol.map.obj,layer.control,image.path,nice.format=TR
         write_function("});")
         write_function("map.addOverlay(overlay);")
         if(nice.format) cat("\n")
-        write_function("function displayTooltip(evt) {")
+        write_function("function displayOlTooltip(evt) {")
         inid <- inid + 2
         write_function("var pixel = evt.pixel;")
         write_function("var feature = map.forEachFeatureAtPixel(pixel, function(feature) {")
@@ -647,22 +653,22 @@ write_body_script <- function(ol.map.obj,layer.control,image.path,nice.format=TR
         write_function("if (feature) {")
         inid <- inid + 2
         write_function("var feature_text = feature.get(\"tooltip_text\");")
-        write_function("tooltip.style.display = feature_text ? '' : 'none';")
+        write_function("ol_tooltip.style.display = feature_text ? '' : 'none';")
         write_function("if(feature_text){")
         inid <- inid + 2
         write_function("overlay.setPosition(evt.coordinate);")
-        write_function("tooltip.innerHTML = feature_text;")
+        write_function("ol_tooltip.innerHTML = feature_text;")
         inid <- inid - 2
         write_function("}")
         inid <- inid - 2
         write_function("} else {")
         inid <- inid + 2
-        write_function("tooltip.style.display = 'none';")
+        write_function("ol_tooltip.style.display = 'none';")
         inid <- inid - 2
         write_function("}")
         inid <- inid - 2
         write_function("};")
-        write_function("map.on('pointermove',displayTooltip);")
+        write_function("map.on('pointermove',displayOlTooltip);")
         if(nice.format) cat("\n")
     }
 }

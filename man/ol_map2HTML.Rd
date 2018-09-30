@@ -6,7 +6,7 @@
 \usage{
 ol_map2HTML(ol.map.obj, file.name, file.path = ".",
   page.name = "ROpenLayers Map", image.path = "images",
-  nice.format = TRUE)
+  nice.format = FALSE)
 }
 \arguments{
 \item{ol.map.obj}{Ol.Map object to be exported.}
