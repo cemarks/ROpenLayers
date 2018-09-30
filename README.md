@@ -43,8 +43,10 @@ This package enables users to rapidly access and write OpenLayers vector layers 
 
 Install in R directly from GitHub:
 
-`> library(devtools)`
-`> install_github("cemarks/ROpenLayers")`
+```r 
+library(devtools)
+install_github("cemarks/ROpenLayers")
+```
 
 ## Example
 
