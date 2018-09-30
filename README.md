@@ -51,6 +51,7 @@ install_github("cemarks/ROpenLayers")
 ## Example
 
 ```r
+library(ROpenLayers)
 data(quakes)
 center <- c(
 	mean(quakes$long),mean(quakes$lat)
