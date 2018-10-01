@@ -44,7 +44,7 @@ Specify a continuous size mapping for an icon layer.
 \details{
 This method maps OpenLayers point (icon) feature sizes to continuous 
 variable values.  This scale can be added to an Ol.Map S3 object
-only if the Ol.Map object has a layer with a "iconsize" mapping to a
+only if the Ol.Map object has a layer with an "iconsize" mapping to a
 numeric variable.  If no such layer exists, attempts to add this type
 of scale will result in a warning.  Attempt to apply this scale
 to a non-numeric variable will throw an error.

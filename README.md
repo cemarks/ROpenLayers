@@ -39,6 +39,40 @@ This package enables users to rapidly access and write OpenLayers vector layers 
 * `ol_geom_heatmap` 
 * `ol_geom_text` 
 
+### Aesthetic Mappings
+
+Most vector layer types support some aesthetic mappings.  For a list of which aesthetic mappings are supported by a layer, consult the documentation for that layer, e.g.,
+
+```r
+?ROpenLayers::ol_geom_polygon
+```
+
+Similar to the ggplot2 package, aesthetic mappings are made by including a `mapping` parameter to the layer call.  This parameter generally takes the form
+```r
+mapping=ol_aes(aesthetic1=variable1,aesthetic2=variable2,...)
+```
+
+This parameter will create a default mapping in the layer.
+
+### Scales
+
+Once a default aesthetic mapping has been created, it can be manually updated by adding a scale object to the `Ol.Map` object.  A comprehensive list of scales follows.  For more information, consult the documentation on each.
+
+* `ol_scale_fill_continuous` 
+* `ol_scale_fill_discrete` 
+* `ol_scale_color_continuous` 
+* `ol_scale_color_discrete` 
+* `ol_scale_lwd_discrete` 
+* `ol_scale_lty_discrete` (experimental) 
+* `ol_scale_size_continuous` 
+* `ol_scale_size_discrete` 
+* `ol_scale_iconsize_continuous` 
+* `ol_scale_iconsize_discrete` 
+* `ol_scale_iconimage_discrete` 
+
+The example below shows how to map a `fill` aesthetic to a `ol_geom_polygon` layer and then to set the name and display options by calling `ol_scale_fill_continuous`.
+
+
 ## Installation
 
 Install in R directly from GitHub:
@@ -99,66 +133,67 @@ While not developed for Shiny, ROpenLayers output can be hosted in a Shiny serve
 
 ```r
 library(shiny)
-library(ROpenLayers)
 dir.create('shinyApp',showWarnings=FALSE)
 setwd('shinyApp')
-data(quakes)
-center <- c(
-	mean(quakes$long),mean(quakes$lat)
-)
-quakes$long[which(quakes$long>180)] <- quakes$long[which(quakes$long>180)]-360
-tooltips <- paste("Depth",quakes$depth,sep=": ")
-mymap <- ol_map(
-	zoom = 5,
-	center = center,
-	map.heading = "Earthquake Data Visualization"
-)
-basemap.layer <- public_arcgis_basemap(
-	"OceanBase",
-	toggle.control=FALSE
-)
-point.layer <- ol_geom_point(
-	quakes[,c("long","lat")],
-	mapping = ol_aes(fill=mag),
-	df = quakes,
-	name = "Earthquake Points",
-	toggle.control=TRUE,
-	tooltip = tooltips
-)
-heatmap.layer <- ol_geom_heatmap(
-	quakes[,c("long","lat")],
-	name = "Earthquake Heatmap",
-	toggle.control=TRUE,
-	weight.values = quakes$mag,
-	opacity = 0.25
-)
-mymap <- mymap +
-	basemap.layer +
-	point.layer +
-	ol_scale_fill_continuous(name="Magnitude",display=TRUE) +
-	heatmap.layer 
-## Save to file (requires write permission)
-HTML.strings <- ol_map2Strings(mymap,image.path="www")
-### Shiny integration ---
-### replace www with current working directory 
-HTML.strings[[3]] <- gsub("www",".",HTML.strings[[3]],fixed=TRUE)
-HTML.strings[[4]] <- gsub("www",".",HTML.strings[[4]],fixed=TRUE)
+#Write to App.R file
 sink("App.R")
 cat(
-"ui <- shinyUI(
-    fluidPage(
-        ## Add OpenLayers Javascript source & CSS to head
-        tags$head(HTML(HTML.strings[[1]]),tags$style(HTML(HTML.strings[[2]]))),
-        titlePanel('Earthquakes'),
-        mainPanel(
-            tags$div(HTML(HTML.strings[[3]]))
-        ),
-        tags$script(HTML(HTML.strings[[4]]))
-    )
-)
-server <- function(input,output){
-}
-shinyApp(ui=ui,server)"
+"	library(ROpenLayers)
+	data(quakes)
+	center <- c(
+		mean(quakes$long),mean(quakes$lat)
+	)
+	quakes$long[which(quakes$long>180)] <- quakes$long[which(quakes$long>180)]-360
+	tooltips <- paste('Depth',quakes$depth,sep=': ')
+	mymap <- ol_map(
+		zoom = 5,
+		center = center,
+		map.heading = 'Earthquake Data Visualization'
+	)
+	basemap.layer <- public_arcgis_basemap(
+		'OceanBase',
+		toggle.control=FALSE
+	)
+	point.layer <- ol_geom_point(
+		quakes[,c('long','lat')],
+		mapping = ol_aes(fill=mag),
+		df = quakes,
+		name = 'Earthquake Points',
+		toggle.control=TRUE,
+		tooltip = tooltips
+	)
+	heatmap.layer <- ol_geom_heatmap(
+		quakes[,c('long','lat')],
+		name = 'Earthquake Heatmap',
+		toggle.control=TRUE,
+		weight.values = quakes$mag,
+		opacity = 0.25
+	)
+	mymap <- mymap +
+		basemap.layer +
+		point.layer +
+		ol_scale_fill_continuous(name='Magnitude',display=TRUE) +
+		heatmap.layer 
+	## Save to file (requires write permission)
+	HTML.strings <- ol_map2Strings(mymap,image.path='www')
+	### Shiny integration ---
+	### replace www with current working directory 
+	HTML.strings[[3]] <- gsub('www','.',HTML.strings[[3]],fixed=TRUE)
+	HTML.strings[[4]] <- gsub('www','.',HTML.strings[[4]],fixed=TRUE)
+	ui <- shinyUI(
+	    fluidPage(
+	        ## Add OpenLayers Javascript source & CSS to head
+	        tags$head(HTML(HTML.strings[[1]]),tags$style(HTML(HTML.strings[[2]]))),
+	        titlePanel('Earthquakes'),
+	        mainPanel(
+	            tags$div(HTML(HTML.strings[[3]]))
+	        ),
+	        tags$script(HTML(HTML.strings[[4]]))
+	    )
+	)
+	server <- function(input,output){
+	}
+	shinyApp(ui=ui,server)"
 )
 sink()
 setwd("..")

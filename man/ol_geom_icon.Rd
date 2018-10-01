@@ -67,8 +67,8 @@ geometries and user-supplied point icons.
 \section{Aesthetics}{
 
 \itemize{
-\item \code{icon}
-\item \code{size}
+\item \code{iconimage}
+\item \code{iconsize}
 }
 }
 

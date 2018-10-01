@@ -8,8 +8,8 @@
 #'
 #' @section Aesthetics:
 #' \itemize{
-#' \item \code{icon}
-#' \item \code{size}
+#' \item \code{iconimage}
+#' \item \code{iconsize}
 #' }
 #' 
 #' @param point.obj SpatialPointsDataframe, SpatialPoints, or a matrix 
@@ -190,6 +190,9 @@ ol_geom_icon <- function(
     l.created <- FALSE
     if('iconsize' %in% names(mapping)){
         mapping[['size']]=mapping[['iconsize']]
+    }
+    if('iconimage' %in% names(mapping)){
+        mapping[['icon']]=mapping[['iconimage']]
     }
     if('size' %in% names(mapping)){
         size.column = as.character(mapping['size'])

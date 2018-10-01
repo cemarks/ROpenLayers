@@ -1158,7 +1158,7 @@ ol_scale_size_discrete <- function(
 #'
 #' This method maps OpenLayers point (icon) feature sizes to continuous 
 #' variable values.  This scale can be added to an Ol.Map S3 object
-#' only if the Ol.Map object has a layer with a "iconsize" mapping to a
+#' only if the Ol.Map object has a layer with an "iconsize" mapping to a
 #' numeric variable.  If no such layer exists, attempts to add this type
 #' of scale will result in a warning.  Attempt to apply this scale
 #' to a non-numeric variable will throw an error.  
@@ -1458,7 +1458,7 @@ ol_scale_iconsize_discrete <- function(
 #'
 #' This method maps OpenLayers point (icon) feature images to discrete 
 #' variable values.  This scale can be added to an Ol.Map S3 object
-#' only if the Ol.Map object has a layer with an "icon" mapping to a
+#' only if the Ol.Map object has a layer with an "iconimage" mapping to a
 #' numeric, character, or factor variable.  
 #' If no such layer exists, attempts to add this type
 #' of scale will result in a warning.  
@@ -1518,7 +1518,7 @@ ol_scale_iconsize_discrete <- function(
 #'     ol_geom_icon(
 #'         loc.df[,1:2],
 #'         c(r.icon,freebsd.icon),
-#'         mapping=ol_aes(icon=type),
+#'         mapping=ol_aes(iconimage=type),
 #'         df = loc.df,
 #'         name="Some Open Source Locations",
 #'         icon.size.scalar='autoscale',
