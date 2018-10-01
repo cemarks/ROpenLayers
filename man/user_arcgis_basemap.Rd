@@ -31,14 +31,22 @@ Creates and returns an OpenLayers ArcGIS Tile layer that sources a
 map server at a user-supplied URL.
 }
 \examples{
-mymap <- ol_map()
 server.url <- "http://server.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer"
-base.layer <- user_arcgis_basemap(
-    server.url,
-    attributions = sprintf(
+mymap <- ol_map(
+    map.note = sprintf(
         "I found this at <a href='\%s'>arcgisonline.com</a>",
         server.url
-    ),
+    )
+)
+attrib <- paste(
+    "Content may not reflect National Geographic's current map policy.",
+    "Sources: National Geographic, Esri, Garmin, HERE,",
+    "UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, increment P Corp",
+    sep=" " # long attribution!
+)
+base.layer <- user_arcgis_basemap(
+    server.url,
+    attributions = attrib,
     toggle.control=TRUE
 )
 mymap <- mymap + base.layer

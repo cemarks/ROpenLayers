@@ -9,7 +9,8 @@
 * Update README.md to include ol_aes and scales.
 * Update icon layer aesthetics to match scale names.
 * Add PDF documentation to repository.
-
+* Fix user_arcgis_basemap documentation
+* Include package tar.gz
 
 # ROpenLayers 0.0.3
 
