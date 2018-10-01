@@ -57,7 +57,7 @@ center <- c(
 	mean(quakes$long),mean(quakes$lat)
 )
 quakes$long[which(quakes$long>180)] <- quakes$long[which(quakes$long>180)]-360
-tooltips <- paste("Depth",quakes$depth,sep="")
+tooltips <- paste("Depth",quakes$depth,sep=": ")
 mymap <- ol_map(
 	zoom = 5,
 	center = center,
@@ -90,5 +90,77 @@ mymap <- mymap +
 ## Save to file (requires write permission)
 ol_map2HTML(mymap,"Quakes.html")
 ## Open in browser
-browseURL("file:Quakes.html") 
+browseURL("Quakes.html") 
+```
+
+### Integration with Shiny
+
+While not developed for Shiny, ROpenLayers output can be hosted in a Shiny server.  Currently, this requires writing supporting image files to a 'www' directory.  Shiny automatically looks in this directory for source files, so the 'www' must be overwritten in the HTML output.  The example below provides one over several ways the same map from the above example could be integrated into a minimal Shiny application.  Note that the code will create a "shinyApp" folder in the working directory for the Shiny application.
+
+```r
+library(shiny)
+library(ROpenLayers)
+dir.create('shinyApp',showWarnings=FALSE)
+setwd('shinyApp')
+data(quakes)
+center <- c(
+	mean(quakes$long),mean(quakes$lat)
+)
+quakes$long[which(quakes$long>180)] <- quakes$long[which(quakes$long>180)]-360
+tooltips <- paste("Depth",quakes$depth,sep=": ")
+mymap <- ol_map(
+	zoom = 5,
+	center = center,
+	map.heading = "Earthquake Data Visualization"
+)
+basemap.layer <- public_arcgis_basemap(
+	"OceanBase",
+	toggle.control=FALSE
+)
+point.layer <- ol_geom_point(
+	quakes[,c("long","lat")],
+	mapping = ol_aes(fill=mag),
+	df = quakes,
+	name = "Earthquake Points",
+	toggle.control=TRUE,
+	tooltip = tooltips
+)
+heatmap.layer <- ol_geom_heatmap(
+	quakes[,c("long","lat")],
+	name = "Earthquake Heatmap",
+	toggle.control=TRUE,
+	weight.values = quakes$mag,
+	opacity = 0.25
+)
+mymap <- mymap +
+	basemap.layer +
+	point.layer +
+	ol_scale_fill_continuous(name="Magnitude",display=TRUE) +
+	heatmap.layer 
+## Save to file (requires write permission)
+HTML.strings <- ol_map2Strings(mymap,image.path="www")
+### Shiny integration ---
+### replace www with current working directory 
+HTML.strings[[3]] <- gsub("www",".",HTML.strings[[3]],fixed=TRUE)
+HTML.strings[[4]] <- gsub("www",".",HTML.strings[[4]],fixed=TRUE)
+sink("App.R")
+cat(
+"ui <- shinyUI(
+    fluidPage(
+        ## Add OpenLayers Javascript source & CSS to head
+        tags$head(HTML(HTML.strings[[1]]),tags$style(HTML(HTML.strings[[2]]))),
+        titlePanel('Earthquakes'),
+        mainPanel(
+            tags$div(HTML(HTML.strings[[3]]))
+        ),
+        tags$script(HTML(HTML.strings[[4]]))
+    )
+)
+server <- function(input,output){
+}
+shinyApp(ui=ui,server)"
+)
+sink()
+setwd("..")
+shiny::runApp("./shinyApp")
 ```

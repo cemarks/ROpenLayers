@@ -129,5 +129,5 @@ mymap <- mymap +
     heatmap.layer
 ## Not run: save to file and open in browser
 # ol_map2HTML(mymap,"Quakes.html")
-# browseURL("file:Quakes.html")
+# browseURL("Quakes.html")
 }
