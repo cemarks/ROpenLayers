@@ -111,7 +111,7 @@ ol_geom_line <- function(
     df=NULL,
     toggle.control=FALSE,
     lwd=1,
-    ol.lty=1,
+    ol.lty=list(),
     color='#000000',
     label=NULL,
     label.params=list(),
@@ -255,7 +255,7 @@ ol_geom_line <- function(
             o[['scale']][[i]][['variable.name']] <- lty.column
         }
     }
-    if(!l.created){
+    if(!l.created && (length(lty)>0)){
         o[['scale']][[i]] <- ol_scale_fixed(
             attribute <- "lty",
             values <- lty
@@ -333,13 +333,26 @@ writeLayer.Layer.SpatialLine <- function(layer,suffix="basemap",nice.format=TRUE
     }
     if('lty' %in% scale.attributes){
         w <- which(scale.attributes=='lty')
-        if((layer[['scale']][[w]][['type']] != "fixed") || (!is.null(layer[['scale']][[w]][['value']]) && (length(layer[['scale']][[w]][['value']]) > 1))){
+        if(!(layer[['scale']][[w]][['type']]=='fixed') || (length(layer[['scale']][[w]][['value']]) > 1)){
             write_function("lineDash: feature.get('lty'),")
+            write_function("lineDashOffset: 3,")
+        } else if(length(layer[['scale']][[w]][['value']]) == 1){
+            write_function(sprintf("lineDash: [%s],",paste(layer[['scale']][[w]][['value']][[1]],collapse=",")))
             write_function("lineDashOffset: 3,")
         }
     }
-    write_function("width: feature.get('lwd'),")
-    write_function("color: feature.get('color')")
+    w <- which(scale.attributes=='lwd')
+    if((length(w)==1) && layer[['scale']][[w]][['type']] == 'fixed' && length(layer[['scale']][[w]][['value']])==1){
+        write_function(sprintf("width: %1.1f,",layer[['scale']][[w]][['value']]))
+    } else {
+        write_function("width: feature.get('lwd'),")
+    }
+    w <- which(scale.attributes=='color')
+    if((length(w)==1) && layer[['scale']][[w]][['type']] == 'fixed' && length(layer[['scale']][[w]][['value']])==1){
+        write_function(sprintf("color: %s",hex2rgb_arraystr(layer[['scale']][[w]][['value']])))
+    } else {
+        write_function("color: feature.get('color')")
+    }
     inid <- inid - 2
     write_function("})")
     inid <- inid - 2

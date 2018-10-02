@@ -183,7 +183,11 @@ cat(
 	ui <- shinyUI(
 	    fluidPage(
 	        ## Add OpenLayers Javascript source & CSS to head
-	        tags$head(HTML(HTML.strings[[1]]),tags$style(HTML(HTML.strings[[2]]))),
+	        tags$head(
+	            HTML('<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"/>'),
+	            HTML(HTML.strings[[1]]),
+	            tags$style(HTML(HTML.strings[[2]]))
+	        ),
 	        titlePanel('Earthquakes'),
 	        mainPanel(
 	            tags$div(HTML(HTML.strings[[3]]))

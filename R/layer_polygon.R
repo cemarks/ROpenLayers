@@ -347,7 +347,7 @@ ol_geom_polygon <- function(
             o[['scale']][[i]][['variable.name']] <- lty.column
         }
     }
-    if(!l.created){
+    if(!l.created && (length(lty)>0)){
         o[['scale']][[i]] <- ol_scale_fixed(
             attribute <- "lty",
             values <- lty
@@ -425,18 +425,36 @@ writeLayer.Layer.SpatialPolygon <- function(layer,suffix="basemap",nice.format=T
     }
     if('lty' %in% scale.attributes){
         w <- which(scale.attributes=='lty')
-        if(!(layer[['scale']][[w]][['attribute']]=='fixed') || !is.null(layer[['scale']][[w]][['value']])){
+        if(!(layer[['scale']][[w]][['type']]=='fixed') || (length(layer[['scale']][[w]][['value']]) > 1)){
             write_function("lineDash: feature.get('lty'),")
+            write_function("lineDashOffset: 3,")
+        } else if(length(layer[['scale']][[w]][['value']]) == 1){
+            write_function(sprintf("lineDash: [%s],",paste(layer[['scale']][[w]][['value']][[1]],collapse=",")))
             write_function("lineDashOffset: 3,")
         }
     }
-    write_function("width: feature.get('lwd'),")
-    write_function("color: feature.get('color')")
+    w <- which(scale.attributes=='lwd')
+    if((length(w)==1) && layer[['scale']][[w]][['type']] == 'fixed' && length(layer[['scale']][[w]][['value']])==1){
+        write_function(sprintf("width: %1.1f,",layer[['scale']][[w]][['value']]))
+    } else {
+        write_function("width: feature.get('lwd'),")
+    }
+    w <- which(scale.attributes=='color')
+    if((length(w)==1) && layer[['scale']][[w]][['type']] == 'fixed' && length(layer[['scale']][[w]][['value']])==1){
+        write_function(sprintf("color: %s",hex2rgb_arraystr(layer[['scale']][[w]][['value']])))
+    } else {
+        write_function("color: feature.get('color')")
+    }
     inid <- inid - 2
     write_function("}),")
     write_function("fill: new ol.style.Fill({")
     inid <- inid + 2
-    write_function("color: feature.get('fill')")
+    w <- which(scale.attributes=='fill')
+    if((length(w)==1) && layer[['scale']][[w]][['type']] == 'fixed' && length(layer[['scale']][[w]][['value']])==1){
+        write_function(sprintf("color: %s",hex2rgb_arraystr(layer[['scale']][[w]][['value']])))
+    } else {
+        write_function("color: feature.get('fill')")
+    }
     inid <- inid - 2
     write_function("})")
     inid <- inid - 2

@@ -2,6 +2,13 @@
 
 * Capability to control the direction of color scales.
 
+# ROpenLayers 0.0.5
+
+* Included IE compatibility statement in ol_map2HTML by default and in shiny examples (#1).
+* Fixed unneeded comma in public_OSM_basemap layer (#2).
+* Fixed color formats for browser compatibility (#3).
+* Removed linedash property when lty not set (#4).
+* Moved property settings to style function when fixed to single value (#5).
 
 # ROpenLayers 0.0.4
 

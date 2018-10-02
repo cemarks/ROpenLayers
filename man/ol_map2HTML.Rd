@@ -6,7 +6,7 @@
 \usage{
 ol_map2HTML(ol.map.obj, file.name, file.path = ".",
   page.name = "ROpenLayers Map", image.path = "images",
-  nice.format = FALSE)
+  nice.format = FALSE, IE.compatability.view = TRUE)
 }
 \arguments{
 \item{ol.map.obj}{Ol.Map object to be exported.}
@@ -24,6 +24,11 @@ directory that will contain page images.}
 
 \item{nice.format}{logical.  If \code{TRUE}, output file will be formated with
 new lines and indentation for human readability.}
+
+\item{IE.compatability.view}{logical.  If \code{TRUE}, the statement\cr
+\code{<meta http-equiv="X-UA-Compatible" content="IE=edge"/>}\cr
+to the HTML document head.  This statement is required for some browsers to 
+render the map.}
 }
 \description{
 Writes Ol.Map object to HTML file.

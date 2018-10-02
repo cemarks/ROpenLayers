@@ -63,7 +63,11 @@ HTML.strings <- ol_map2Strings(mymap)
 # ui <- shinyUI(
 #     fluidPage(
 #         ## Add OpenLayers Javascript source & CSS to head
-#         tags$head(HTML(HTML.strings[[1]]),tags$style(HTML(HTML.strings[[2]]))),
+#         tags$head(
+#             HTML("<meta http-equiv=\\"X-UA-Compatible\\" content=\\"IE=edge\\"/>")
+#             HTML(HTML.strings[[1]]),
+#             tags$style(HTML(HTML.strings[[2]]))
+#         ),
 #         titlePanel("Random Heatmap"),
 #         mainPanel(
 #             tags$div(HTML(HTML.strings[[3]]))

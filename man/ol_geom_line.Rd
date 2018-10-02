@@ -5,9 +5,9 @@
 \title{OpenLayers Line Layer}
 \usage{
 ol_geom_line(line.obj, mapping = ol_aes(), name = NULL, df = NULL,
-  toggle.control = FALSE, lwd = 1, ol.lty = 1, color = "#000000",
-  label = NULL, label.params = list(), tooltip = NULL,
-  tooltip.params = list())
+  toggle.control = FALSE, lwd = 1, ol.lty = list(),
+  color = "#000000", label = NULL, label.params = list(),
+  tooltip = NULL, tooltip.params = list())
 }
 \arguments{
 \item{line.obj}{SpatialLinesDataFrame, SpatialLines, list

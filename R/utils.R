@@ -28,6 +28,28 @@ color_check <- function(color.vector,alpha.vector=1){
     return(o)
 }
 
+hex2rgb_arraystr <- function(input.hex){
+    v <- as.numeric(
+        grDevices::col2rgb(
+            input.hex,
+            alpha=TRUE
+        )
+    )
+    v[4] <- v[4]/255
+    return(
+        paste(
+            "[",
+            paste(
+                v,
+                collapse=","
+            ),
+            "]",
+            sep=""
+        )
+    )    
+
+}
+
 rgb2hsv <- function(color.str){
     rr <- t(grDevices::col2rgb(color.str))/255
     rgb.min<-min(rr)

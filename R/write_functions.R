@@ -18,6 +18,10 @@
 #' directory that will contain page images. 
 #' @param nice.format logical.  If \code{TRUE}, output file will be formated with
 #' new lines and indentation for human readability.
+#' @param IE.compatability.view logical.  If \code{TRUE}, the statement\cr
+#' \code{<meta http-equiv="X-UA-Compatible" content="IE=edge"/>}\cr
+#' to the HTML document head.  This statement is required for some browsers to 
+#' render the map.
 #'
 #' @return NULL
 #'
@@ -40,7 +44,8 @@ ol_map2HTML <- function(
     file.name,file.path=".",
     page.name="ROpenLayers Map",
     image.path="images",
-    nice.format=FALSE
+    nice.format=FALSE,
+    IE.compatability.view=TRUE
 ){
     if(grepl("/",file.name)){
         warning("File name string contains path identifier.  This could result in broken image links.")
@@ -111,6 +116,9 @@ ol_map2HTML <- function(
         inid <- inid + 2
         write_function("<head>")
         inid <- inid + 2
+        if(IE.compatability.view){
+            write_function("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"/>")
+        }
         write_function(sprintf("<title>%s</title>",page.name))
         write_headscript(ol.map.obj[['ol.source.url']],nice.format,inid)
         write_function("<style>")
@@ -230,7 +238,11 @@ ol_map2HTML <- function(
 #' # ui <- shinyUI(
 #' #     fluidPage(
 #' #         ## Add OpenLayers Javascript source & CSS to head
-#' #         tags$head(HTML(HTML.strings[[1]]),tags$style(HTML(HTML.strings[[2]]))),
+#' #         tags$head(
+#' #             HTML("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"/>")
+#' #             HTML(HTML.strings[[1]]),
+#' #             tags$style(HTML(HTML.strings[[2]]))
+#' #         ),
 #' #         titlePanel("Random Heatmap"),
 #' #         mainPanel(
 #' #             tags$div(HTML(HTML.strings[[3]]))
@@ -716,7 +728,7 @@ writeLayer.Layer.OSM <- function(layer,suffix="basemap",nice.format=TRUE,initial
     write_function(sprintf("name: \"%s\",",gsub('"',"'",layer[['name']])))
     write_function("source: new ol.source.OSM({")
     inid <- inid + 2
-    write_function(sprintf("attributions: \"%s\",",layer[['attributions']]))
+    write_function(sprintf("attributions: \"%s\"",layer[['attributions']]))
     inid <- inid - 2
     write_function("})")
     inid <- inid - 2
@@ -780,12 +792,12 @@ write_scale_attr_polygons_lines <- function(scale.list,ind,nice.format=TRUE,init
         if(scale.list[['attribute']]=='lty'){
             if(scale.list[['type']]=='continuous' || scale.list[['type']]=='discrete'){
                 feature.value <- scale.list[['function']](scale.list[['variable.values']][ind])
-            } else if((scale.list[['type']]=='fixed') && (length(scale.list[['value']]) > 0) && (!is.na(scale.list[['value']]) && (!is.null(scale.list[['value']])))){
+            } else if((scale.list[['type']]=='fixed') && (length(scale.list[['value']]) > 1) && (!is.na(scale.list[['value']]) && (!is.null(scale.list[['value']])))){
                 vind <- get_vind(ind,length(scale.list[['value']]))
                 if(is.list(scale.list[['value']])){
                     feature.value <- scale.list[['value']][[vind]]
                 } else {
-                    feature.value <- scale.list[['value']]
+                    feature.value <- NA
                 }
             } else {
                 feature.value <- NA
@@ -793,25 +805,29 @@ write_scale_attr_polygons_lines <- function(scale.list,ind,nice.format=TRUE,init
             if(!is.na(feature.value)  && !is.null(feature.value) && length(feature.value)>1){
                 write_function(sprintf("%s: [%s],",scale.attr,paste(feature.value,collapse=",")))
             }
-        } else {
+        } else if(scale.list[['attribute']] %in% c('fill','color')){
             if(scale.list[['type']]=='continuous' || scale.list[['type']]=='discrete'){
                 feature.value <- scale.list[['function']](scale.list[['variable.values']][ind])
-            } else if((scale.list[['type']]=='fixed') && (!is.na(scale.list[['value']]) && (!is.null(scale.list[['value']])))){
+            } else if((scale.list[['type']]=='fixed') && !is.na(scale.list[['value']]) && !is.null(scale.list[['value']]) && (length(scale.list[['value']]) > 1)){
                 vind <- get_vind(ind,length(scale.list[['value']]))
-                if(is.list(scale.list[['value']])){
-                    feature.value <- scale.list[['value']][[vind]]
-                } else {
-                    feature.value <- scale.list[['value']][vind]
-                }
+                feature.value <- scale.list[['value']][vind]
             } else {
                 feature.value <- NA
             }
             if(!is.na(feature.value)  && !is.null(feature.value)){
-                if(is.character(feature.value)){
-                    write_function(sprintf("%s: '%s',",scale.attr,feature.value))
-                } else {
-                    write_function(sprintf("%s: %1.1f,",scale.attr,feature.value))
-                }
+                write_function(sprintf("%s: %s,",scale.attr,hex2rgb_arraystr(feature.value)))
+            }
+        } else if(scale.list[['attribute']] == 'lwd'){
+            if(scale.list[['type']]=='continuous' || scale.list[['type']]=='discrete'){
+                feature.value <- scale.list[['function']](scale.list[['variable.values']][ind])
+            } else if((scale.list[['type']]=='fixed') && !is.na(scale.list[['value']]) && !is.null(scale.list[['value']]) && (length(scale.list[['value']]) > 1)){
+                vind <- get_vind(ind,length(scale.list[['value']]))
+                feature.value <- scale.list[['value']][vind]
+            } else {
+                feature.value <- NA
+            }
+            if(!is.na(feature.value)  && !is.null(feature.value)){
+                write_function(sprintf("%s: %1.1f,",scale.attr,feature.value))
             }
         }
     }
