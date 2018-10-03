@@ -4,13 +4,18 @@
 \alias{ol_map2Strings}
 \title{OpenLayers Map HTML to List}
 \usage{
-ol_map2Strings(ol.map.obj, image.path = "images")
+ol_map2Strings(ol.map.obj, image.path = "images",
+  deployment.image.path = NULL)
 }
 \arguments{
 \item{ol.map.obj}{Ol.Map object to be exported.}
 
 \item{image.path}{character \emph{relative} path from \code{file.path} to 
 directory that will contain page images.}
+
+\item{deployment.image.path}{character path to images on server, if different
+from \code{image.path}.  The \code{image.path} will be replaced with this 
+path in the returned strings.}
 }
 \value{
 list object with the following character elements:

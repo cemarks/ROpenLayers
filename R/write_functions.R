@@ -41,7 +41,8 @@
 #' # browseURL("SanDiego.html")
 ol_map2HTML <- function(
     ol.map.obj,
-    file.name,file.path=".",
+    file.name,
+    file.path=".",
     page.name="ROpenLayers Map",
     image.path="images",
     nice.format=FALSE,
@@ -192,6 +193,9 @@ ol_map2HTML <- function(
 #' @param ol.map.obj Ol.Map object to be exported.
 #' @param image.path character \emph{relative} path from \code{file.path} to 
 #' directory that will contain page images. 
+#' @param deployment.image.path character path to images on server, if different
+#' from \code{image.path}.  The \code{image.path} will be replaced with this 
+#' path in the returned strings.
 #'
 #' @return list object with the following character elements:
 #' \tabular{ll}{
@@ -253,7 +257,7 @@ ol_map2HTML <- function(
 #' # server <- function(input,output){
 #' # }
 #' # shinyApp(ui=ui,server)
-ol_map2Strings <- function(ol.map.obj,image.path="images"){
+ol_map2Strings <- function(ol.map.obj,image.path="images",deployment.image.path=NULL){
     nice.format=FALSE
     if(!dir.exists(image.path)){
         image.dir.exists <- FALSE
@@ -325,6 +329,20 @@ ol_map2Strings <- function(ol.map.obj,image.path="images"){
             initial.indent=0
         )        
     )
+    if(!is.null(deployment.image.path)){
+        body.html <- gsub(
+            paste(image.path,"/",sep=""),
+            paste(deployment.image.path,"/",sep=""),
+            body.html,
+            fixed=TRUE
+        )
+        body.script <- gsub(
+            paste(image.path,"/",sep=""),
+            paste(deployment.image.path,"/",sep=""),
+            body.script,
+            fixed=TRUE
+        )
+    }
     return(
         list(
             headscript = head.script,
@@ -492,12 +510,12 @@ write_style <- function(width,height,display.scale=FALSE,layer.control=FALSE,sca
 
 write_tooltip_css <- function(tooltip.params,nice.format=TRUE,initial.indent=8){
     params.translation <- c(
-        backgroundFill="background-color",
+        fill.color="background-color",
         border="border",
         borderradius="border-radius",
         font="font",
         padding="padding",
-        stroke="font-color"
+        stroke.color="font-color"
         )
     inid <- initial.indent
     if(nice.format){
@@ -510,7 +528,7 @@ write_tooltip_css <- function(tooltip.params,nice.format=TRUE,initial.indent=8){
         }
     }
     for(param in names(params.translation)){
-        if(!is.null(tooltip.params[param])  &!is.na(tooltip.params[param])){
+        if(!is.null(tooltip.params[param]) && !is.na(tooltip.params[param])){
             write_function(sprintf("%s:%s;",params.translation[param],tooltip.params[param]))
         }
     }

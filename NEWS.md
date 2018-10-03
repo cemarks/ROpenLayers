@@ -2,6 +2,12 @@
 
 * Capability to control the direction of color scales.
 
+# ROpenLayers 0.0.6
+
+* Converted CSS colors to rgba format for compatibility.
+* Enabled deployment image path in ol_map2Strings.
+
+
 # ROpenLayers 0.0.5
 
 * Included IE compatibility statement in ol_map2HTML by default and in shiny examples (#1).

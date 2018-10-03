@@ -29,9 +29,10 @@ color_check <- function(color.vector,alpha.vector=1){
 }
 
 hex2rgb_arraystr <- function(input.hex){
+    col <- color_check(input.hex)
     v <- as.numeric(
         grDevices::col2rgb(
-            input.hex,
+            col,
             alpha=TRUE
         )
     )
@@ -47,7 +48,28 @@ hex2rgb_arraystr <- function(input.hex){
             sep=""
         )
     )    
+}
 
+hex2rgba_func <- function(input.hex){
+    col <- color_check(input.hex)
+    v <- as.numeric(
+        grDevices::col2rgb(
+            col,
+            alpha=TRUE
+        )
+    )
+    v[4] <- v[4]/255
+    return(
+        paste(
+            "rgba(",
+            paste(
+                v,
+                collapse=","
+            ),
+            ")",
+            sep=""
+        )
+    )    
 }
 
 rgb2hsv <- function(color.str){
@@ -92,8 +114,8 @@ get_ol_layer_label <- function(df,mapping,label,label.params){
         rotation=0,
         textAlign='center',
         textBaseline='middle',
-        stroke_color='#000000FF',
-        fill_color='#303030FF'
+        stroke.color='#000000FF',
+        fill.color='#303030FF'
     )
     for(i in 1:length(default.values)){
         if(!(names(default.values)[i] %in% names(label.params))){
@@ -119,8 +141,8 @@ get_ol_layer_label <- function(df,mapping,label,label.params){
             rotation=label.params[['rotation']],
             textAlign=label.params[['textAlign']],
             textBaseline=label.params[['textBaseline']],
-            stroke_color=label.params[['stroke_color']],
-            fill_color=label.params[['fill_color']]
+            stroke.color=hex2rgb_arraystr(label.params[['stroke.color']]),
+            fill.color=hex2rgb_arraystr(label.params[['fill.color']])
         )
         class(o) <- "Label"
     }
@@ -133,8 +155,8 @@ get_ol_layer_tooltip <- function(df,mapping,tooltip,tooltip.params){
         offsetX=5,
         offsetY=5,
         positioning='bottom-left',
-        stroke='#000000FF',
-        backgroundFill="#FAEBD7A0",
+        stroke.color='#000000FF',
+        fill.color="#FFFFFFA0",
         padding="3px",
         border="solid black 1px",
         borderradius="3px"
@@ -161,8 +183,8 @@ get_ol_layer_tooltip <- function(df,mapping,tooltip,tooltip.params){
             offsetX=tooltip.params[["offsetX"]],
             offsetY=tooltip.params[["offsetY"]],
             positioning=tooltip.params[["positioning"]],
-            stroke=tooltip.params[["stroke"]],
-            backgroundFill=tooltip.params[["backgroundFill"]],
+            stroke.color=hex2rgba_func(tooltip.params[["stroke.color"]]),
+            fill.color=hex2rgba_func(tooltip.params[["fill.color"]]),
             padding=tooltip.params[["padding"]],
             border=tooltip.params[["border"]],
             borderradius=tooltip.params[["borderradius"]]
