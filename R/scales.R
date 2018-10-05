@@ -263,6 +263,10 @@ get_lty_scale_discrete <- function(
 #' to the highest color.
 #' @param low.col character the "low" color.
 #' @param high.col character the "high" color.
+#' @param rotate.clockwise logical.  If \code{TRUE}, continuous scale
+#' will map to colors on a clockwise rotation from \code{low.col} to
+#' \code{high.col} on the hue-saturation-value (HSV) color space.  If 
+#' \code{FALSE}, rotation will be counter-clockwise.
 #' @param name character the scale name.
 #' @param na.col.val character the color assigned to non-numeric or
 #' NA values.
@@ -340,6 +344,7 @@ ol_scale_fill_continuous <- function(
         high.val,
         low.col=NULL,
         high.col=NULL,
+        rotate.clockwise=TRUE,
         name=NULL,
         na.col.val = "#FFFFFF00",
         opacity=1,
@@ -357,7 +362,8 @@ ol_scale_fill_continuous <- function(
                 low.col,
                 high.col,
                 na.col.val,
-                opacity
+                opacity,
+                rotate.clockwise
         )
     }
     o <- list(
@@ -550,6 +556,10 @@ ol_scale_fixed <- function(attribute,values){
 #' to the highest color.
 #' @param low.col character the "low" color.
 #' @param high.col character the "high" color.
+#' @param rotate.clockwise logical.  If \code{TRUE}, continuous scale
+#' will map to colors on a clockwise rotation from \code{low.col} to
+#' \code{high.col} on the hue-saturation-value (HSV) color space.  If 
+#' \code{FALSE}, rotation will be counter-clockwise.
 #' @param name character the scale name.
 #' @param na.col.val character the color assigned to non-numeric or
 #' NA values.
@@ -628,6 +638,7 @@ ol_scale_color_continuous <- function(
         high.val,
         low.col=NULL,
         high.col=NULL,
+        rotate.clockwise=TRUE,
         name=NULL,
         na.col.val = "#FFFFFF00",
         opacity=1,
@@ -645,7 +656,8 @@ ol_scale_color_continuous <- function(
             low.col,
             high.col,
             na.col.val,
-            opacity
+            opacity,
+            rotate.clockwise
         )
     }
     o <- list(

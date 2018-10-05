@@ -181,7 +181,7 @@ ol_map <- function(
         if(nga.olsource){
             ol.source.url <- "https://home.gvs.nga.mil/libs/openlayers/3.16.0/build/ol.js"
         } else {
-            ol.source.url <- "https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v3.16.0/build/ol.js"
+            ol.source.url <- "http://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v3.16.0/build/ol.js"
         }
     }
     toggle.control.df <- data.frame(matrix(nrow=0,ncol=3))

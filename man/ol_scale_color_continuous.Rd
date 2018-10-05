@@ -5,8 +5,9 @@
 \title{Line Color Scale (Continuous)}
 \usage{
 ol_scale_color_continuous(low.val, high.val, low.col = NULL,
-  high.col = NULL, name = NULL, na.col.val = "#FFFFFF00",
-  opacity = 1, preserve.opacity = NULL, display = FALSE)
+  high.col = NULL, rotate.clockwise = TRUE, name = NULL,
+  na.col.val = "#FFFFFF00", opacity = 1, preserve.opacity = NULL,
+  display = FALSE)
 }
 \arguments{
 \item{low.val}{numeric the minimum variable value to be mapped 
@@ -18,6 +19,11 @@ to the highest color.}
 \item{low.col}{character the "low" color.}
 
 \item{high.col}{character the "high" color.}
+
+\item{rotate.clockwise}{logical.  If \code{TRUE}, continuous scale
+will map to colors on a clockwise rotation from \code{low.col} to
+\code{high.col} on the hue-saturation-value (HSV) color space.  If 
+\code{FALSE}, rotation will be counter-clockwise.}
 
 \item{name}{character the scale name.}
 

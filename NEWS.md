@@ -1,6 +1,8 @@
-# Coming soon
+# ROpenLayers 0.0.7
 
-* Capability to control the direction of color scales.
+* Capability to control the direction of continuous color scales.
+* Removed SSL from public OpenLayers JavaScript library request.
+* Created "inst" folder for documentation, binaries.
 
 # ROpenLayers 0.0.6
 
