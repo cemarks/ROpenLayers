@@ -82,6 +82,12 @@ library(devtools)
 install_github("cemarks/ROpenLayers")
 ```
 
+Alternatively, on Windows install the pre-compiled binary:
+
+```r
+install.packages("https://github.com/cemarks/ROpenLayers/raw/master/inst/win_binaries/ROpenLayers_0.0.7.zip",repos=NULL)
+```
+
 ## Example
 
 ```r
