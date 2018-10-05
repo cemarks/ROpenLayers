@@ -79,7 +79,7 @@ miami.gray.basemap <- ol_map(
     zoom=9,
     map.heading="Miami Lines"
     ) + 
-   public_arcgis_basemap("LightGray") 
+   nga_basemap("LightGray") 
 line.layer <- ol_geom_line(
     line.list,
     mapping=ol_aes(

@@ -70,7 +70,7 @@ mymap <- ol_map(
     center=c(-100,25),
     zoom=3
 ) +
-    public_arcgis_basemap("OceanBase") +
+    nga_basemap("LightGray") +
     ol_geom_text(
         text.pts,
         text.labels,

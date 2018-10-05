@@ -42,7 +42,7 @@ be placed directly into a directory hosted by a minimal http server.
 }
 \examples{
 mymap <- ol_map()
-base.layer <- public_arcgis_basemap('LightGray')
+base.layer <- nga_basemap('LightGray')
 mymap <- mymap + base.layer
 ## The following writes HTML and needed images (not run)
 # ol_map2HTML(mymap,"SanDiego.html", nice.format=TRUE)

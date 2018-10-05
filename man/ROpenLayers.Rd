@@ -7,16 +7,16 @@
 \title{ROpenLayers: A pacakge for Geo-Visualization}
 \description{
 ROpenLayers leverages the power of OpenLayers javascript libraries
-and web-based Mapservers to enable informative visualization.
+and web-based map servers to enable informative visualization.
 }
 \section{What this package does}{
 
 The purpose of this package is to make it easy for a user to visualize
 geo-spatial data and analyses using the open source
-\href{https://openlayers.org/}{OpenLayers} javascript library and
+OpenLayers javascript library and
 online map servers.  The process for creating a visualization 
 imitates the process of creating a plot in R package 
-\href{https://ggplot2.tidyverse.org/}{\code{ggplot2}}.  
+\code{ggplot2}.  
 \enumerate{
 \item First, an OpenLayers Map object is created with a 
 call to the \code{\link{ol_map}} method.  
@@ -33,10 +33,10 @@ application or format.  Export methods are \code{\link{ol_map2HTML}} and
 
 \section{OpenLayers}{
 
-\href{https://openlayers.org}{OpenLayers}
+OpenLayers
  is an open source javascript library that makes it easy to put a
 dynamic map on any web page.  It is licensed under the 2-clause BSD
-license (see \href{https://github.com/openlayers/openlayers/blob/master/LICENSE.md}{OpenLayers Licence}).
+license.
 This license will appear commented within OpenLayers CSS code in the
 HTML exports created by this package. However, this package does not
 contain any of the OpenLayers javascript source code; rather, it exports
@@ -47,33 +47,12 @@ source OpenLayers 3.16.0, but the user has the option to set the
 source URL (see \code{\link{ol_map}}).
 }
 
-\section{Public ArcGIS Servers}{
+\section{ArcGIS Servers}{
 
-\href{https://www.arcgis.com}{ESRI ArcGIS} hosts several 
-publicly available map servers at 
-\href{https://server.arcgisonline.com/arcgis/rest/services}{arcgisonline.com},
- which can accessed via REST APIs and rendered using OpenLayers javascript methods.
-A subset of these are made available in this package through the 
-\code{\link{public_arcgis_basemap}} method.  Alternatively, a user can
-specify any ArcGIS map server using the \code{\link{user_arcgis_basemap}}
-method.  Note that while these maps servers are publicly available, they are
-not necessarily open-licensed.  Users must ensure they comply with each
-map server's license and terms of use.
-}
-
-\section{OpenStreetMap}{
-
-\href{https://www.openstreetmap.org/}{OpenStreetMap} also hosts a public and
-open license map server that can be imported as a layer using OpenLayers.
-See \code{\link{public_OSM_basemap}}.
-}
-
-\section{Other Servers}{
-
-As stated above, the \code{\link{user_arcgis_basemap}} method allows the user
+The \code{\link{user_arcgis_basemap}} method allows the user
 to manually specify any available ArcGIS map server.  This package also provides
 access to US National Geospatial-Intelligence Agency servers hosted
-at \href{https://www.nga.mil}{NGA.mil} through the \code{\link{nga_basemap}}
+at \href{https://home.gvs.nga.smil.mil}{NGA.smil.mil} through the \code{\link{nga_basemap}}
 method.  Note that these servers require authentication, which will be requested
 at the time of access (i.e., when the HTML page is opened in a browser).
 }
@@ -103,8 +82,8 @@ mymap <- ol_map(
     center = center,
     map.heading = "Earthquake Data Visualization"
 )
-basemap.layer <- public_arcgis_basemap(
-    "OceanBase",
+basemap.layer <- nga_basemap(
+    "LightGray",
     toggle.control=FALSE
 )
 point.layer <- ol_geom_point(

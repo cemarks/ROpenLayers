@@ -33,7 +33,7 @@
 #'
 #' @examples
 #' mymap <- ol_map()
-#' base.layer <- public_arcgis_basemap('LightGray')
+#' base.layer <- nga_basemap('LightGray')
 #' mymap <- mymap + base.layer
 #' ## The following writes HTML and needed images (not run)
 #' # ol_map2HTML(mymap,"SanDiego.html", nice.format=TRUE)
@@ -223,9 +223,8 @@ ol_map2HTML <- function(
 #' mymap <- ol_map(
 #'     center=c(-98.5,28.5),
 #'     zoom=4,
-#'     nga.olsource=FALSE,
 #'     map.note="Heatmap of random points centered on Miami and San Diego.") + 
-#'     public_OSM_basemap() +
+#'     nga_basemap("WSM") +
 #'     ol_geom_heatmap(
 #'         heatmap.pts,
 #'         name="Random Heatmap",

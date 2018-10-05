@@ -311,7 +311,7 @@ get_lty_scale_discrete <- function(
 #'     map.note="Note: Mouseover popup values are 
 #'         independent of shape size &amp; color."
 #'     ) + 
-#'    public_OSM_basemap() 
+#'    nga_basemap("WSM") 
 #' polygon.layer <- ol_geom_polygon(
 #'     polygon.list,
 #'     mapping=ol_aes(
@@ -453,7 +453,7 @@ ol_scale_fill_continuous <- function(
 #'     map.note="Note: Mouseover popup values are 
 #'         independent of shape size &amp; color."
 #'     ) + 
-#'    public_OSM_basemap() 
+#'    nga_basemap("WSM") 
 #' polygon.layer <- ol_geom_polygon(
 #'     polygon.list,
 #'     mapping=ol_aes(
@@ -605,7 +605,7 @@ ol_scale_fixed <- function(attribute,values){
 #'     zoom=9,
 #'     map.heading="Miami Lines"
 #'     ) + 
-#'    public_arcgis_basemap("LightGray") 
+#'    nga_basemap("LightGray") 
 #' line.layer <- ol_geom_line(
 #'     line.list,
 #'     mapping=ol_aes(
@@ -743,7 +743,7 @@ ol_scale_color_continuous <- function(
 #'     zoom=9,
 #'     map.heading="Miami Lines"
 #'     ) + 
-#'    public_arcgis_basemap("LightGray") 
+#'    nga_basemap("LightGray") 
 #' line.layer <- ol_geom_line(
 #'     line.list,
 #'     mapping=ol_aes(
@@ -874,7 +874,7 @@ ol_scale_color_discrete <- function(
 #'     zoom=9,
 #'     map.heading="Miami Lines"
 #'     ) + 
-#'    public_arcgis_basemap("LightGray") 
+#'    nga_basemap("LightGray") 
 #' line.layer <- ol_geom_line(
 #'     line.list,
 #'     mapping=ol_aes(
@@ -992,7 +992,7 @@ ol_scale_lwd_discrete <- function(
 #'     center=c(-80.385790,25.782618),
 #'     zoom=10
 #' ) + 
-#'     public_OSM_basemap()+
+#'     nga_basemap("WSM")+
 #'     ol_geom_point(
 #'         point.matrix,
 #'         df=point.df,
@@ -1111,7 +1111,7 @@ ol_scale_size_continuous <- function(
 #'     center=c(-80.385790,25.782618),
 #'     zoom=10
 #' ) + 
-#'     public_OSM_basemap()+
+#'     nga_basemap("WSM")+
 #'     ol_geom_point(
 #'         point.matrix,
 #'         df=point.df,
@@ -1260,7 +1260,7 @@ ol_scale_size_discrete <- function(
 #'     center=c(-100,30),
 #'     zoom=3
 #' ) + 
-#'     public_OSM_basemap()+
+#'     nga_basemap("WSM")+
 #'     ol_geom_icon(
 #'         some.r.servers,
 #'         r.icon,
@@ -1416,7 +1416,7 @@ ol_scale_iconsize_continuous <- function(
 #'     center=c(-100,30),
 #'     zoom=3
 #' ) + 
-#'     public_OSM_basemap()+
+#'     nga_basemap("WSM")+
 #'     ol_geom_icon(
 #'         some.r.servers,
 #'         r.icon,
@@ -1526,7 +1526,7 @@ ol_scale_iconsize_discrete <- function(
 #'     center=c(-75,38),
 #'     zoom=5
 #' ) + 
-#'     public_OSM_basemap()+
+#'     nga_basemap("WSM")+
 #'     ol_geom_icon(
 #'         loc.df[,1:2],
 #'         c(r.icon,freebsd.icon),
@@ -1658,7 +1658,7 @@ ol_scale_iconimage_discrete <- function(
 #'     zoom=9,
 #'     map.heading="Miami Lines"
 #'     ) + 
-#'    public_arcgis_basemap("LightGray") 
+#'    nga_basemap("LightGray") 
 #' line.layer <- ol_geom_line(
 #'     line.list,
 #'     mapping=ol_aes(

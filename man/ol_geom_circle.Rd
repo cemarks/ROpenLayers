@@ -96,7 +96,7 @@ miami.OSM.basemap <- ol_map(
     map.note="Note: Mouseover popup values are 
         independent of shape size &amp; color."
     ) + 
-   public_OSM_basemap() 
+   nga_basemap("WSM") 
 circle.layer<-ol_geom_circle(
         miami.circles,
         df = aesthetic.df,

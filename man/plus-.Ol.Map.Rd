@@ -38,7 +38,7 @@ You can add the following types of objects:
 
 \examples{
 mymap <- ol_map()
-base.layer <- public_arcgis_basemap('LightGray')
+base.layer <- nga_basemap('LightGray')
 mymap <- mymap + base.layer
 ## Not run
 # ol_map2HTML(mymap,"SanDiego.html")

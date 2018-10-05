@@ -57,7 +57,5 @@ mymap <- mymap + base.layer
 \seealso{
 \code{\link{ol_map}}, 
 \code{\link{+.Ol.Map}}, 
-\code{\link{nga_basemap}}, 
-\code{\link{public_OSM_basemap}}, 
-\code{\link{public_arcgis_basemap}}
+\code{\link{nga_basemap}},
 }

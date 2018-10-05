@@ -114,7 +114,7 @@
 #'     map.note="Note: Mouseover popup values are 
 #'         independent of shape size &amp; color."
 #'     ) + 
-#'    public_OSM_basemap() 
+#'    nga_basemap("LightGray") 
 #' polygon.layer <- ol_geom_polygon(
 #'     polygon.list,
 #'     mapping=ol_aes(

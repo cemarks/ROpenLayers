@@ -1,5 +1,6 @@
-# ROpenLayers 0.0.7
+# ROpenLayers 0.0.7-99
 
+* Initial SIPR branch and commit.
 * Capability to control the direction of continuous color scales.
 * Removed SSL from public OpenLayers JavaScript library request.
 * Created "inst" folder for documentation, binaries.

@@ -61,7 +61,7 @@ miami.points.map <- ol_map(
     center=c(-80.385790,25.782618),
     zoom=10
 ) + 
-    public_OSM_basemap()+
+    nga_basemap("WSM")+
     ol_geom_point(
         point.matrix,
         df=point.df,

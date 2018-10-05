@@ -102,7 +102,7 @@
 #'     center=c(-100,30),
 #'     zoom=3,
 #' ) + 
-#'     public_OSM_basemap()+
+#'     nga_basemap("WSM")+
 #'     ol_geom_icon(
 #'         some.r.servers,
 #'         r.icon,

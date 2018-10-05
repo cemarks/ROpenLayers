@@ -70,7 +70,7 @@ icon.map <- ol_map(
     center=c(-75,38),
     zoom=5
 ) + 
-    public_OSM_basemap()+
+    nga_basemap("WSM")+
     ol_geom_icon(
         loc.df[,1:2],
         c(r.icon,freebsd.icon),

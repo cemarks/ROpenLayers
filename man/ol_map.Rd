@@ -5,7 +5,8 @@
 \title{OpenLayers Map}
 \usage{
 ol_map(zoom = 10, center = c(-117.1611, 32.7157), width = NULL,
-  height = NULL, ol.source.url = NULL, nga.olsource = FALSE,
+  height = NULL,
+  ol.source.url = "http://home.gvs.nga.smil.mil/libs/openlayers/3.16.0/build/ol.js",
   map.heading = NULL, map.note = NULL)
 }
 \arguments{
@@ -20,12 +21,6 @@ latitude coordinates for initial map center.}
 
 \item{ol.source.url}{character string containing the url to the OpenLayers
 javascript library.}
-
-\item{nga.olsource}{logical.  \code{TRUE} will use the OpenLayers 3.16.0 javascript
-library from \url{https://home.gvs.nga.mil} (requires authentication);
-\code{FALSE} uses the public library at 
-\href{https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v3.16.0/build/ol.js}{cdn.rawgit.com}.
-Only used if \code{ol.source.url} is missing or \code{NULL}.}
 
 \item{map.heading}{character heading to be placed over map in html h1 tag.}
 
@@ -49,7 +44,7 @@ miami.OSM.basemap <- ol_map(
     map.note="Note: Mouseover popup values are 
         independent of shape size &amp; color."
     ) + 
-   public_OSM_basemap() 
+   nga_basemap('WSM') 
 ## Not Run
 # ol_map2HTML(miami.OSM.basemap,'miami.html')
 # browseURL("miami.html")
@@ -57,8 +52,6 @@ miami.OSM.basemap <- ol_map(
 \seealso{
 \code{\link{ol_map2HTML}}, 
 \code{\link{ol_map2Strings}}, 
-\code{\link{public_OSM_basemap}}, 
 \code{\link{nga_basemap}}, 
-\code{\link{public_arcgis_basemap}}, 
 \code{\link{user_arcgis_basemap}}
 }

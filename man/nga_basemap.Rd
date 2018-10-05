@@ -24,7 +24,7 @@ Create a basemap layer linking to an NGA ArcGIS mapserver.
 }
 \details{
 Creates and returns an OpenLayers ArcGIS Tile layer that sources a
-map server hosted at \url{https://home.gvs.nga.mil}.  These map servers
+map server hosted at \url{http://home.gvs.nga.smil.mil}.  These map servers
 are owned by the US Government and require authentication.  If the 
 \code{basemap.identifier} parameter is unrecognized the function will
 default to the NGA OpenStreetMap map server.
@@ -33,33 +33,29 @@ default to the NGA OpenStreetMap map server.
 
 The following basemap.identifiers are currently supported by this method.
 \tabular{ll}{
-"ABM" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/CanvasMaps/Analytic_Basemap/MapServer}{Analytic Base Map}\cr
-"LightGray" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/CanvasMaps/LightGray/MapServer}{Analytic Base Map (Light Gray)}\cr
-"Light_LightGray" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/CanvasMaps/Lite_LightGray/MapServer}{Analytic Base Map (Light Light Gray)}\cr
-"LightMidnight" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/CanvasMaps/Lite_Midnight/MapServer}{Analytic Base Map (Light Midnight)}\cr
-"Light_Slate" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/CanvasMaps/Lite_Slate/MapServer}{Analytic Base Map (Light Slate)}\cr
-"Midnight" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/CanvasMaps/Midnight/MapServer}{Analytic Base Map (Midnight)}\cr
-"Slate" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/CanvasMaps/Slate/MapServer}{Analytic Base Map (Slate)}\cr
-"CARDG" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/Basemap/ScannedMaps/MapServer}{Scanned CARDG Maps}\cr
-"DNC" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/Basemap/DNC/MapServer}{Digital Nautical Charts}\cr
-"Imagery" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/Basemap/NGA_World_Imagery_2D/MapServer}{Satellite Imagery}\cr
-"Hillshade" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/Basemap/NGA_Hillshade_2D/MapServer}{Hillshade Map}\cr
-"ShadedRelief" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/Basemap/NGA_ShadedRelief_2D/MapServer}{Shaded Relief Map}\cr
-"TintedHillshade" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/Basemap/NGA_Tinted_Hillshade/MapServer}{Tinted Hillshade Map}\cr
-"WorldBoundaries" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/Basemap/World_Boundaries_2D/MapServer}{World Boundaries (WSM)}\cr
-"WorldBoundaries_Places" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/Basemap/World_Boundaries_Places_2D/MapServer}{World Boundaries, Places (WSM)}\cr
-"WorldPlaceNames" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/Basemap/World_Place_Names_2D/MapServer}{World Place Names (WSM)}\cr
-"WorldTransportation" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/Basemap/World_Transportation_2D/MapServer}{World Transportation (WSM)}\cr
-"WorldCities" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/SampleWorldCities/MapServer}{Sample World Cities}\cr
-"WSM" \tab \href{https://maps.gvs.nga.mil/arcgis/rest/services/Basemap/World_StreetMap_2D/MapServer}{World Street Map}\cr
+"ABM" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/Analytic_Basemap/MapServer}{Analytic Base Map}\cr
+"LightGray" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/LightGray/MapServer}{Analytic Base Map (Light Gray)}\cr
+"Light_LightGray" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/Lite_LightGray/MapServer}{Analytic Base Map (Light Light Gray)}\cr
+"LightMidnight" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/Lite_Midnight/MapServer}{Analytic Base Map (Light Midnight)}\cr
+"Light_Slate" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/Lite_Slate/MapServer}{Analytic Base Map (Light Slate)}\cr
+"Midnight" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/Midnight/MapServer}{Analytic Base Map (Midnight)}\cr
+"Slate" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/Slate/MapServer}{Analytic Base Map (Slate)}\cr
+"CARDG" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/ScannedMaps/MapServer}{Scanned CARDG Maps}\cr
+"DNC" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/DNC/MapServer}{Digital Nautical Charts}\cr
+"Imagery" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/NGA_World_Imagery_2D/MapServer}{Satellite Imagery}\cr
+"Hillshade" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/NGA_Hillshade_2D/MapServer}{Hillshade Map}\cr
+"ShadedRelief" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/NGA_ShadedRelief_2D/MapServer}{Shaded Relief Map}\cr
+"TintedHillshade" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/NGA_Tinted_Hillshade/MapServer}{Tinted Hillshade Map}\cr
+"WorldBoundaries" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/World_Boundaries_2D/MapServer}{World Boundaries (WSM)}\cr
+"WorldBoundaries_Places" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/World_Boundaries_Places_2D/MapServer}{World Boundaries, Places (WSM)}\cr
+"WorldPlaceNames" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/World_Place_Names_2D/MapServer}{World Place Names (WSM)}\cr
+"WorldTransportation" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/World_Transportation_2D/MapServer}{World Transportation (WSM)}\cr
+"WSM" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/World_StreetMap_2D/MapServer}{World Street Map}\cr
 }
 }
 
 \examples{
-mymap <- ol_map(
-    nga.olsource = TRUE ## Not required; can also use public OpenLayers
-                        ## javascript source with NGA mapservers.
-)
+mymap <- ol_map()
 base.layer <- nga_basemap('Midnight')
 mymap <- mymap + base.layer
 ## Not run
@@ -69,7 +65,6 @@ mymap <- mymap + base.layer
 \seealso{
 \code{\link{ol_map}}, 
 \code{\link{+.Ol.Map}}, 
-\code{\link{public_arcgis_basemap}}, 
-\code{\link{public_OSM_basemap}}, 
+\code{\link{nga_basemap}}, 
 \code{\link{user_arcgis_basemap}}
 }

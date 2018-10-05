@@ -71,7 +71,7 @@ mymap <- ol_map(
     zoom=4,
     map.note="Heatmap of random points centered on Miami and San Diego."
 ) + 
-    public_OSM_basemap() +
+    nga_basemap("WSM") +
     ol_geom_heatmap(
         heatmap.pts,
         name="Random Heatmap",
