@@ -75,11 +75,10 @@ The example below shows how to map a `fill` aesthetic to a `ol_geom_polygon` lay
 
 ## Installation
 
-Install in R directly from GitHub:
+Download the pre-compiled Windows binary and install from local.
 
 ```r 
-library(devtools)
-install_github("cemarks/ROpenLayers")
+install.packages("[local path to binary]/ROpenLayers_0.0.7-99.zip",repos=NULL)
 ```
 
 ## Example
