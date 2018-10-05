@@ -75,7 +75,7 @@ The example below shows how to map a `fill` aesthetic to a `ol_geom_polygon` lay
 
 ## Installation
 
-Download the pre-compiled Windows binary and install from local.
+Download the pre-compiled Windows binary from `inst/win_binaries` and install from local.
 
 ```r 
 install.packages("[local path to binary]/ROpenLayers_0.0.7-99.zip",repos=NULL)
