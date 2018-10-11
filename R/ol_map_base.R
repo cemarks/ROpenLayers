@@ -195,12 +195,12 @@ ol_map <- function(
         layer.control.df=toggle.control.df,
         tooltips=FALSE,
         tooltips.param.vector=c(
-            fill.color=hex2rgba_func('#105555B0'),
+            fill_color=hex2rgba_func('#105555B0'),
             border='solid black 1px',
             borderradius="3px",
             font=NULL,
             padding="3px",
-            stroke.color=hex2rgba_func("#000000"),
+            stroke_color=hex2rgba_func("#000000"),
             offsetX=6,
             offsetY=0,
             positioning="bottom-left"
@@ -283,12 +283,12 @@ ol_map <- function(
         if(!(is.null(other.obj[['tooltip']]))){
             ol.map.obj[['tooltips']]<-TRUE
             for(tooltip.property in c(
-                "fill.color",
+                "fill_color",
                 "border",
                 "borderradius",
                 "font",
                 "padding",
-                "stroke.color",
+                "stroke_color",
                 "offsetX",
                 "offsetY",
                 "positioning")

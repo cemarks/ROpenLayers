@@ -1,3 +1,7 @@
+# ROpenLayers 0.0.8
+
+* Fixed several bugs in label and tooltip CSS.
+
 # ROpenLayers 0.0.7
 
 * Capability to control the direction of continuous color scales.
