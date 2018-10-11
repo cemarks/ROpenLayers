@@ -142,8 +142,8 @@ get_ol_layer_label <- function(df,mapping,label,label.params){
             rotation=label.params[['rotation']],
             textAlign=label.params[['textAlign']],
             textBaseline=label.params[['textBaseline']],
-            stroke_color=hex2rgb_arraystr(label.params[['stroke_color']]),
-            fill_color=hex2rgb_arraystr(label.params[['fill_color']])
+            stroke_color=sapply(label.params[['stroke_color']],hex2rgb_arraystr),
+            fill_color=sapply(label.params[['fill_color']],hex2rgb_arraystr)
         )
         class(o) <- "Label"
     }

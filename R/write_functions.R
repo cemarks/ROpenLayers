@@ -896,12 +896,16 @@ write_label_attr_vec <- function(label.list,ind,nice.format=TRUE,initial.indent=
                 if(length(attr.val) > 1){
                     if(is.numeric(attr.val)){
                         write_function(paste(sprintf("%s: [",object.name),paste(sprintf("%1.2f",attr.val),collapse=","),"],",sep=""))
+                    } else if(str %in% c("fill_color","stroke_color")){
+                        write_function(paste(sprintf("%s: [",object.name),paste(sprintf("%s",attr.val),collapse=","),"],",sep=""))
                     } else {
                         write_function(paste(sprintf("%s: [",object.name),paste(sprintf("\"%s\"",gsub("\"","'",as.character(attr.val))),collapse=","),"],",sep=""))
                     }
                 } else {
                     if(is.numeric(attr.val)){
                         write_function(sprintf("%s: %1.2f,",object.name,attr.val))
+                    } else if(str %in% c("fill_color","stroke_color")){
+                        write_function(sprintf("%s: %s,",object.name,as.character(attr.val)))
                     } else {
                         write_function(sprintf("%s: \"%s\",",object.name,gsub("\"","'",as.character(attr.val))))
                     }
