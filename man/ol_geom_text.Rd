@@ -50,8 +50,8 @@ The following ol/style/Text properties are supported:
 \code{rotation} \tab numeric label rotation  \cr
 \code{textAlign} \tab character label text horizontal alighment \cr
 \code{textBaseline} \tab  character label text vertical alignment\cr
-\code{stroke.color} \tab character text color\cr
-\code{fill.color} \tab  character text fill color\cr
+\code{stroke_color} \tab character text color\cr
+\code{fill_color} \tab  character text fill color\cr
 }
 }
 
@@ -77,7 +77,7 @@ mymap <- ol_map(
         toggle.control=TRUE,
         label.params=list(
             font="16px sans-serif",
-            stroke_color=c("#F00","#0F0","#00F"),
+            stroke_color="#FF0000",
             fill_color="#FFFFFF00"
         )
     )

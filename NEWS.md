@@ -1,3 +1,7 @@
+# ROpenLayers 0.0.8-99
+
+* Fixed several bugs in label and tooltip CSS.
+
 # ROpenLayers 0.0.7-99
 
 * Initial SIPR branch and commit.

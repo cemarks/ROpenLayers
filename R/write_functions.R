@@ -509,12 +509,12 @@ write_style <- function(width,height,display.scale=FALSE,layer.control=FALSE,sca
 
 write_tooltip_css <- function(tooltip.params,nice.format=TRUE,initial.indent=8){
     params.translation <- c(
-        fill.color="background-color",
+        fill_color="background-color",
         border="border",
         borderradius="border-radius",
         font="font",
         padding="padding",
-        stroke.color="font-color"
+        stroke_color="color"
         )
     inid <- initial.indent
     if(nice.format){
@@ -951,7 +951,7 @@ write_label_style_obj <- function(label.list,nice.format=TRUE,initial.indent=14)
     } else if(!is.null(label.list[["stroke_color"]])){
         write_function("stroke: new ol.style.Stroke({")
         inid <- inid + 2
-        write_function(sprintf("color: \"%s\"",label.list[["stroke_color"]]))
+        write_function(sprintf("color: %s",label.list[["stroke_color"]]))
         inid <- inid - 2
         write_function("}),")
     }
@@ -964,7 +964,7 @@ write_label_style_obj <- function(label.list,nice.format=TRUE,initial.indent=14)
     } else if(!is.null(label.list[["fill_color"]])){
         write_function("fill: new ol.style.Fill({")
         inid <- inid + 2
-        write_function(sprintf("color: \"%s\"",label.list[["fill_color"]]))
+        write_function(sprintf("color: %s",label.list[["fill_color"]]))
         inid <- inid - 2
         write_function("}),")
     }

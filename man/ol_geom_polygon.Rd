@@ -92,8 +92,8 @@ The following ol/style/Text properties are supported:
 \code{rotation} \tab numeric label rotation  \cr
 \code{textAlign} \tab character label text horizontal alighment \cr
 \code{textBaseline} \tab  character label text vertical alignment\cr
-\code{stroke.color} \tab character text color\cr
-\code{fill.color} \tab  character text fill color\cr
+\code{stroke_color} \tab character text color\cr
+\code{fill_color} \tab  character text fill color\cr
 }
 }
 
@@ -111,8 +111,8 @@ provides additional information about Overlay Properties.
 \code{offsetX} \tab numeric OpenLayers Overlay x-offset \cr
 \code{offsetY} \tab numeric OpenLayers Overlay y-offset \cr
 \code{positioning} \tab character OpenLayers Overlay positioning string \cr
-\code{stroke.color} \tab character Tooltip CSS font-color \cr
-\code{fill.color} character \tab Tooltip CSS background-color \cr
+\code{stroke_color} \tab character Tooltip CSS font-color \cr
+\code{fill_color} character \tab Tooltip CSS background-color \cr
 \code{padding}, \tab character Tooltip CSS padding \cr
 \code{border}, \tab character Tooltip CSS border \cr
 \code{borderradius} character \tab Tooltip CSS border-radius \cr

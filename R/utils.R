@@ -114,8 +114,8 @@ get_ol_layer_label <- function(df,mapping,label,label.params){
         rotation=0,
         textAlign='center',
         textBaseline='middle',
-        stroke.color='#000000FF',
-        fill.color='#303030FF'
+        stroke_color='#000000FF',
+        fill_color=NULL
     )
     for(i in 1:length(default.values)){
         if(!(names(default.values)[i] %in% names(label.params))){
@@ -130,6 +130,7 @@ get_ol_layer_label <- function(df,mapping,label,label.params){
     } else {
         label.values <- NULL
     }
+    if(is.null(label.params[['fill_color']])) label.params[['fill_color']] <- label.params[['stroke_color']]
     if(is.null(label.values)){
         o <- NULL
     } else {
@@ -141,8 +142,8 @@ get_ol_layer_label <- function(df,mapping,label,label.params){
             rotation=label.params[['rotation']],
             textAlign=label.params[['textAlign']],
             textBaseline=label.params[['textBaseline']],
-            stroke.color=hex2rgb_arraystr(label.params[['stroke.color']]),
-            fill.color=hex2rgb_arraystr(label.params[['fill.color']])
+            stroke_color=hex2rgb_arraystr(label.params[['stroke_color']]),
+            fill_color=hex2rgb_arraystr(label.params[['fill_color']])
         )
         class(o) <- "Label"
     }
@@ -155,8 +156,8 @@ get_ol_layer_tooltip <- function(df,mapping,tooltip,tooltip.params){
         offsetX=5,
         offsetY=5,
         positioning='bottom-left',
-        stroke.color='#000000FF',
-        fill.color="#FFFFFFA0",
+        stroke_color='#000000FF',
+        fill_color="#FFFFFFA0",
         padding="3px",
         border="solid black 1px",
         borderradius="3px"
@@ -183,8 +184,8 @@ get_ol_layer_tooltip <- function(df,mapping,tooltip,tooltip.params){
             offsetX=tooltip.params[["offsetX"]],
             offsetY=tooltip.params[["offsetY"]],
             positioning=tooltip.params[["positioning"]],
-            stroke.color=hex2rgba_func(tooltip.params[["stroke.color"]]),
-            fill.color=hex2rgba_func(tooltip.params[["fill.color"]]),
+            stroke_color=hex2rgba_func(tooltip.params[["stroke_color"]]),
+            fill_color=hex2rgba_func(tooltip.params[["fill_color"]]),
             padding=tooltip.params[["padding"]],
             border=tooltip.params[["border"]],
             borderradius=tooltip.params[["borderradius"]]
