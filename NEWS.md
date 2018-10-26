@@ -1,5 +1,9 @@
 # ROpenLayers 0.0.8-99
 
+* Added geocoding capability using NGA services portal.
+
+# ROpenLayers 0.0.8-99
+
 * Fixed several bugs in label and tooltip CSS.
 
 # ROpenLayers 0.0.7-99

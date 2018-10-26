@@ -13,19 +13,12 @@ The purpose of this package is to make it easy for a user to visualize geo-spati
 
 ## OpenLayers
 
-[OpenLayers](https://openlayers.org) is an open source JavaScript library that makes it easy to put a dynamic map on any web page. It is licensed under the 2-clause BSD license (see [OpenLayers Licence](https://github.com/openlayers/openlayers/blob/master/LICENSE.md)). This license will appear commented within OpenLayers CSS code in the HTML exports created by this package. However, this package does not contain any of the OpenLayers JavaScript source code; rather, it exports HTML code that source these libraries when loaded. Therefore, these products will not render without network access to the OpenLayers JavaScript library. By default, the products exported by this package source OpenLayers 3.16.0, but the user has the option to set the JavaScript source URL (see `ol_map` documentation). 
+OpenLayers is an open source JavaScript library that makes it easy to put a dynamic map on any web page. It is licensed under the 2-clause BSD license and hosted on the [NGA Portal](http://home.gvs.nga.smil.mil). This license will appear commented within OpenLayers CSS code in the HTML exports created by this package. However, this package does not contain any of the OpenLayers JavaScript source code; rather, it exports HTML code that source these libraries when loaded. Therefore, these products will not render without network access to the OpenLayers JavaScript library. By default, the products exported by this package source OpenLayers 3.16.0, but the user has the option to set the JavaScript source URL (see `ol_map` documentation). 
 
-## Public ArcGIS Servers
 
-[ESRI ArcGIS](https://www.arcgis.com) hosts several publicly available map servers at [arcgisonline.com](https://server.arcgisonline.com/arcgis/rest/services), which can accessed via REST APIs and rendered using OpenLayers JavaScript methods. A subset of these are made available in this package through the `public_arcgis_basemap` method. Alternatively, a user can specify any ArcGIS map server using the `user_arcgis_basemap` method. Note that while these maps servers are publicly available, they are not necessarily open-licensed. Users must ensure they comply with each map server's license and terms of use. 
+## ArcGIS Servers
 
-## OpenStreetMap
-
-[OpenStreetMap](https://www.openstreetmap.org/) also hosts a public and open license map server that can be imported as a layer using OpenLayers. See `public_OSM_basemap` documentation. 
-
-## Other Servers
-
-As stated above, the `user_arcgis_basemap` method allows the user to manually specify any available ArcGIS map server. This package also provides access to US National Geospatial-Intelligence Agency servers hosted at [NGA.mil](https://www.nga.mil) through the `nga_basemap` method. Note that these servers require authentication, which will be requested at the time of access (i.e., when the HTML page is opened in a browser). 
+The `user_arcgis_basemap` method allows the user to manually specify any available ArcGIS map server. This package also provides access to US National Geospatial-Intelligence Agency servers hosted at [NGA.mil](http://home.gvs.nga.smil.mil) through the `nga_basemap` method. Note that these servers require authentication, which will be requested at the time of access (i.e., when the HTML page is opened in a browser). 
 
 ## Vector Layers
 
@@ -72,13 +65,16 @@ Once a default aesthetic mapping has been created, it can be manually updated by
 
 The example below shows how to map a `fill` aesthetic to a `ol_geom_polygon` layer and then to set the name and display options by calling `ol_scale_fill_continuous`.
 
+## New in Version 0.0.9-99: Geocoding
+
+This package enables a user to geocode a vector of addresses using the [NGA Geocoding API](http://origin-services.gvs.nga.smil.mil/arcgis/rest/services/Locators/CompositeLocator/GeoCodeServer). See documentation for the `geocode` method.
 
 ## Installation
 
 Download the pre-compiled Windows binary from `inst/win_binaries` and install from local.
 
 ```r 
-install.packages("[local path to binary]/ROpenLayers_0.0.7-99.zip",repos=NULL)
+install.packages("[local path to binary]/ROpenLayers_0.0.9-99.zip",repos=NULL)
 ```
 
 ## Example
