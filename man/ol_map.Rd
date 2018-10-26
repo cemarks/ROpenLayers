@@ -41,17 +41,17 @@ miami.OSM.basemap <- ol_map(
     center=c(-80.385790,25.782618),
     zoom=9,
     map.heading="Miami Shapes",
-    map.note="Note: Mouseover popup values are 
+    map.note="Note: Mouseover popup values are
         independent of shape size &amp; color."
-    ) + 
-   nga_basemap('WSM') 
+    ) +
+   nga_basemap('WSM')
 ## Not Run
 # ol_map2HTML(miami.OSM.basemap,'miami.html')
 # browseURL("miami.html")
 }
 \seealso{
-\code{\link{ol_map2HTML}}, 
-\code{\link{ol_map2Strings}}, 
-\code{\link{nga_basemap}}, 
+\code{\link{ol_map2HTML}},
+\code{\link{ol_map2Strings}},
+\code{\link{nga_basemap}},
 \code{\link{user_arcgis_basemap}}
 }
