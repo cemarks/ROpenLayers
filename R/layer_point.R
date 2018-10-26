@@ -2,9 +2,9 @@
 #'
 #' Function to create a points layer to add to an OpenLayers Map object.
 #'
-#' This function stores the data required to generate an OpenLayers 
-#' vector layer with features using \code{Point} 
-#' geometries.  
+#' This function stores the data required to generate an OpenLayers
+#' vector layer with features using \code{Point}
+#' geometries.
 #' See OpenLayers \href{https://openlayers.org/en/latest/apidoc/module-ol_geom_Point-Point.html}{Point Documentation}
 #' for details.
 #'
@@ -13,10 +13,10 @@
 #' \item \code{fill}
 #' \item \code{size}
 #' }
-#' 
-#' @param point.obj SpatialPointsDataframe, SpatialPoints, or a matrix 
-#' containing columns of point longitudes and latitudes, respectively. 
-#' @param mapping list created by ol_aes. Used for aestheic mapping. 
+#'
+#' @param point.obj SpatialPointsDataframe, SpatialPoints, or a matrix
+#' containing columns of point longitudes and latitudes, respectively.
+#' @param mapping list created by ol_aes. Used for aestheic mapping.
 #' @param name character Layer name.
 #' @param df data.frame with same number of rows as \code{point.obj} coordinate
 #' matrix.
@@ -35,18 +35,19 @@
 #' "dot" markers.
 #' @param label character vector of point feature labels.
 #' @param tooltip character vector of point feature tooltip popups.
-#' @param label.params,tooltip.params named lists (e.g., \code{list(property=value)}) of 
-#' label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation. 
+#' @param label.params,tooltip.params named lists (e.g., \code{list(property=value)}) of
+#' label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation.
 #'
 #' @return A list object of class \code{Layer.SpatialPoint}.
 #'
-#' @seealso \code{\link{ol_aes}}, 
-#' \code{\link{ol_map}}, 
-#' \code{\link{ol_geom_polygon}}, 
+#' @seealso \code{\link{ol_aes}},
+#' \code{\link{ol_map}},
+#' \code{\link{ol_geom_polygon}},
 #' \code{\link{ol_geom_circle}},
 #' \code{\link{ol_geom_line}},
-#' \code{\link{ol_geom_icon}}
-#' 
+#' \code{\link{ol_geom_icon}},
+#' \code{\link{geocode}}
+#'
 #' @export
 #'
 #' @examples
@@ -64,7 +65,7 @@
 #' miami.map <- ol_map(
 #'     center=c(-80.385790,25.782618),
 #'     zoom=9
-#' ) + 
+#' ) +
 #'     nga_basemap("WSM")
 #' miami.points <- ol_geom_point(
 #'     point.matrix,
@@ -74,7 +75,7 @@
 #'     marker="pin",
 #'     toggle.control=TRUE,
 #'     tooltip=point.df$pt.type
-#' ) 
+#' )
 #' size.scale <- ol_scale_size_continuous(
 #'     display=TRUE,
 #'     draw.fill='green'
@@ -87,7 +88,7 @@
 #'     miami.points +
 #'     size.scale +
 #'     fill.scale
-#' 
+#'
 #' ## Not Run: output to file and view
 #' # ol_map2HTML(miami.points.map,'Miami_points.html')
 #' # browseURL('Miami_points.html')

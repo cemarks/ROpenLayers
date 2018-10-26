@@ -1,28 +1,28 @@
 #' ROpenLayers: A pacakge for Geo-Visualization
-#' 
+#'
 #' ROpenLayers leverages the power of OpenLayers javascript libraries
 #' and web-based map servers to enable informative visualization.
-#' 
+#'
 #' @section What this package does:
 #' The purpose of this package is to make it easy for a user to visualize
 #' geo-spatial data and analyses using the open source
 #' OpenLayers javascript library and
-#' online map servers.  The process for creating a visualization 
-#' imitates the process of creating a plot in R package 
-#' \code{ggplot2}.  
+#' online map servers.  The process for creating a visualization
+#' imitates the process of creating a plot in R package
+#' \code{ggplot2}.
 #' \enumerate{
-#' \item First, an OpenLayers Map object is created with a 
-#' call to the \code{\link{ol_map}} method.  
+#' \item First, an OpenLayers Map object is created with a
+#' call to the \code{\link{ol_map}} method.
 #' \item Next, layers and scales are created and added.  Layers can reference
-#' map servers to provide underlying base maps or vector features 
+#' map servers to provide underlying base maps or vector features
 #' (polygons, lines, or points) created or imported in R.  These capabilities
 #' are described in the following sections.
 #' \item Finally, the updated map object is exported to HTML/javascript for
-#' viewing in a browser, hosting on a server, or embedding into another 
-#' application or format.  Export methods are \code{\link{ol_map2HTML}} and 
+#' viewing in a browser, hosting on a server, or embedding into another
+#' application or format.  Export methods are \code{\link{ol_map2HTML}} and
 #' \code{\link{ol_map2Strings}}.
 #' }
-#' 
+#'
 #' @section OpenLayers:
 #' OpenLayers
 #'  is an open source javascript library that makes it easy to put a
@@ -34,10 +34,10 @@
 #' HTML code that source these libraries when loaded.  Therefore, these
 #' products will not render without network access to the OpenLayers
 #' javascript library.  By default, the products exported by this package
-#' source OpenLayers 3.16.0, but the user has the option to set the 
+#' source OpenLayers 3.16.0, but the user has the option to set the
 #' source URL (see \code{\link{ol_map}}).
-#' 
-#' 
+#'
+#'
 #' @section ArcGIS Servers:
 #' The \code{\link{user_arcgis_basemap}} method allows the user
 #' to manually specify any available ArcGIS map server.  This package also provides
@@ -45,9 +45,9 @@
 #' at \href{https://home.gvs.nga.smil.mil}{NGA.smil.mil} through the \code{\link{nga_basemap}}
 #' method.  Note that these servers require authentication, which will be requested
 #' at the time of access (i.e., when the HTML page is opened in a browser).
-#' 
+#'
 #' @section Vector Layers:
-#' This package enables users to rapidly access and write OpenLayers 
+#' This package enables users to rapidly access and write OpenLayers
 #' vector layers in javascript.  The following methods enable that functionality.
 #' \itemize{
 #' \item \code{\link{ol_geom_polygon}}
@@ -58,7 +58,7 @@
 #' \item \code{\link{ol_geom_heatmap}}
 #' \item \code{\link{ol_geom_text}}
 #' }
-#' 
+#'
 #' @docType package
 #' @name ROpenLayers
 #' @examples
@@ -105,12 +105,11 @@ NULL
 
 
 
-#' 
 #' OpenLayers Map
 #'
 #' Create an OpenLayers Map Object.
 #'
-#' This function creates a new S3 OpenLayers Map object with no layers.  
+#' This function creates a new S3 OpenLayers Map object with no layers.
 #'
 #' @param zoom integer map initial zoom level.
 #' @param center numeric vector of length 2 containing decimal longitude and
@@ -121,13 +120,13 @@ NULL
 #' javascript library.
 #' @param map.heading character heading to be placed over map in html h1 tag.
 #' @param map.note character note placed in html paragraph (<p>) tag centered
-#' under map container. 
+#' under map container.
 #'
 #' @return A list object of class \code{Ol.Map}.
 #'
-#' @seealso \code{\link{ol_map2HTML}}, 
-#' \code{\link{ol_map2Strings}}, 
-#' \code{\link{nga_basemap}}, 
+#' @seealso \code{\link{ol_map2HTML}},
+#' \code{\link{ol_map2Strings}},
+#' \code{\link{nga_basemap}},
 #' \code{\link{user_arcgis_basemap}}
 #'
 #' @export
@@ -137,10 +136,10 @@ NULL
 #'     center=c(-80.385790,25.782618),
 #'     zoom=9,
 #'     map.heading="Miami Shapes",
-#'     map.note="Note: Mouseover popup values are 
+#'     map.note="Note: Mouseover popup values are
 #'         independent of shape size &amp; color."
-#'     ) + 
-#'    nga_basemap('WSM') 
+#'     ) +
+#'    nga_basemap('WSM')
 #' ## Not Run
 #' # ol_map2HTML(miami.OSM.basemap,'miami.html')
 #' # browseURL("miami.html")
@@ -188,14 +187,14 @@ ol_map <- function(
 #' Add components to a OpenLayers Map.
 #'
 #' Similar to the \code{ggplot2} package, + provides functionality to add layers to
-#' an existing OpenLayers Map object.  
+#' an existing OpenLayers Map object.
 #' Layers are simply appended to the Ol.Map objects layers list.
 #' When adding scales, this method searches
 #' through map layers in reverse order for scales with matching aesthetics.  When
 #' a matching scale is found, it is updated according to the parameters of the
 #' added scale.
-#' In general, continuous scales can be coerced into discrete scales.   
-#' 
+#' In general, continuous scales can be coerced into discrete scales.
+#'
 #' @section What can you add?:
 #' You can add the following types of objects:
 #' \itemize{
@@ -208,8 +207,8 @@ ol_map <- function(
 #'
 #' @return Ol.Map object with updated layers or scales.
 #'
-#' @seealso 
-#' \code{\link{ol_map}} 
+#' @seealso
+#' \code{\link{ol_map}}
 #'
 #' @export
 #'
@@ -373,13 +372,13 @@ ol_map <- function(
 #' NGA Basemap Layer
 #'
 #' Create a basemap layer linking to an NGA ArcGIS mapserver.
-#' 
+#'
 #' Creates and returns an OpenLayers ArcGIS Tile layer that sources a
 #' map server hosted at \url{http://home.gvs.nga.smil.mil}.  These map servers
-#' are owned by the US Government and require authentication.  If the 
+#' are owned by the US Government and require authentication.  If the
 #' \code{basemap.identifier} parameter is unrecognized the function will
 #' default to the NGA OpenStreetMap map server.
-#' 
+#'
 #' @section Available Base Maps:
 #' The following basemap.identifiers are currently supported by this method.
 #' \tabular{ll}{
@@ -402,19 +401,19 @@ ol_map <- function(
 #' "WorldTransportation" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/World_Transportation_2D/MapServer}{World Transportation (WSM)}\cr
 #' "WSM" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/World_StreetMap_2D/MapServer}{World Street Map}\cr
 #' }
-#' 
+#'
 #' @param basemap.identifier character indicating which NGA mapserver to use.
 #' See 'Available Base Maps'.
 #' @param name character layer name.
 #' @param toggle.control logical.  If \code{TRUE}, a checkbox will appear on the
 #' map allowing the viewer to toggle its visibility in the browser.
-#' 
-#' @return A \code{Layer.ArcGIS} S3 object. 
 #'
-#' @seealso 
-#' \code{\link{ol_map}}, 
-#' \code{\link{+.Ol.Map}}, 
-#' \code{\link{nga_basemap}}, 
+#' @return A \code{Layer.ArcGIS} S3 object.
+#'
+#' @seealso
+#' \code{\link{ol_map}},
+#' \code{\link{+.Ol.Map}},
+#' \code{\link{nga_basemap}},
 #' \code{\link{user_arcgis_basemap}}
 #'
 #' @export
@@ -464,10 +463,10 @@ nga_basemap<-function(basemap.identifier="WSM",name=NULL,toggle.control=FALSE){
 #' User ArcGIS Basemap Layer
 #'
 #' Create a basemap layer linking to an User-supplied ArcGIS mapserver.
-#' 
+#'
 #' Creates and returns an OpenLayers ArcGIS Tile layer that sources a
-#' map server at a user-supplied URL.  
-#'  
+#' map server at a user-supplied URL.
+#'
 #' @param url character url string where the map server is located.  Typically these
 #' urls end with "/MapServer".
 #' @param name character layer name.
@@ -477,12 +476,12 @@ nga_basemap<-function(basemap.identifier="WSM",name=NULL,toggle.control=FALSE){
 #' @param toggle.control logical.  If \code{TRUE}, a checkbox will appear on the
 #' map allowing the viewer to toggle its visibility in the browser.
 #'
-#' @return A \code{Layer.ArcGIS} S3 object. 
+#' @return A \code{Layer.ArcGIS} S3 object.
 #'
-#' @seealso 
-#' \code{\link{ol_map}}, 
-#' \code{\link{+.Ol.Map}}, 
-#' \code{\link{nga_basemap}}, 
+#' @seealso
+#' \code{\link{ol_map}},
+#' \code{\link{+.Ol.Map}},
+#' \code{\link{nga_basemap}},
 #'
 #' @export
 #'
@@ -529,17 +528,17 @@ user_arcgis_basemap <- function(url,name="",attributions="",toggle.control=FALSE
 #' These operations must be completed a priori by the user.
 #'
 #' @param ... comma-separated mappings of the form 'aesthetic=variable'.  Available aesthetics for mapping
-#' are layer specific and are listed in the documentation for each layer type.  Unavailable or 
+#' are layer specific and are listed in the documentation for each layer type.  Unavailable or
 #' unrecognized aesthetics are ignored.  Variables must correspond to names in the layer's input data.frame,
 #' otherwise an error is thrown.
 #'
 #' @return A list of aesthetic mappings.
 #'
-#' @seealso 
-#' \code{\link{ol_geom_polygon}}, 
-#' \code{\link{ol_geom_line}}, 
-#' \code{\link{ol_geom_point}}, 
-#' \code{\link{ol_geom_icon}}, 
+#' @seealso
+#' \code{\link{ol_geom_polygon}},
+#' \code{\link{ol_geom_line}},
+#' \code{\link{ol_geom_point}},
+#' \code{\link{ol_geom_icon}},
 #' \code{\link{ol_geom_circle}}
 #'
 #' @export
@@ -565,10 +564,10 @@ user_arcgis_basemap <- function(url,name="",attributions="",toggle.control=FALSE
 #'     center=c(-80.385790,25.782618),
 #'     zoom=9,
 #'     map.heading="Miami Shapes",
-#'     map.note="Note: Mouseover popup values are 
+#'     map.note="Note: Mouseover popup values are
 #'         independent of shape size &amp; color."
-#'     ) + 
-#'    nga_basemap('WSM') 
+#'     ) +
+#'    nga_basemap('WSM')
 #' polygon.layer <- ol_geom_polygon(
 #'     polygon.list,
 #'     mapping=ol_aes(
@@ -590,8 +589,8 @@ user_arcgis_basemap <- function(url,name="",attributions="",toggle.control=FALSE
 #'     display=TRUE,
 #'     name="Shape"
 #' )
-#' polygons.over.miami <- miami.OSM.basemap + 
-#'     polygon.layer + 
+#' polygons.over.miami <- miami.OSM.basemap +
+#'     polygon.layer +
 #'     polygon.fill.scale +
 #'     polygon.linewidth.scale
 #'

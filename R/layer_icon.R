@@ -2,8 +2,8 @@
 #'
 #' Function to create a point-icon layer to add to an OpenLayers Map object.
 #'
-#' This function stores the data required to generate an OpenLayers 
-#' vector layer with features using \code{Point} 
+#' This function stores the data required to generate an OpenLayers
+#' vector layer with features using \code{Point}
 #' geometries and user-supplied point icons.
 #'
 #' @section Aesthetics:
@@ -11,17 +11,17 @@
 #' \item \code{iconimage}
 #' \item \code{iconsize}
 #' }
-#' 
-#' @param point.obj SpatialPointsDataframe, SpatialPoints, or a matrix 
-#' containing columns of point longitudes and latitudes, respectively. 
+#'
+#' @param point.obj SpatialPointsDataframe, SpatialPoints, or a matrix
+#' containing columns of point longitudes and latitudes, respectively.
 #' @param src.img character vector of image file paths.
-#' @param mapping list created by ol_aes. Used for aestheic mapping. 
+#' @param mapping list created by ol_aes. Used for aestheic mapping.
 #' @param name character Layer name.
 #' @param df data.frame with same number of rows as \code{point.obj} coordinate
 #' matrix.
 #' @param toggle.control logical indicating whether this layer will have
 #' a visibility toggle.
-#' @param icon.size.scalar numeric scalar vector or 'autoscale'.  
+#' @param icon.size.scalar numeric scalar vector or 'autoscale'.
 #' The width of the icon on the map will be scaled by this input from the original
 #' image width.  The default 'autoscale' uses the png, jpeg, or tiff package to
 #' scale each image to \code{target.icon.width}.
@@ -35,20 +35,21 @@
 #' determined by \code{target.icon.width} or \code{icon.size.scalar}.
 #' @param label character vector of point feature labels.
 #' @param tooltip character vector of point feature tooltip popups.
-#' @param label.params,tooltip.params named lists (e.g., \code{list(property=value)}) of 
-#' label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation. 
-#' @param deployment.image.path character giving the path where the icon images will be located on 
+#' @param label.params,tooltip.params named lists (e.g., \code{list(property=value)}) of
+#' label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation.
+#' @param deployment.image.path character giving the path where the icon images will be located on
 #' the server, if different from the path in \code{img.src}.
 #'
 #' @return A list object of class \code{Layer.SpatialIcon}.
 #'
-#' @seealso 
-#' \code{\link{ol_map}}, 
-#' \code{\link{ol_geom_polygon}}, 
+#' @seealso
+#' \code{\link{ol_map}},
+#' \code{\link{ol_geom_polygon}},
 #' \code{\link{ol_geom_circle}},
-#' \code{\link{ol_geom_line}}, 
-#' \code{\link{ol_geom_point}}
-#' 
+#' \code{\link{ol_geom_line}},
+#' \code{\link{ol_geom_point}},
+#' \code{\link{geocode}}
+#'
 #' @export
 #'
 #' @examples
@@ -97,11 +98,11 @@
 #' r.icon <- "https://www.r-project.org/Rlogo.png"
 #' ## If width is not provided image must be local
 #' ## and png package must be installed.
-#' r.icon.width <- 200 
+#' r.icon.width <- 200
 #' r.map <- ol_map(
 #'     center=c(-100,30),
 #'     zoom=3,
-#' ) + 
+#' ) +
 #'     nga_basemap("WSM")+
 #'     ol_geom_icon(
 #'         some.r.servers,
@@ -111,7 +112,7 @@
 #'         src.img.width=r.icon.width,
 #'         toggle.control=TRUE,
 #'         tooltip=r.server.names
-#' ) 
+#' )
 #' ## Not run: save as HTML and open in browser
 #' # ol_map2HTML(r.map,'R-servers.html')
 #' # browseURL("R-servers.html")
