@@ -24,7 +24,7 @@ to get coordinates for an address or list of addresses.
 \examples{
 addresses <- c(
     "1600 Pennsylvania Ave NW, Washington, DC 20500",
-    "1 1st ST NE, Washington, DC  20543"
+    "One 1st ST NE, Washington, DC  20543"
 )
 ## Not Run for NIPR Compile
 # g <- geocode(addresses)

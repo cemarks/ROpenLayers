@@ -10,7 +10,7 @@ ol_geom_point(point.obj, mapping = ol_aes(), name = NULL, df = NULL,
   tooltip = NULL, tooltip.params = list())
 }
 \arguments{
-\item{point.obj}{SpatialPointsDataframe, SpatialPoints, or a matrix 
+\item{point.obj}{SpatialPointsDataframe, SpatialPoints, or a matrix
 containing columns of point longitudes and latitudes, respectively.}
 
 \item{mapping}{list created by ol_aes. Used for aestheic mapping.}
@@ -40,7 +40,7 @@ only if no \code{size} aesthetic is provided in \code{mapping}.  A value of
 
 \item{label}{character vector of point feature labels.}
 
-\item{label.params, tooltip.params}{named lists (e.g., \code{list(property=value)}) of 
+\item{label.params, tooltip.params}{named lists (e.g., \code{list(property=value)}) of
 label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation.}
 
 \item{tooltip}{character vector of point feature tooltip popups.}
@@ -52,9 +52,9 @@ A list object of class \code{Layer.SpatialPoint}.
 Function to create a points layer to add to an OpenLayers Map object.
 }
 \details{
-This function stores the data required to generate an OpenLayers 
-vector layer with features using \code{Point} 
-geometries.  
+This function stores the data required to generate an OpenLayers
+vector layer with features using \code{Point}
+geometries.
 See OpenLayers \href{https://openlayers.org/en/latest/apidoc/module-ol_geom_Point-Point.html}{Point Documentation}
 for details.
 }
@@ -81,7 +81,7 @@ point.df <- data.frame(
 miami.map <- ol_map(
     center=c(-80.385790,25.782618),
     zoom=9
-) + 
+) +
     nga_basemap("WSM")
 miami.points <- ol_geom_point(
     point.matrix,
@@ -91,7 +91,7 @@ miami.points <- ol_geom_point(
     marker="pin",
     toggle.control=TRUE,
     tooltip=point.df$pt.type
-) 
+)
 size.scale <- ol_scale_size_continuous(
     display=TRUE,
     draw.fill='green'
@@ -110,10 +110,11 @@ miami.points.map <- miami.map +
 # browseURL('Miami_points.html')
 }
 \seealso{
-\code{\link{ol_aes}}, 
-\code{\link{ol_map}}, 
-\code{\link{ol_geom_polygon}}, 
+\code{\link{ol_aes}},
+\code{\link{ol_map}},
+\code{\link{ol_geom_polygon}},
 \code{\link{ol_geom_circle}},
 \code{\link{ol_geom_line}},
-\code{\link{ol_geom_icon}}
+\code{\link{ol_geom_icon}},
+\code{\link{geocode}}
 }

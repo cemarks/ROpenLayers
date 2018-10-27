@@ -1,12 +1,12 @@
 Package: ROpenLayers
 Title: Geo-visualization Using OperLayers and ArcGIS (SIPR)
-Version: 0.0.9-99
+Version: 0.0.10-99
 Authors@R: person("Christopher","Marks",email="cemarks@alum.mit.edu",role=c("aut","cre"))
 Description: Functions to export geospatial data and analyses to interactive HTML/javascript visualization using the OpenLayers javascript library.  The resulting HTML pages replicate some of the functionality in the Leaflet and ggmap packages, but have the advantage of enabling the user to easily leverage the functionality of the OpenLayers javascript library with NGA map servers.  User-supplied ArcGIS map servers are also supported.  The output HTML, files, and folders can be viewed on a local machine, hosted as self-contained web pages on a minimal http server, or parsed by the user for inclusion in other applications, web pages, or other server environments (e.g., RShiny).   
 Depends: R (>= 3.3)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: sp, stats, grDevices, graphics, utils
+Imports: sp, stats, grDevices, graphics, utils, base64enc
 Suggests: rgdal, png, jpeg, tiff, httr, jsonlite
 RoxygenNote: 6.1.0

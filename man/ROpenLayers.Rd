@@ -14,19 +14,19 @@ and web-based map servers to enable informative visualization.
 The purpose of this package is to make it easy for a user to visualize
 geo-spatial data and analyses using the open source
 OpenLayers javascript library and
-online map servers.  The process for creating a visualization 
-imitates the process of creating a plot in R package 
-\code{ggplot2}.  
+online map servers.  The process for creating a visualization
+imitates the process of creating a plot in R package
+\code{ggplot2}.
 \enumerate{
-\item First, an OpenLayers Map object is created with a 
-call to the \code{\link{ol_map}} method.  
+\item First, an OpenLayers Map object is created with a
+call to the \code{\link{ol_map}} method.
 \item Next, layers and scales are created and added.  Layers can reference
-map servers to provide underlying base maps or vector features 
+map servers to provide underlying base maps or vector features
 (polygons, lines, or points) created or imported in R.  These capabilities
 are described in the following sections.
 \item Finally, the updated map object is exported to HTML/javascript for
-viewing in a browser, hosting on a server, or embedding into another 
-application or format.  Export methods are \code{\link{ol_map2HTML}} and 
+viewing in a browser, hosting on a server, or embedding into another
+application or format.  Export methods are \code{\link{ol_map2HTML}} and
 \code{\link{ol_map2Strings}}.
 }
 }
@@ -43,7 +43,7 @@ contain any of the OpenLayers javascript source code; rather, it exports
 HTML code that source these libraries when loaded.  Therefore, these
 products will not render without network access to the OpenLayers
 javascript library.  By default, the products exported by this package
-source OpenLayers 3.16.0, but the user has the option to set the 
+source OpenLayers 3.16.0, but the user has the option to set the
 source URL (see \code{\link{ol_map}}).
 }
 
@@ -59,7 +59,7 @@ at the time of access (i.e., when the HTML page is opened in a browser).
 
 \section{Vector Layers}{
 
-This package enables users to rapidly access and write OpenLayers 
+This package enables users to rapidly access and write OpenLayers
 vector layers in javascript.  The following methods enable that functionality.
 \itemize{
 \item \code{\link{ol_geom_polygon}}
@@ -70,6 +70,11 @@ vector layers in javascript.  The following methods enable that functionality.
 \item \code{\link{ol_geom_heatmap}}
 \item \code{\link{ol_geom_text}}
 }
+}
+
+\section{Geocode}{
+
+New in Version 0.0.9-99: geocoding addresses.  See \code{\link{geocode}} for details.
 }
 
 \examples{

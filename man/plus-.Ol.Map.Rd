@@ -19,7 +19,7 @@ Add components to a OpenLayers Map.
 }
 \details{
 Similar to the \code{ggplot2} package, + provides functionality to add layers to
-an existing OpenLayers Map object.  
+an existing OpenLayers Map object.
 Layers are simply appended to the Ol.Map objects layers list.
 When adding scales, this method searches
 through map layers in reverse order for scales with matching aesthetics.  When

@@ -31,6 +31,7 @@ Creates and returns an OpenLayers ArcGIS Tile layer that sources a
 map server at a user-supplied URL.
 }
 \examples{
+## NOTE: Example for public URL accessible on NIPR.
 server.url <- "http://server.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer"
 mymap <- ol_map(
     map.note = sprintf(
@@ -55,7 +56,7 @@ mymap <- mymap + base.layer
 # browseURL("SanDiego_NatGeo.html")
 }
 \seealso{
-\code{\link{ol_map}}, 
-\code{\link{+.Ol.Map}}, 
+\code{\link{ol_map}},
+\code{\link{+.Ol.Map}},
 \code{\link{nga_basemap}},
 }

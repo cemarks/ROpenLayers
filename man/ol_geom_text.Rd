@@ -81,6 +81,7 @@ mymap <- ol_map(
             fill_color="#FFFFFF00"
         )
     )
+## Not run: write to file and view in browser
 # ol_map2HTML(mymap, "textmap.html")
 # browseURL("textmap.html")
 }

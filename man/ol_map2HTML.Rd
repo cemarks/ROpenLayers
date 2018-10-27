@@ -6,7 +6,8 @@
 \usage{
 ol_map2HTML(ol.map.obj, file.name, file.path = ".",
   page.name = "ROpenLayers Map", image.path = "images",
-  nice.format = FALSE, IE.compatability.view = TRUE)
+  self.contained = TRUE, nice.format = FALSE,
+  IE.compatability.view = TRUE)
 }
 \arguments{
 \item{ol.map.obj}{Ol.Map object to be exported.}
@@ -21,6 +22,10 @@ supporting directories (e.g., 'images') will be in this path.}
 
 \item{image.path}{character \emph{relative} path from \code{file.path} to 
 directory that will contain page images.}
+
+\item{self.contained}{logical.  If \code{TRUE} images will be converted to 
+64-bit text and embedded in HTML/JavaScript code.  Note: images will still
+be created and saved locally in the \code{image.path} folder.}
 
 \item{nice.format}{logical.  If \code{TRUE}, output file will be formated with
 new lines and indentation for human readability.}

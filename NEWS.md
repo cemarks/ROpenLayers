@@ -1,4 +1,8 @@
-# ROpenLayers 0.0.8-99
+# ROpenLayers 0.0.10-99
+
+* Added functionality for base-64 standalone web page exports.  This is now the default behavior.
+
+# ROpenLayers 0.0.9-99
 
 * Added geocoding capability using NGA services portal.
 

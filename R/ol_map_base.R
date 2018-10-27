@@ -59,6 +59,9 @@
 #' \item \code{\link{ol_geom_text}}
 #' }
 #'
+#' @section Geocode:
+#' New in Version 0.0.9-99: geocoding addresses.  See \code{\link{geocode}} for details.
+#' 
 #' @docType package
 #' @name ROpenLayers
 #' @examples
@@ -486,6 +489,7 @@ nga_basemap<-function(basemap.identifier="WSM",name=NULL,toggle.control=FALSE){
 #' @export
 #'
 #' @examples
+#' ## NOTE: Example for public URL accessible on NIPR.
 #' server.url <- "http://server.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer"
 #' mymap <- ol_map(
 #'     map.note = sprintf(

@@ -25,7 +25,7 @@ Create a basemap layer linking to an NGA ArcGIS mapserver.
 \details{
 Creates and returns an OpenLayers ArcGIS Tile layer that sources a
 map server hosted at \url{http://home.gvs.nga.smil.mil}.  These map servers
-are owned by the US Government and require authentication.  If the 
+are owned by the US Government and require authentication.  If the
 \code{basemap.identifier} parameter is unrecognized the function will
 default to the NGA OpenStreetMap map server.
 }
@@ -63,8 +63,8 @@ mymap <- mymap + base.layer
 # browseURL("SanDiegoMidnight.html")
 }
 \seealso{
-\code{\link{ol_map}}, 
-\code{\link{+.Ol.Map}}, 
-\code{\link{nga_basemap}}, 
+\code{\link{ol_map}},
+\code{\link{+.Ol.Map}},
+\code{\link{nga_basemap}},
 \code{\link{user_arcgis_basemap}}
 }

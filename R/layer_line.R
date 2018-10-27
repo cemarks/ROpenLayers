@@ -273,7 +273,7 @@ ol_geom_line <- function(
 }
 
 
-writeLayer.Layer.SpatialLine <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
+writeLayer.Layer.SpatialLine <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=TRUE,initial.indent=6,...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){

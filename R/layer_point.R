@@ -232,7 +232,7 @@ ol_geom_point <- function(
     return(o)
 }
 
-writeLayer.Layer.SpatialPoint <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,image.path=".",...){
+writeLayer.Layer.SpatialPoint <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=TRUE,initial.indent=6,image.path=".",...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){
@@ -303,7 +303,12 @@ writeLayer.Layer.SpatialPoint <- function(layer,suffix="basemap",nice.format=TRU
         }
         write_function("new ol.Feature({")
         inid <- inid + 2
-        write_function(sprintf("img: \"%s\",",file.name))
+        if(self.contained){
+            image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
+        } else {
+            image.str <- file.name
+        }
+        write_function(sprintf("img: \"%s\",",image.str))
         write_function(sprintf("name: \"Point%i\",",i))
         write_function(sprintf("scale: %1.2f,",pts.df$size[i]))
         write_function(sprintf("opacity: %1.2f,",point.opacity))

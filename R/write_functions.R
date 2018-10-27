@@ -16,6 +16,9 @@
 #' @param page.name character page title to be included in the HTML head section.
 #' @param image.path character \emph{relative} path from \code{file.path} to 
 #' directory that will contain page images. 
+#' @param self.contained logical.  If \code{TRUE} images will be converted to 
+#' 64-bit text and embedded in HTML/JavaScript code.  Note: images will still
+#' be created and saved locally in the \code{image.path} folder. 
 #' @param nice.format logical.  If \code{TRUE}, output file will be formated with
 #' new lines and indentation for human readability.
 #' @param IE.compatability.view logical.  If \code{TRUE}, the statement\cr
@@ -45,6 +48,7 @@ ol_map2HTML <- function(
     file.path=".",
     page.name="ROpenLayers Map",
     image.path="images",
+    self.contained=TRUE,
     nice.format=FALSE,
     IE.compatability.view=TRUE
 ){
@@ -78,7 +82,7 @@ ol_map2HTML <- function(
                         dir.create(paste(file.path,image.path,sep="/"))
                         image.dir.exists <- TRUE
                     }
-                    new.scale.html <- draw_scale(ol.map.obj[['layers']][[i]][['scale']][[j]],image.path,nice.format=nice.format,initial.indent=8)
+                    new.scale.html <- draw_scale(ol.map.obj[['layers']][[i]][['scale']][[j]],image.path,nice.format=nice.format,self.contained=self.contained,initial.indent=8)
                     display.scale<-TRUE
                     scale.div.vector<-c(scale.div.vector,new.scale.html)
                 }
@@ -157,6 +161,7 @@ ol_map2HTML <- function(
             layer.control,
             image.path,
             nice.format=nice.format,
+            self.contained=self.contained,
             initial.indent=inid
         )
         inid <- inid - 2
@@ -193,6 +198,9 @@ ol_map2HTML <- function(
 #' @param ol.map.obj Ol.Map object to be exported.
 #' @param image.path character \emph{relative} path from \code{file.path} to 
 #' directory that will contain page images. 
+#' @param self.contained logical.  If \code{TRUE} images will be converted to 
+#' 64-bit text and embedded in HTML/JavaScript code.  Note: images will still
+#' be created and saved locally in the \code{image.path} folder. 
 #' @param deployment.image.path character path to images on server, if different
 #' from \code{image.path}.  The \code{image.path} will be replaced with this 
 #' path in the returned strings.
@@ -256,7 +264,7 @@ ol_map2HTML <- function(
 #' # server <- function(input,output){
 #' # }
 #' # shinyApp(ui=ui,server)
-ol_map2Strings <- function(ol.map.obj,image.path="images",deployment.image.path=NULL){
+ol_map2Strings <- function(ol.map.obj,image.path="images",self.contained=TRUE,deployment.image.path=NULL){
     nice.format=FALSE
     if(!dir.exists(image.path)){
         image.dir.exists <- FALSE
@@ -280,7 +288,7 @@ ol_map2Strings <- function(ol.map.obj,image.path="images",deployment.image.path=
                         dir.create(image.path)
                         image.dir.exists <- TRUE
                     }
-                    new.scale.html <- draw_scale(ol.map.obj[['layers']][[i]][['scale']][[j]],image.path,nice.format=nice.format,initial.indent=8)
+                    new.scale.html <- draw_scale(ol.map.obj[['layers']][[i]][['scale']][[j]],image.path,nice.format=nice.format,self.contained=self.contained,initial.indent=8)
                     display.scale<-TRUE
                     scale.div.vector<-c(scale.div.vector,new.scale.html)
                 }
@@ -325,6 +333,7 @@ ol_map2Strings <- function(ol.map.obj,image.path="images",deployment.image.path=
             layer.control,
             image.path,
             nice.format=nice.format,
+            self.contained=self.contained,
             initial.indent=0
         )        
     )
@@ -598,7 +607,14 @@ write_body_html <- function(display.scale=FALSE,
 }
 
 
-write_body_script <- function(ol.map.obj,layer.control,image.path,nice.format=TRUE,initial.indent=6){
+write_body_script <- function(
+    ol.map.obj,
+    layer.control,
+    image.path,
+    nice.format=TRUE,
+    self.contained=TRUE,
+    initial.indent=6
+){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){
@@ -612,7 +628,7 @@ write_body_script <- function(ol.map.obj,layer.control,image.path,nice.format=TR
     nl <- length(ol.map.obj[['layers']])
     if(nl >= 1){
         for(i in 1:nl){
-            writeLayer(ol.map.obj[['layers']][[names(ol.map.obj[['layers']])[i]]],names(ol.map.obj[['layers']][i]),nice.format=nice.format,initial.indent = inid,image.path=image.path)
+            writeLayer(ol.map.obj[['layers']][[names(ol.map.obj[['layers']])[i]]],names(ol.map.obj[['layers']][i]),nice.format=nice.format,self.contained=self.contained,initial.indent = inid,image.path=image.path)
         }
     }
     if(nice.format) cat("\n\n")
@@ -702,9 +718,9 @@ write_body_script <- function(ol.map.obj,layer.control,image.path,nice.format=TR
     }
 }
 
-writeLayer <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...) UseMethod("writeLayer")
-writeLayer.default <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...) return(0)
-writeLayer.Layer.ArcGIS <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
+writeLayer <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=self.contained,initial.indent=6,...) UseMethod("writeLayer")
+writeLayer.default <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=self.contained,initial.indent=6,...) return(0)
+writeLayer.Layer.ArcGIS <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=self.contained,initial.indent=6,...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){
@@ -729,29 +745,29 @@ writeLayer.Layer.ArcGIS <- function(layer,suffix="basemap",nice.format=TRUE,init
     if(nice.format) cat("\n")
 }
 
-writeLayer.Layer.OSM <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
-    inid <- initial.indent
-    if(nice.format){
-        write_function <- function(s){
-            cat(paste(strrep(" ",inid),s,"\n",sep=""))
-        }
-    } else {
-        write_function <- function(s){
-            cat(s)
-        }
-    }
-    write_function(sprintf("var layer_%s = new ol.layer.Tile({",suffix))
-    inid <- inid + 2
-    write_function(sprintf("name: \"%s\",",gsub('"',"'",layer[['name']])))
-    write_function("source: new ol.source.OSM({")
-    inid <- inid + 2
-    write_function(sprintf("attributions: \"%s\"",layer[['attributions']]))
-    inid <- inid - 2
-    write_function("})")
-    inid <- inid - 2
-    write_function("});")
-    if(nice.format) cat("\n")
-}
+# writeLayer.Layer.OSM <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
+#     inid <- initial.indent
+#     if(nice.format){
+#         write_function <- function(s){
+#             cat(paste(strrep(" ",inid),s,"\n",sep=""))
+#         }
+#     } else {
+#         write_function <- function(s){
+#             cat(s)
+#         }
+#     }
+#     write_function(sprintf("var layer_%s = new ol.layer.Tile({",suffix))
+#     inid <- inid + 2
+#     write_function(sprintf("name: \"%s\",",gsub('"',"'",layer[['name']])))
+#     write_function("source: new ol.source.OSM({")
+#     inid <- inid + 2
+#     write_function(sprintf("attributions: \"%s\"",layer[['attributions']]))
+#     inid <- inid - 2
+#     write_function("})")
+#     inid <- inid - 2
+#     write_function("});")
+#     if(nice.format) cat("\n")
+# }
 
 # writeLayer.layer.bing <- function(layer,suffix="basemap"){
 #     cat(sprintf("      var layer_%s = new ol.layer.Tile({\n",suffix))

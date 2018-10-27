@@ -69,7 +69,7 @@
 #'             fill_color="#FFFFFF00"
 #'         )
 #'     )
-## Not run: write to file and view in browser
+#' ## Not run: write to file and view in browser
 #' # ol_map2HTML(mymap, "textmap.html")
 #' # browseURL("textmap.html")
 ol_geom_text <- function(
@@ -106,7 +106,7 @@ ol_geom_text <- function(
     return(o)
 }
 
-writeLayer.Layer.Text <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,image.path=".",...){
+writeLayer.Layer.Text <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=TRUE,initial.indent=6,image.path=".",...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){
