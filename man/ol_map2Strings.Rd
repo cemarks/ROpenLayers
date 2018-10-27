@@ -5,13 +5,17 @@
 \title{OpenLayers Map HTML to List}
 \usage{
 ol_map2Strings(ol.map.obj, image.path = "images",
-  deployment.image.path = NULL)
+  self.contained = TRUE, deployment.image.path = NULL)
 }
 \arguments{
 \item{ol.map.obj}{Ol.Map object to be exported.}
 
 \item{image.path}{character \emph{relative} path from \code{file.path} to 
 directory that will contain page images.}
+
+\item{self.contained}{logical.  If \code{TRUE} images will be converted to 
+64-bit text and embedded in HTML/JavaScript code.  Note: images will still
+be created and saved locally in the \code{image.path} folder.}
 
 \item{deployment.image.path}{character path to images on server, if different
 from \code{image.path}.  The \code{image.path} will be replaced with this 

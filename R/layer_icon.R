@@ -288,7 +288,7 @@ ol_geom_icon <- function(
     return(o)
 }
 
-writeLayer.Layer.SpatialPointIcon <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,image.path=".",...){
+writeLayer.Layer.SpatialPointIcon <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=TRUE,initial.indent=6,image.path=".",...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){
@@ -341,7 +341,12 @@ writeLayer.Layer.SpatialPointIcon <- function(layer,suffix="basemap",nice.format
         scale.multiplier <- layer[['icons']]$scalar[which(layer[['icons']]$src==file.name)]
         write_function("new ol.Feature({")
         inid <- inid + 2
-        write_function(sprintf("img: \"%s\",",file.name))
+        if(self.contained){
+            image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
+        } else {
+            image.str <- file.name
+        }
+        write_function(sprintf("img: \"%s\",",image.str))
         write_function(sprintf("name: \"Icon%i\",",i))
         write_function(sprintf("scale: %1.6f,",pts.df$iconsize[i]*scale.multiplier))
         write_tooltip_attr(layer[['tooltip']],i,nice.format=nice.format,initial.indent=inid)

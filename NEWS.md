@@ -1,3 +1,7 @@
+# ROpenLayers 0.0.10
+
+* Added functionality for base-64 standalone web page exports.  This is now the default behavior.
+
 # ROpenLayers 0.0.8
 
 * Fixed several bugs in label and tooltip CSS.

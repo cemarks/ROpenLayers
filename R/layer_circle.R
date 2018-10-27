@@ -276,7 +276,7 @@ ol_geom_circle <- function(
     return(o)
 }
 
-writeLayer.Layer.Circle <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
+writeLayer.Layer.Circle <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=TRUE,initial.indent=6,...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){
