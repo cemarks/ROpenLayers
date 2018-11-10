@@ -3,9 +3,10 @@
 #' Writes Ol.Map object to HTML file.
 #'
 #' Ol.Map object is written to HTML file with embedded javascript.  The file
-#' will source the OpenLayers javascript library identified by the Ol.Map 
-#' object and call any REST APIs required for each layer.  The intent is to
-#' produce an output file with supporting images, as required, that can
+#' will include or source the OpenLayers javascript library as specified
+#' in the Ol.Map object (see \code{\link{ol_map}}). 
+#' The Javascript will call any REST APIs required for each layer in order to
+#' produce an output file with supporting images, if required, that can
 #' be placed directly into a directory hosted by a minimal http server.      
 #' 
 #' @param ol.map.obj Ol.Map object to be exported.
@@ -207,10 +208,12 @@ ol_map2HTML <- function(
 #'
 #' @return list object with the following character elements:
 #' \tabular{ll}{
-#' $headscript \tab HTML script block sourcing the OpenLayers javascript library identify in \code{ol.map.obj}.\cr
-#' $style \tab  CSS code for styling the map and legends. \cr
-#' $body.html \tab HTML map and legend containers, and associated elements. \cr
-#' $body.script \tab Javascript code writing the layer and map objects. \cr
+#' \code{$head.meta.IE.compatibility} \tab HTML meta tag for IE compatability viewing.\cr
+#' \code{$head.script} \tab HTML script block including or sourcing the OpenLayers 
+#' Javascript library (see \code{ol.map.obj}).\cr
+#' \code{$style} \tab  CSS code for styling the map and legends. \cr
+#' \code{$body.html} \tab HTML map and legend containers, and associated elements. \cr
+#' \code{$body.script} \tab Javascript code writing the layer and map objects. \cr
 #' }
 #'
 #' @seealso 
@@ -251,15 +254,15 @@ ol_map2HTML <- function(
 #' #     fluidPage(
 #' #         ## Add OpenLayers Javascript source & CSS to head
 #' #         tags$head(
-#' #             HTML("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"/>")
-#' #             HTML(HTML.strings[[1]]),
-#' #             tags$style(HTML(HTML.strings[[2]]))
+#' #             HTML(HTML.strings[[1]])
+#' #             HTML(HTML.strings[[2]]),
+#' #             tags$style(HTML(HTML.strings[[3]]))
 #' #         ),
 #' #         titlePanel("Random Heatmap"),
 #' #         mainPanel(
-#' #             tags$div(HTML(HTML.strings[[3]]))
+#' #             tags$div(HTML(HTML.strings[[4]]))
 #' #         ),
-#' #         tags$script(HTML(HTML.strings[[4]]))
+#' #         tags$script(HTML(HTML.strings[[5]]))
 #' #     )
 #' # )
 #' # server <- function(input,output){
@@ -301,8 +304,12 @@ ol_map2Strings <- function(ol.map.obj,image.path="images",self.contained=TRUE,de
     } else {
         layer.control <- FALSE
     }
-    head.script <- utils::capture.output(
-        write_headscript(ol.map.obj[['ol.source.url']],nice.format,0)
+    head.meta.IE.compatibility <- "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"/>"
+    head.script <- paste(
+        utils::capture.output(
+            write_headscript(ol.map.obj[['ol.source.url']],nice.format,0)
+        ),
+        collapse="\n"
     )
     style <- utils::capture.output(
         write_style(
@@ -354,7 +361,8 @@ ol_map2Strings <- function(ol.map.obj,image.path="images",self.contained=TRUE,de
     }
     return(
         list(
-            headscript = head.script,
+            head.meta.IE.compatibility = head.meta.IE.compatibility,
+            head.script = head.script,
             style=style,
             body.html=body.html,
             body.script=body.script
@@ -377,7 +385,13 @@ write_headscript <- function(ol.source.url,nice.format=TRUE,initial.indent=4){
             cat(s)
         }
     }
-    write_function(sprintf("<script type=\"text/javascript\" src=\"%s\"></script>",ol.source.url))
+    if(is.null(ol.source.url)){
+        write_function("<script>")
+        cat(readLines(system.file("extdata","ol_3.20.1.js",package="ROpenLayers")),sep="\n")
+        write_function("</script>")
+    } else {
+        write_function(sprintf("<script type=\"text/javascript\" src=\"%s\"></script>",ol.source.url))
+    }
 }
 
 write_style <- function(width,height,display.scale=FALSE,layer.control=FALSE,scale.width="200px",tooltips.param.vector,nice.format=TRUE,initial.indent=6){
@@ -429,14 +443,6 @@ write_style <- function(width,height,display.scale=FALSE,layer.control=FALSE,sca
         }
         write_function(sprintf("width: %s;",w))
     }
-    if(!is.null(height)){
-        if(is.numeric(height)){
-            h <- paste(round(height),"px",sep="")
-        } else {
-            h <- as.character(height)
-        }
-        write_function(sprintf("height: %s;",h))
-    }
     inid <- inid -2
     write_function("}")
     write_function(".postmappar-container{")
@@ -454,11 +460,21 @@ write_style <- function(width,height,display.scale=FALSE,layer.control=FALSE,sca
     }
     inid <- inid -2
     write_function("}")
-    if(display.scale){
+    if(display.scale || !is.null(height)){
         write_function(".map{")
         inid <- inid + 2
-        write_function(sprintf("margin-right: %s;",lw))
-        write_function("padding-right: 10px;")
+        if(display.scale){
+            write_function(sprintf("margin-right: %s;",lw))
+            write_function("padding-right: 10px;")
+        }
+        if(!is.null(height)){
+            if(is.numeric(height)){
+                h <- paste(round(height),"px",sep="")
+            } else {
+                h <- as.character(height)
+            }
+            write_function(sprintf("height: %s;",h))
+        }
         inid <- inid -2
         write_function("}")
     }

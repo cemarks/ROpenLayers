@@ -21,31 +21,65 @@ get_color_scale_continuous <- function(
         h.h <- 0.4
         h.s <- 0.85
         h.v <- 0.9
-        get_color_gen1 <- function(lv,hv,h.min,s.min,v.min,h.max,s.max,v.max,opac){
-            o <- function(df.var,na.col=na.col.val){
+        get_color_gen1 <- function(lv,hv,h.min,s.min,v.min,h.max,s.max,v.max,opac,na.col.gen){
+            o <- function(df.var,na.col=na.col.gen){
                 if(is.na(df.var) || is.null(df.var) || !(is.numeric(df.var))){
-                    color <- na.col
-                } else if(df.var > hv){
-                    color <- grDevices::hsv(h.max,s.max,v.max)
-                } else if(df.var < lv){
-                    color <- grDevices::hsv(h.min,s.min,v.min)
+                    color <- color_check(na.col,opac)
                 } else {
-                    l <- 1-(df.var-lv)/(hv-lv)
-                    hh <- h.min*l + h.max*(1-l)
-                    ss <- s.min*l + s.max*(1-l)
-                    vv <- v.min*l + v.max*(1-l)
-                    color <- grDevices::hsv(hh,ss,vv)
+                    if(df.var > hv){
+                        color <- grDevices::hsv(h.max,s.max,v.max)
+                    } else if(df.var < lv){
+                        color <- grDevices::hsv(h.min,s.min,v.min)
+                    } else {
+                        if(rotate.clockwise){
+                            if(h.max >= h.min){
+                                l <- 1-(df.var-lv)/(hv-lv)
+                                hh <- h.min*l + h.max*(1-l)
+                                ss <- s.min*l + s.max*(1-l)
+                                vv <- v.min*l + v.max*(1-l)
+                                color <- grDevices::hsv(hh,ss,vv)
+                            } else {
+                                h.max <- h.max + 1
+                                l <- 1-(df.var-lv)/(hv-lv)
+                                hh <- h.min*l + h.max*(1-l)
+                                ss <- s.min*l + s.max*(1-l)
+                                vv <- v.min*l + v.max*(1-l)
+                                if(hh >=1){
+                                    hh <- hh - 1
+                                }
+                                color <- grDevices::hsv(hh,ss,vv)
+                            }
+                        } else {
+                            if(h.max <= h.min){
+                                l <- 1-(df.var-lv)/(hv-lv)
+                                hh <- h.min*l + h.max*(1-l)
+                                ss <- s.min*l + s.max*(1-l)
+                                vv <- v.min*l + v.max*(1-l)
+                                color <- grDevices::hsv(hh,ss,vv)
+                            } else {
+                                h.min <- h.min + 1
+                                l <- 1-(df.var-lv)/(hv-lv)
+                                hh <- h.min*l + h.max*(1-l)
+                                ss <- s.min*l + s.max*(1-l)
+                                vv <- v.min*l + v.max*(1-l)
+                                if(hh >= 1){
+                                    hh <- hh - 1
+                                }
+                                color <- grDevices::hsv(hh,ss,vv)
+                            }
+                        }
+                    }
+                    color <- paste(
+                        color,
+                        format(as.hexmode(round((opac)*255)),width=2,upper.case=TRUE),
+                        sep=""
+                        )
                 }
-                color <- paste(
-                    color,
-                    format(as.hexmode(round((opac)*255)),width=2,upper.case=TRUE),
-                    sep=""
-                    )
                 return(color)
             }
             return(o)
         }
-        get_color <- get_color_gen1(low.val,high.val,l.h,l.s,l.v,h.h,h.s,h.v,opacity)
+        get_color <- get_color_gen1(low.val,high.val,l.h,l.s,l.v,h.h,h.s,h.v,opacity,na.col.val)
         return(get_color)
     } else {
         if(
@@ -62,7 +96,7 @@ get_color_scale_continuous <- function(
             op.min <- opacity
             op.max <- opacity
         }
-        get_color_gen2 <- function(lv,hv,lc,hc,min.opac,max.opac,na.col=na.col.val){
+        get_color_gen2 <- function(lv,hv,lc,hc,min.opac,max.opac,na.col.gen){
             hsv.min <- rgb2hsv(t(lc))
             hsv.max <- rgb2hsv(t(hc))
             if(hsv.max[1] < hsv.min[1] && rotate.clockwise){
@@ -70,9 +104,9 @@ get_color_scale_continuous <- function(
             } else if(hsv.max[1] > hsv.min[1] && !rotate.clockwise) {
                 hsv.min[1] <- hsv.min[1] + 1
             }
-            o <- function(df.var){
+            o <- function(df.var,na.col=na.col.gen){
                 if(is.na(df.var) || is.null(df.var) || !(is.numeric(df.var))){
-                    color <- na.col
+                    color <- color_check(na.col,mean(c(min.opac,max.opac)))
                 } else {
                     l <- 1-(df.var-lv)/(hv-lv)
                     if (l > 1){
@@ -93,7 +127,7 @@ get_color_scale_continuous <- function(
             }
             return(o)
         }
-        get_color <- get_color_gen2(low.val,high.val,low.col,high.col,op.min,op.max)
+        get_color <- get_color_gen2(low.val,high.val,low.col,high.col,op.min,op.max,na.col.val)
         return(get_color)
     }
 }
@@ -128,10 +162,10 @@ get_color_scale_discrete <- function(
     na.col.val="#FFFFFF00",
     opacity = 1
     ){
-    f <- function(color.vector,opac,na.col){
+    f <- function(color.vector,opac,na.col.gen){
         o <- function(val){
             if(is.na(val) || is.null(val) || !(as.character(val) %in% names(color.vector))){
-                return(na.col)
+                return(color_check(na.col.gen,opac))
             }else{
                 return(color_check(color.vector[as.character(val)],opac))
             }

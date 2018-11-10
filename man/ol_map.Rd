@@ -19,12 +19,12 @@ latitude coordinates for initial map center.}
 \item{height}{numeric or character CSS value height of map container.}
 
 \item{ol.source.url}{character string containing the url to the OpenLayers
-javascript library.}
+javascript library.  Ignored if nga.olsource is \code{TRUE}.}
 
 \item{nga.olsource}{logical.  \code{TRUE} will use the OpenLayers 3.16.0 javascript
 library from \url{https://home.gvs.nga.mil} (requires authentication);
-\code{FALSE} uses the public library at 
-\href{https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v3.16.0/build/ol.js}{cdn.rawgit.com}.
+\code{FALSE} uses the sources the \code{ol.source.url}, if provided, or embeds
+the OpenLayers 3.21.1 JavaScript code in the HTML head.
 Only used if \code{ol.source.url} is missing or \code{NULL}.}
 
 \item{map.heading}{character heading to be placed over map in html h1 tag.}
@@ -40,6 +40,13 @@ Create an OpenLayers Map Object.
 }
 \details{
 This function creates a new S3 OpenLayers Map object with no layers.
+If \code{ol.source.url} is \code{NULL} and \code{nga.olsource} is 
+\code{FALSE}, OpenLayers Javascript source will be embedded directly
+into the HTML when \code{\link{ol_map2HTML}} or 
+\code{\link{ol_map2Strings}} is called.
+Otherwise, the output HTML/Javascript with source the OpenLayers library
+according to the value of \code{ol.source.url}, or the NGA hosted 
+OpenLayers library if \code{nga.olsource} is \code{TRUE}.
 }
 \examples{
 miami.OSM.basemap <- ol_map(
