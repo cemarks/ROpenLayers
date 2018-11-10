@@ -24,10 +24,11 @@ path in the returned strings.}
 \value{
 list object with the following character elements:
 \tabular{ll}{
-$headscript \tab HTML script block sourcing the OpenLayers javascript library identify in \code{ol.map.obj}.\cr
-$style \tab  CSS code for styling the map and legends. \cr
-$body.html \tab HTML map and legend containers, and associated elements. \cr
-$body.script \tab Javascript code writing the layer and map objects. \cr
+\code{$head.meta.IE.compatibility} \tab HTML meta tag for IE compatability viewing.\cr
+\code{$head.script} \tab HTML script block sourcing the OpenLayers javascript library identify in \code{ol.map.obj}.\cr
+\code{$style} \tab  CSS code for styling the map and legends. \cr
+\code{$body.html} \tab HTML map and legend containers, and associated elements. \cr
+\code{$body.script} \tab Javascript code writing the layer and map objects. \cr
 }
 }
 \description{
@@ -72,15 +73,15 @@ HTML.strings <- ol_map2Strings(mymap)
 #     fluidPage(
 #         ## Add OpenLayers Javascript source & CSS to head
 #         tags$head(
-#             HTML("<meta http-equiv=\\"X-UA-Compatible\\" content=\\"IE=edge\\"/>")
-#             HTML(HTML.strings[[1]]),
-#             tags$style(HTML(HTML.strings[[2]]))
+#             HTML(HTML.strings[[1]])
+#             HTML(HTML.strings[[2]]),
+#             tags$style(HTML(HTML.strings[[3]]))
 #         ),
 #         titlePanel("Random Heatmap"),
 #         mainPanel(
-#             tags$div(HTML(HTML.strings[[3]]))
+#             tags$div(HTML(HTML.strings[[4]]))
 #         ),
-#         tags$script(HTML(HTML.strings[[4]]))
+#         tags$script(HTML(HTML.strings[[5]]))
 #     )
 # )
 # server <- function(input,output){

@@ -120,7 +120,8 @@ NULL
 #' @param width numeric or character CSS value width of map container.
 #' @param height numeric or character CSS value height of map container.
 #' @param ol.source.url character string containing the url to the OpenLayers
-#' javascript library.
+#' javascript library.  If \code{NULL}, OpenLayers 3.21.1 JavaScript code will
+#' be directly embedded into the output HTML.
 #' @param map.heading character heading to be placed over map in html h1 tag.
 #' @param map.note character note placed in html paragraph (<p>) tag centered
 #' under map container.

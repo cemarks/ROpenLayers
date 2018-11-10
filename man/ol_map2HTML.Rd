@@ -41,7 +41,8 @@ Writes Ol.Map object to HTML file.
 \details{
 Ol.Map object is written to HTML file with embedded javascript.  The file
 will source the OpenLayers javascript library identified by the Ol.Map 
-object and call any REST APIs required for each layer.  The intent is to
+object (see \code{\link{ol_map}}) and call any REST APIs required for
+each layer in order to 
 produce an output file with supporting images, as required, that can
 be placed directly into a directory hosted by a minimal http server.
 }

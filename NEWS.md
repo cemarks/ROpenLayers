@@ -1,3 +1,11 @@
+# ROpenLayers 0.0.11-99
+
+* Fixed continuous color scale so that rotate.clockwise has an effect and na.col.val is correctly interpreted (#10)
+* Placed map height property in the .map CSS class.  The width property remains in the .map-container class (#11).
+* Included HTML meta tag in ol_map2Strings output for IE compatibility (#12).
+* Included OpenLayers 3.21.1 source code in the /inst/extdata folder.  The default behavior is now to include this script in the HTML outputs unless otherwise specified by user inputs (#14).
+* Checked scale_color_discrete; opacity appears to be working fine for discrete and continuous color and fill scales (#15).
+
 # ROpenLayers 0.0.10-99
 
 * Added functionality for base-64 standalone web page exports.  This is now the default behavior.
