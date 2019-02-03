@@ -3,6 +3,7 @@
 * Updated Javascript to OL5.  There is still an option to link to a URL.
 * Removed option for non-stand alone pages, i.e., all pages are self-contained.
 * Moved the HTML page options from the `ol_map` function to the HTML production functions.
+* Added `geocode` function using [https://www.arcgis.com](ArcGIS) online geocoding service.
 
 # ROpenLayers 0.0.11
 

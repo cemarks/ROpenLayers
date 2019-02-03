@@ -93,6 +93,12 @@ vector layers in javascript.  The following methods enable that functionality.
 }
 }
 
+\section{Geocode}{
+
+New in version 1.0.0--geocode addresses using \href{http://www.arcgis.com}{ArcGIS}
+geocoding service.  See \code{\link{geocode}}.
+}
+
 \examples{
 data(quakes)
 center <- c(mean(quakes$long),mean(quakes$lat))

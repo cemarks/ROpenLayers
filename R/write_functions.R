@@ -271,6 +271,9 @@ ol_map2Strings <- function(
     map.heading = NULL,
     map.note=NULL
 ){
+    if(nga.olsource){
+        ol.source.url <- "https://home.gvs.nga.mil/libs/openlayers/3.16.0/build/ol.js"
+    }
     nice.format=FALSE
     scale.div.vector <- NULL
     display.scale <- FALSE
@@ -304,6 +307,7 @@ ol_map2Strings <- function(
             display.scale=display.scale,
             layer.control=layer.control,
             tooltips.param.vector=ol.map.obj[['tooltips.param.vector']],
+            nga.olsource = nga.olsource,
             nice.format = nice.format,
             initial.indent=0
         )
@@ -315,7 +319,7 @@ ol_map2Strings <- function(
             layer.control.df=ol.map.obj[['layer.control.df']],
             tooltips.bool=ol.map.obj[['tooltips']],
             tooltips.param.vector=ol.map.obj[['tooltips.param.vector']],
-            map.heading=ol.map.obj[['map.heading']],
+            map.heading=map.heading,
             map.note=map.note,
             nice.format=nice.format,
             initial.indent = 0

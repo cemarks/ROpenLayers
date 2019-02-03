@@ -72,6 +72,10 @@ Once a default aesthetic mapping has been created, it can be manually updated by
 
 The example below shows how to map a `fill` aesthetic to a `ol_geom_polygon` layer and then to set the name and display options by calling `ol_scale_fill_continuous`.
 
+## Geocode
+
+New in version 1.0.0!  Geocode addresses using [http://www.arcgis.com](ArcGIS) geocoding service.  See `geocode` documentation.
+
 
 ## Installation
 

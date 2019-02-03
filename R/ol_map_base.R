@@ -75,6 +75,10 @@
 #' \item \code{\link{ol_geom_text}}
 #' }
 #'
+#' @section Geocode:
+#' New in version 1.0.0--geocode addresses using \href{http://www.arcgis.com}{ArcGIS}
+#' geocoding service.  See \code{\link{geocode}}.
+#' 
 #' @docType package
 #' @name ROpenLayers
 #' @examples
