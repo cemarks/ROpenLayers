@@ -70,7 +70,7 @@ mymap <- ol_map(
     center=c(-100,25),
     zoom=3
 ) +
-    nga_basemap("LightGray") +
+    oceanbase() +
     ol_geom_text(
         text.pts,
         text.labels,
@@ -81,9 +81,11 @@ mymap <- ol_map(
             fill_color="#FFFFFF00"
         )
     )
-## Not run: write to file and view in browser
-# ol_map2HTML(mymap, "textmap.html")
-# browseURL("textmap.html")
+\dontrun{
+# Write to file and view in browser
+ol_map2HTML(mymap, "textmap.html")
+browseURL("textmap.html")
+}
 }
 \seealso{
 \code{\link{ol_map}}, 

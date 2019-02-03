@@ -55,19 +55,24 @@
 #' )
 #' mymap <- ol_map(
 #'     center=c(-98.5,28.5),
-#'     zoom=4,
-#'     map.note="Heatmap of random points centered on Miami and San Diego."
+#'     zoom=4
 #' ) + 
-#'     nga_basemap("WSM") +
+#'     streetmap() +
 #'     ol_geom_heatmap(
 #'         heatmap.pts,
 #'         name="Random Heatmap",
 #'         toggle.control=TRUE,
 #'         opacity=0.25
 #'         )
-#' ## Not run: write to file and view in browser
-#' # ol_map2HTML(mymap, "heatmap.html")
-#' # browseURL("heatmap.html")
+#' \dontrun{
+#' # Write to file and view in browser
+#' ol_map2HTML(
+#'   mymap,
+#'   "heatmap.html",
+#'   map.note="Heatmap of random points centered on Miami and San Diego."
+#' )
+#' browseURL("heatmap.html")
+#' }
 ol_geom_heatmap <- function(
     point.obj,
     name=NULL,
@@ -115,7 +120,7 @@ ol_geom_heatmap <- function(
     return(o)
 }
 
-writeLayer.Layer.HeatMap <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=TRUE,initial.indent=6,...){
+writeLayer.Layer.HeatMap <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){

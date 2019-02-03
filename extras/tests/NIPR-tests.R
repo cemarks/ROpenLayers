@@ -1,15 +1,8 @@
-############### 
+###############
 
 server.url <- "http://server.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer"
 ol.source.url <- "https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v3.16.0/build/ol.js"
-mymap <- ol_map(
-    map.note = sprintf(
-         "I found this at <a href='%s'>arcgisonline.com</a>",
-         server.url
-    ),
-    ol.source.url = ol.source.url
-
-)
+mymap <- ol_map()
 attrib <- paste(
     "Content may not reflect National Geographic's current map policy.",
     "Sources: National Geographic, Esri, Garmin, HERE,",
@@ -35,10 +28,8 @@ quakes$long[which(quakes$long>180)]<-quakes$long[which(quakes$long>180)]-360
 tooltips <- paste("Depth",quakes$depth,sep=": ")
 mymap <- ol_map(
  zoom = 5,
- center = center,
- map.heading = "Earthquake Data Visualization",
- ol.source.url = ol.source.url
-)
+ center = center
+ )
 basemap.layer <- user_arcgis_basemap(
     server.url,
     attributions = attrib,
@@ -183,10 +174,10 @@ miami.OSM.basemap <- ol_map(
  center=c(-80.385790,25.782618),
  zoom=9,
  map.heading="Miami Shapes",
- map.note="Note: Mouseover popup values are 
+ map.note="Note: Mouseover popup values are
      independent of shape size &amp; color.",
  ol.source.url = ol.source.url
- ) + 
+ ) +
 user_arcgis_basemap(
     server.url,
     attributions = attrib,
@@ -205,8 +196,8 @@ polygon.layer <- ol_geom_polygon(
  tooltip=polygon.df$no
 )
 polygon.fill.scale <- ol_scale_fill_discrete(display=TRUE)
-polygons.over.miami <- miami.OSM.basemap + 
- polygon.layer + 
+polygons.over.miami <- miami.OSM.basemap +
+ polygon.layer +
  polygon.fill.scale
 
 # Not Run: output to file and view
@@ -236,10 +227,10 @@ miami.OSM.basemap <- ol_map(
  center=c(-80.385790,25.782618),
  zoom=9,
  map.heading="Miami Shapes",
- map.note="Note: Mouseover popup values are 
+ map.note="Note: Mouseover popup values are
      independent of shape size &amp; color.",
  ol.source.url = ol.source.url
- ) + 
+ ) +
 user_arcgis_basemap(
     server.url,
     attributions = attrib,
@@ -258,8 +249,8 @@ polygon.layer <- ol_geom_polygon(
  tooltip=polygon.df$no
 )
 polygon.fill.scale <- ol_scale_fill_discrete(display=TRUE)
-polygons.over.miami <- miami.OSM.basemap + 
- polygon.layer + 
+polygons.over.miami <- miami.OSM.basemap +
+ polygon.layer +
  polygon.fill.scale
 
 # Not Run: output to file and view
@@ -285,10 +276,10 @@ miami.OSM.basemap <- ol_map(
  center=c(-80.385790,25.782618),
  zoom=9,
  map.heading="Miami Shapes",
- map.note="Note: Mouseover popup values are 
+ map.note="Note: Mouseover popup values are
      independent of shape size &amp; color.",
  ol.source.url = ol.source.url
- ) + 
+ ) +
 user_arcgis_basemap(
     server.url,
     attributions = attrib,
@@ -303,7 +294,7 @@ circle.layer<-ol_geom_circle(
      toggle.control=TRUE,
      color="#000000FF",
      tooltip=sprintf("%1.2f",aesthetic.df$value)
-     ) 
+     )
 circle.fill <- ol_scale_fill_discrete(
      display=TRUE,
      preserve.opacity=TRUE
@@ -312,7 +303,7 @@ circles <- miami.OSM.basemap + circle.layer + circle.fill
 
 ol_map2HTML(circles,'miami_circles.html')
 browseURL("miami_circles.html")
-     
+
 ###################3
 
 text.pts <- matrix(

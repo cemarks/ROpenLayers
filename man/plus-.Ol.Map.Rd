@@ -38,11 +38,12 @@ You can add the following types of objects:
 
 \examples{
 mymap <- ol_map()
-base.layer <- nga_basemap('LightGray')
+base.layer <- lightgray()
 mymap <- mymap + base.layer
-## Not run
-# ol_map2HTML(mymap,"SanDiego.html")
-# browseURL("SanDiego.html")
+\dontrun{
+ol_map2HTML(mymap,"SanDiego.html")
+browseURL("SanDiego.html")
+}
 }
 \seealso{
 \code{\link{ol_map}}

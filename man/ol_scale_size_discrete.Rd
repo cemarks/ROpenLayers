@@ -61,7 +61,7 @@ miami.points.map <- ol_map(
     center=c(-80.385790,25.782618),
     zoom=10
 ) + 
-    nga_basemap("WSM")+
+    streetmap()+
     ol_geom_point(
         point.matrix,
         df=point.df,
@@ -80,9 +80,14 @@ miami.points.map <- ol_map(
     draw.fill='black',
     display=TRUE
 )
-## Not run: save to file and open on browser
-# ol_map2HTML(miami.points.map,'pointsizes.html')
-# browseURL('pointsizes.html')
+\dontrun{
+# Oave to file and open on browser
+ol_map2HTML(
+  miami.points.map,
+  'pointsizes.html'
+)
+browseURL('pointsizes.html')
+}
 }
 \seealso{
 \code{\link{ol_map}},

@@ -84,13 +84,9 @@ quakes$long[which(quakes$long>180)]<-quakes$long[which(quakes$long>180)]-360
 tooltips <- paste("Depth",quakes$depth,sep=": ")
 mymap <- ol_map(
     zoom = 5,
-    center = center,
-    map.heading = "Earthquake Data Visualization"
+    center = center
 )
-basemap.layer <- nga_basemap(
-    "LightGray",
-    toggle.control=FALSE
-)
+basemap.layer <- lightgray()
 point.layer <- ol_geom_point(
     quakes[,c("long","lat")],
     mapping = ol_aes(fill=mag),
@@ -111,7 +107,13 @@ mymap <- mymap +
     point.layer +
     ol_scale_fill_continuous(name="Magnitude",display=TRUE) +
     heatmap.layer
-## Not run: save to file and open in browser
-# ol_map2HTML(mymap,"Quakes.html")
-# browseURL("Quakes.html")
+\dontrun{
+# Save to file and open in browser
+ol_map2HTML(
+  mymap,
+  "Quakes.html",
+  map.heading = "Earthquake Data Visualization"
+)
+browseURL("Quakes.html")
+}
 }

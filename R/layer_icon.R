@@ -2,8 +2,8 @@
 #'
 #' Function to create a point-icon layer to add to an OpenLayers Map object.
 #'
-#' This function stores the data required to generate an OpenLayers
-#' vector layer with features using \code{Point}
+#' This function stores the data required to generate an OpenLayers 
+#' vector layer with features using \code{Point} 
 #' geometries and user-supplied point icons.
 #'
 #' @section Aesthetics:
@@ -11,17 +11,17 @@
 #' \item \code{iconimage}
 #' \item \code{iconsize}
 #' }
-#'
-#' @param point.obj SpatialPointsDataframe, SpatialPoints, or a matrix
-#' containing columns of point longitudes and latitudes, respectively.
+#' 
+#' @param point.obj SpatialPointsDataframe, SpatialPoints, or a matrix 
+#' containing columns of point longitudes and latitudes, respectively. 
 #' @param src.img character vector of image file paths.
-#' @param mapping list created by ol_aes. Used for aestheic mapping.
+#' @param mapping list created by ol_aes. Used for aestheic mapping. 
 #' @param name character Layer name.
 #' @param df data.frame with same number of rows as \code{point.obj} coordinate
 #' matrix.
 #' @param toggle.control logical indicating whether this layer will have
 #' a visibility toggle.
-#' @param icon.size.scalar numeric scalar vector or 'autoscale'.
+#' @param icon.size.scalar numeric scalar vector or 'autoscale'.  
 #' The width of the icon on the map will be scaled by this input from the original
 #' image width.  The default 'autoscale' uses the png, jpeg, or tiff package to
 #' scale each image to \code{target.icon.width}.
@@ -35,21 +35,18 @@
 #' determined by \code{target.icon.width} or \code{icon.size.scalar}.
 #' @param label character vector of point feature labels.
 #' @param tooltip character vector of point feature tooltip popups.
-#' @param label.params,tooltip.params named lists (e.g., \code{list(property=value)}) of
-#' label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation.
-#' @param deployment.image.path character giving the path where the icon images will be located on
-#' the server, if different from the path in \code{img.src}.
+#' @param label.params,tooltip.params named lists (e.g., \code{list(property=value)}) of 
+#' label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation. 
 #'
 #' @return A list object of class \code{Layer.SpatialIcon}.
 #'
-#' @seealso
-#' \code{\link{ol_map}},
-#' \code{\link{ol_geom_polygon}},
+#' @seealso 
+#' \code{\link{ol_map}}, 
+#' \code{\link{ol_geom_polygon}}, 
 #' \code{\link{ol_geom_circle}},
-#' \code{\link{ol_geom_line}},
-#' \code{\link{ol_geom_point}},
-#' \code{\link{geocode}}
-#'
+#' \code{\link{ol_geom_line}}, 
+#' \code{\link{ol_geom_point}}
+#' 
 #' @export
 #'
 #' @examples
@@ -98,12 +95,12 @@
 #' r.icon <- "https://www.r-project.org/Rlogo.png"
 #' ## If width is not provided image must be local
 #' ## and png package must be installed.
-#' r.icon.width <- 200
+#' r.icon.width <- 200 
 #' r.map <- ol_map(
 #'     center=c(-100,30),
-#'     zoom=3,
-#' ) +
-#'     nga_basemap("WSM")+
+#'     zoom=3
+#' ) + 
+#'     streetmap()+
 #'     ol_geom_icon(
 #'         some.r.servers,
 #'         r.icon,
@@ -112,10 +109,12 @@
 #'         src.img.width=r.icon.width,
 #'         toggle.control=TRUE,
 #'         tooltip=r.server.names
-#' )
-#' ## Not run: save as HTML and open in browser
-#' # ol_map2HTML(r.map,'R-servers.html')
-#' # browseURL("R-servers.html")
+#' ) 
+#' \dontrun{
+#' # Save as HTML and open in browser
+#' ol_map2HTML(r.map,'R-servers.html')
+#' browseURL("R-servers.html")
+#' }
 ol_geom_icon <- function(
     point.obj,
     src.img=NULL,
@@ -130,8 +129,7 @@ ol_geom_icon <- function(
     label=NULL,
     label.params=list(),
     tooltip=NULL,
-    tooltip.params=list(),
-    deployment.image.path=NULL
+    tooltip.params=list()
 ){
     icons <- data.frame(matrix(nrow=0,ncol=3))
     names(icons) <- c('src','scalar','width')
@@ -184,7 +182,6 @@ ol_geom_icon <- function(
     o[['toggle.control']] <- toggle.control
     o[['icons']] <- icons
     o[['target.icon.width']] <- target.icon.width
-    o[['deployment.image.path']] <- deployment.image.path
     n <- names(mapping)
     o[['scale']] <- list()
     i <- 1
@@ -238,7 +235,6 @@ ol_geom_icon <- function(
         )
     }
     o[['scale']][[i]][['icons']] <- icons
-    o[['scale']][[i]][['deployment.image.path']] <- deployment.image.path
     i <- i+1
     l.created <- FALSE
     if('icon' %in% names(mapping)){
@@ -276,7 +272,6 @@ ol_geom_icon <- function(
         )
     }
     o[['scale']][[i]][['icons']] <- icons
-    o[['scale']][[i]][['deployment.image.path']] <- deployment.image.path
     o[["features"]]<-sp.point@coords
     o[['feature.count']]<-nrow(o[["features"]])
     default.label.params <- list(offsetX=8,offsetY=2,textAlign='left',textBaseline='bottom')
@@ -289,7 +284,7 @@ ol_geom_icon <- function(
     return(o)
 }
 
-writeLayer.Layer.SpatialPointIcon <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=TRUE,initial.indent=6,image.path=".",...){
+writeLayer.Layer.SpatialPointIcon <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){
@@ -300,13 +295,6 @@ writeLayer.Layer.SpatialPointIcon <- function(layer,suffix="basemap",nice.format
             cat(s)
         }
     }
-    filename.prefix <- paste(image.path,
-        paste(format(Sys.time(),"%Y%m%d%H%M%S"),
-            sample(1:1000,1),
-            sep=""
-        ),
-        sep="/"
-    )
     pts.df <- data.frame(x=layer[['features']][,1],y=layer[['features']][,2])
     for(s in 1:length(layer[['scale']])){
         s.attr <- layer[['scale']][[s]][['attribute']]
@@ -330,23 +318,10 @@ writeLayer.Layer.SpatialPointIcon <- function(layer,suffix="basemap",nice.format
     inid <- inid + 2
     for(i in 1:nrow(pts.df)){
         file.name <- as.character(pts.df$iconimage[i])
-        if(!is.null(layer[["deployment.image.path"]])){
-            file.name.split <- strsplit(file.name,"/")[[1]]
-            image.name <- file.name.split[length(file.name.split)]
-            if(substr(layer[["deployment.image.path"]],start=nchar(layer[["deployment.image.path"]]),stop=nchar(layer[["deployment.image.path"]]))=="/"){
-                file.name <- paste(layer[["deployment.image.path"]],image.name,sep="")
-            } else {
-                file.name <- paste(layer[["deployment.image.path"]],image.name,sep="/")
-            }
-        }
         scale.multiplier <- layer[['icons']]$scalar[which(layer[['icons']]$src==file.name)]
         write_function("new ol.Feature({")
         inid <- inid + 2
-        if(self.contained){
-            image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
-        } else {
-            image.str <- file.name
-        }
+        image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
         write_function(sprintf("img: \"%s\",",image.str))
         write_function(sprintf("name: \"Icon%i\",",i))
         write_function(sprintf("scale: %1.6f,",pts.df$iconsize[i]*scale.multiplier))

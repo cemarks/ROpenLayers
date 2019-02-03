@@ -58,7 +58,7 @@
 #'     center=c(-100,25),
 #'     zoom=3
 #' ) +
-#'     nga_basemap("LightGray") +
+#'     oceanbase() +
 #'     ol_geom_text(
 #'         text.pts,
 #'         text.labels,
@@ -69,9 +69,11 @@
 #'             fill_color="#FFFFFF00"
 #'         )
 #'     )
-#' ## Not run: write to file and view in browser
-#' # ol_map2HTML(mymap, "textmap.html")
-#' # browseURL("textmap.html")
+#' \dontrun{
+#' # Write to file and view in browser
+#' ol_map2HTML(mymap, "textmap.html")
+#' browseURL("textmap.html")
+#' }
 ol_geom_text <- function(
     point.obj,
     label,
@@ -106,7 +108,7 @@ ol_geom_text <- function(
     return(o)
 }
 
-writeLayer.Layer.Text <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=TRUE,initial.indent=6,image.path=".",...){
+writeLayer.Layer.Text <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){

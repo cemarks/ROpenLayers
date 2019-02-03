@@ -45,8 +45,7 @@
 #' \code{\link{ol_geom_polygon}},
 #' \code{\link{ol_geom_circle}},
 #' \code{\link{ol_geom_line}},
-#' \code{\link{ol_geom_icon}},
-#' \code{\link{geocode}}
+#' \code{\link{ol_geom_icon}}
 #'
 #' @export
 #'
@@ -66,7 +65,7 @@
 #'     center=c(-80.385790,25.782618),
 #'     zoom=9
 #' ) +
-#'     nga_basemap("WSM")
+#'     streetmap()
 #' miami.points <- ol_geom_point(
 #'     point.matrix,
 #'     df=point.df,
@@ -89,9 +88,14 @@
 #'     size.scale +
 #'     fill.scale
 #'
-#' ## Not Run: output to file and view
-#' # ol_map2HTML(miami.points.map,'Miami_points.html')
-#' # browseURL('Miami_points.html')
+#' \dontrun{
+#' # Output to file and view
+#' ol_map2HTML(
+#'   miami.points.map,
+#'   'Miami_points.html'
+#' )
+#' browseURL('Miami_points.html')
+#' }
 ol_geom_point <- function(
     point.obj,
     mapping=ol_aes(),
@@ -232,7 +236,7 @@ ol_geom_point <- function(
     return(o)
 }
 
-writeLayer.Layer.SpatialPoint <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=TRUE,initial.indent=6,image.path=".",...){
+writeLayer.Layer.SpatialPoint <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){
@@ -249,13 +253,6 @@ writeLayer.Layer.SpatialPoint <- function(layer,suffix="basemap",nice.format=TRU
     } else {
         marker.width <- 20
     }
-    filename.prefix <- paste(image.path,
-        paste(format(Sys.time(),"%Y%m%d%H%M%S"),
-            sample(1:1000,1),
-            sep=""
-        ),
-        sep="/"
-    )
     pts.df <- data.frame(x=layer[['features']][,1],y=layer[['features']][,2])
     for(s in 1:length(layer[['scale']])){
         s.attr <- layer[['scale']][[s]][['attribute']]
@@ -275,39 +272,29 @@ writeLayer.Layer.SpatialPoint <- function(layer,suffix="basemap",nice.format=TRU
     inid <- inid + 2
     write_function("features: [")
     inid <- inid + 2
-    plotted.colors <- NULL
+    plotted.colors <- list()
     for(i in 1:nrow(pts.df)){
         point.color <- substr(pts.df$fill[i],start=1,stop=7)
         point.opacity <- as.numeric(as.hexmode(substr(pts.df$fill[i],start=8,stop=9)))/255
-        file.name <- paste(
-            paste(
-                filename.prefix,
-                substr(
-                    point.color,
-                    start=2,
-                    stop=7
-                ),
-                sep="_"
-            ),
-            "png",
-            sep="."
-        )
-        if(!(point.color %in% plotted.colors)){
+        if(!(point.color %in% names(plotted.colors))){
+            file.name <- paste(
+                tempfile(),
+                "png",
+                sep="."
+            )
             draw_marker(
                 marker,
                 file.name,
                 point.color,
                 w=marker.width
             )
-            plotted.colors <- c(plotted.colors,point.color)
+            plotted.colors[[point.color]] <- file.name
+        } else {
+            file.name <- plotted.colors[[point.color]]
         }
         write_function("new ol.Feature({")
         inid <- inid + 2
-        if(self.contained){
-            image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
-        } else {
-            image.str <- file.name
-        }
+        image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
         write_function(sprintf("img: \"%s\",",image.str))
         write_function(sprintf("name: \"Point%i\",",i))
         write_function(sprintf("scale: %1.2f,",pts.df$size[i]))
@@ -330,6 +317,9 @@ writeLayer.Layer.SpatialPoint <- function(layer,suffix="basemap",nice.format=TRU
         } else {
             write_function("})")
         }
+    }
+    for(nn in names(plotted.colors)){
+        zz <- file.remove(plotted.colors[[nn]])
     }
     inid <- inid - 2
     write_function("]")

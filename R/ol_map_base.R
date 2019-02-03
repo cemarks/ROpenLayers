@@ -71,13 +71,9 @@
 #' tooltips <- paste("Depth",quakes$depth,sep=": ")
 #' mymap <- ol_map(
 #'     zoom = 5,
-#'     center = center,
-#'     map.heading = "Earthquake Data Visualization"
+#'     center = center
 #' )
-#' basemap.layer <- nga_basemap(
-#'     "LightGray",
-#'     toggle.control=FALSE
-#' )
+#' basemap.layer <- lightgray()
 #' point.layer <- ol_geom_point(
 #'     quakes[,c("long","lat")],
 #'     mapping = ol_aes(fill=mag),
@@ -98,33 +94,35 @@
 #'     point.layer +
 #'     ol_scale_fill_continuous(name="Magnitude",display=TRUE) +
 #'     heatmap.layer
-#' ## Not run: save to file and open in browser
-#' # ol_map2HTML(mymap,"Quakes.html")
-#' # browseURL("Quakes.html")
+#' \dontrun{
+#' # Save to file and open in browser
+#' ol_map2HTML(
+#'   mymap,
+#'   "Quakes.html",
+#'   map.heading = "Earthquake Data Visualization"
+#' )
+#' browseURL("Quakes.html")
+#' }
 NULL
 
 
-
-
-
-
+#'
 #' OpenLayers Map
 #'
 #' Create an OpenLayers Map Object.
 #'
 #' This function creates a new S3 OpenLayers Map object with no layers.
+#' If \code{ol.source.url} is \code{NULL} and \code{nga.olsource} is
+#' \code{FALSE}, OpenLayers Javascript source will be embedded directly
+#' into the HTML when \code{\link{ol_map2HTML}} or
+#' \code{\link{ol_map2Strings}} is called.
+#' Otherwise, the output HTML/Javascript with source the OpenLayers library
+#' according to the value of \code{ol.source.url}, or the NGA hosted
+#' OpenLayers library if \code{nga.olsource} is \code{TRUE}.
 #'
 #' @param zoom integer map initial zoom level.
 #' @param center numeric vector of length 2 containing decimal longitude and
 #' latitude coordinates for initial map center.
-#' @param width numeric or character CSS value width of map container.
-#' @param height numeric or character CSS value height of map container.
-#' @param ol.source.url character string containing the url to the OpenLayers
-#' javascript library.  If \code{NULL}, OpenLayers 3.21.1 JavaScript code will
-#' be directly embedded into the output HTML.
-#' @param map.heading character heading to be placed over map in html h1 tag.
-#' @param map.note character note placed in html paragraph (<p>) tag centered
-#' under map container.
 #'
 #' @return A list object of class \code{Ol.Map}.
 #'
@@ -138,30 +136,24 @@ NULL
 #' @examples
 #' miami.OSM.basemap <- ol_map(
 #'     center=c(-80.385790,25.782618),
-#'     zoom=9,
-#'     map.heading="Miami Shapes",
-#'     map.note="Note: Mouseover popup values are
-#'         independent of shape size &amp; color."
+#'     zoom=9
 #'     ) +
-#'    nga_basemap('WSM')
-#' ## Not Run
-#' # ol_map2HTML(miami.OSM.basemap,'miami.html')
-#' # browseURL("miami.html")
+#'    streetmap()
+#' \dontrun{
+#' ol_map2HTML(
+#'   miami.OSM.basemap,
+#'   'miami.html',
+#'   map.heading="Miami, FL"
+#' )
+#' browseURL("miami.html")
+#' }
 ol_map <- function(
     zoom=10,
-    center=c(-117.1611,32.7157),
-    width=NULL,
-    height=NULL,
-    ol.source.url="http://home.gvs.nga.smil.mil/libs/openlayers/3.16.0/build/ol.js",
-    map.heading = NULL,
-    map.note=NULL
+    center=c(-117.1611,32.7157)
 ){
     toggle.control.df <- data.frame(matrix(nrow=0,ncol=3))
     names(toggle.control.df) <- c("layer.id","layer.var","name")
     o = list(
-        ol.source.url=ol.source.url,
-        map.width=width,
-        map.height=height,
         center=center,
         zoom=zoom,
         layer.control.df=toggle.control.df,
@@ -177,9 +169,7 @@ ol_map <- function(
             offsetY=0,
             positioning="bottom-left"
         ),
-        layers=list(),
-        map.heading=map.heading,
-        map.note=map.note
+        layers=list()
     )
     class(o) <- 'Ol.Map'
     return(o)
@@ -218,11 +208,12 @@ ol_map <- function(
 #'
 #' @examples
 #' mymap <- ol_map()
-#' base.layer <- nga_basemap('LightGray')
+#' base.layer <- lightgray()
 #' mymap <- mymap + base.layer
-#' ## Not run
-#' # ol_map2HTML(mymap,"SanDiego.html")
-#' # browseURL("SanDiego.html")
+#' \dontrun{
+#' ol_map2HTML(mymap,"SanDiego.html")
+#' browseURL("SanDiego.html")
+#' }
 `+.Ol.Map` <- function(ol.map.obj,other.obj){
     cl <- class(other.obj)
     cl.split <- strsplit(cl,".",fixed=TRUE)[[1]]
@@ -373,157 +364,6 @@ ol_map <- function(
 
 
 
-#' NGA Basemap Layer
-#'
-#' Create a basemap layer linking to an NGA ArcGIS mapserver.
-#'
-#' Creates and returns an OpenLayers ArcGIS Tile layer that sources a
-#' map server hosted at \url{http://home.gvs.nga.smil.mil}.  These map servers
-#' are owned by the US Government and require authentication.  If the
-#' \code{basemap.identifier} parameter is unrecognized the function will
-#' default to the NGA OpenStreetMap map server.
-#'
-#' @section Available Base Maps:
-#' The following basemap.identifiers are currently supported by this method.
-#' \tabular{ll}{
-#' "ABM" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/Analytic_Basemap/MapServer}{Analytic Base Map}\cr
-#' "LightGray" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/LightGray/MapServer}{Analytic Base Map (Light Gray)}\cr
-#' "Light_LightGray" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/Lite_LightGray/MapServer}{Analytic Base Map (Light Light Gray)}\cr
-#' "LightMidnight" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/Lite_Midnight/MapServer}{Analytic Base Map (Light Midnight)}\cr
-#' "Light_Slate" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/Lite_Slate/MapServer}{Analytic Base Map (Light Slate)}\cr
-#' "Midnight" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/Midnight/MapServer}{Analytic Base Map (Midnight)}\cr
-#' "Slate" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/CanvasMaps/Slate/MapServer}{Analytic Base Map (Slate)}\cr
-#' "CARDG" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/ScannedMaps/MapServer}{Scanned CARDG Maps}\cr
-#' "DNC" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/DNC/MapServer}{Digital Nautical Charts}\cr
-#' "Imagery" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/NGA_World_Imagery_2D/MapServer}{Satellite Imagery}\cr
-#' "Hillshade" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/NGA_Hillshade_2D/MapServer}{Hillshade Map}\cr
-#' "ShadedRelief" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/NGA_ShadedRelief_2D/MapServer}{Shaded Relief Map}\cr
-#' "TintedHillshade" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/NGA_Tinted_Hillshade/MapServer}{Tinted Hillshade Map}\cr
-#' "WorldBoundaries" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/World_Boundaries_2D/MapServer}{World Boundaries (WSM)}\cr
-#' "WorldBoundaries_Places" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/World_Boundaries_Places_2D/MapServer}{World Boundaries, Places (WSM)}\cr
-#' "WorldPlaceNames" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/World_Place_Names_2D/MapServer}{World Place Names (WSM)}\cr
-#' "WorldTransportation" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/World_Transportation_2D/MapServer}{World Transportation (WSM)}\cr
-#' "WSM" \tab \href{http://origin-maps.gvs.nga.smil.mil/arcgis/rest/services/Basemap/World_StreetMap_2D/MapServer}{World Street Map}\cr
-#' }
-#'
-#' @param basemap.identifier character indicating which NGA mapserver to use.
-#' See 'Available Base Maps'.
-#' @param name character layer name.
-#' @param toggle.control logical.  If \code{TRUE}, a checkbox will appear on the
-#' map allowing the viewer to toggle its visibility in the browser.
-#'
-#' @return A \code{Layer.ArcGIS} S3 object.
-#'
-#' @seealso
-#' \code{\link{ol_map}},
-#' \code{\link{+.Ol.Map}},
-#' \code{\link{nga_basemap}},
-#' \code{\link{user_arcgis_basemap}}
-#'
-#' @export
-#'
-#' @examples
-#' mymap <- ol_map()
-#' base.layer <- nga_basemap('Midnight')
-#' mymap <- mymap + base.layer
-#' ## Not run
-#' # ol_map2HTML(mymap,"SanDiegoMidnight.html")
-#' # browseURL("SanDiegoMidnight.html")
-nga_basemap<-function(basemap.identifier="WSM",name=NULL,toggle.control=FALSE){
-    if(basemap.identifier %in% nga.mapserver.df$identifier){
-        w <- which(nga.mapserver.df$identifier==basemap.identifier)
-        if(missing(name) || is.null(name) || name==""){
-            use.name <- nga.mapserver.df$name[w]
-        } else {
-            use.name <- name
-        }
-        o <- list(
-            name=use.name,
-            attributions = attribution_str(nga.mapserver.df,w),
-            url = nga.mapserver.df$url[w],
-            toggle.control=toggle.control
-        )
-        class(o) <- "Layer.ArcGIS"
-        return(o)
-    } else {
-        w <- which(nga.mapserver.df$identifier=="WSM")
-        if(missing(name) || is.null(name) || name==""){
-            use.name <- nga.mapserver.df$name[w]
-        } else {
-            use.name <- name
-        }
-        o <- list(
-            name=use.name,
-            attributions = attribution_str(nga.mapserver.df,w),
-            url = nga.mapserver.df$url[w],
-            toggle.control=toggle.control
-        )
-        class(o) <- "Layer.ArcGIS"
-        return(o)
-    }
-}
-
-
-#' User ArcGIS Basemap Layer
-#'
-#' Create a basemap layer linking to an User-supplied ArcGIS mapserver.
-#'
-#' Creates and returns an OpenLayers ArcGIS Tile layer that sources a
-#' map server at a user-supplied URL.
-#'
-#' @param url character url string where the map server is located.  Typically these
-#' urls end with "/MapServer".
-#' @param name character layer name.
-#' @param attributions character HTML.  This HTML will render as attributional text at the
-#' bottom-right corner of the map.  At a minimum, this text should include the
-#' copyright text provided on the map server.
-#' @param toggle.control logical.  If \code{TRUE}, a checkbox will appear on the
-#' map allowing the viewer to toggle its visibility in the browser.
-#'
-#' @return A \code{Layer.ArcGIS} S3 object.
-#'
-#' @seealso
-#' \code{\link{ol_map}},
-#' \code{\link{+.Ol.Map}},
-#' \code{\link{nga_basemap}},
-#'
-#' @export
-#'
-#' @examples
-#' ## NOTE: Example for public URL accessible on NIPR.
-#' server.url <- "http://server.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer"
-#' mymap <- ol_map(
-#'     map.note = sprintf(
-#'         "I found this at <a href='%s'>arcgisonline.com</a>",
-#'         server.url
-#'     )
-#' )
-#' attrib <- paste(
-#'     "Content may not reflect National Geographic's current map policy.",
-#'     "Sources: National Geographic, Esri, Garmin, HERE,",
-#'     "UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, increment P Corp",
-#'     sep=" " # long attribution!
-#' )
-#' base.layer <- user_arcgis_basemap(
-#'     server.url,
-#'     attributions = attrib,
-#'     toggle.control=TRUE
-#' )
-#' mymap <- mymap + base.layer
-#' ## Not run
-#' # ol_map2HTML(mymap,"SanDiego_NatGeo.html")
-#' # browseURL("SanDiego_NatGeo.html")
-user_arcgis_basemap <- function(url,name="",attributions="",toggle.control=FALSE){
-    o <- list(
-        name=name,
-        attributions=gsub('"',"'",attributions),
-        url=url,
-        toggle.control=toggle.control
-    )
-    class(o) <- "Layer.ArcGIS"
-    return(o)
-}
-
 #' Aesthetic Mappings
 #'
 #' Map variables to layer aesthetics.
@@ -567,12 +407,9 @@ user_arcgis_basemap <- function(url,name="",attributions="",toggle.control=FALSE
 #' polygon.df <- data.frame(shape=c("rectangle","triangle"),no=c(1,2))
 #' miami.OSM.basemap <- ol_map(
 #'     center=c(-80.385790,25.782618),
-#'     zoom=9,
-#'     map.heading="Miami Shapes",
-#'     map.note="Note: Mouseover popup values are
-#'         independent of shape size &amp; color."
+#'     zoom=9
 #'     ) +
-#'    nga_basemap('WSM')
+#'    streetmap()
 #' polygon.layer <- ol_geom_polygon(
 #'     polygon.list,
 #'     mapping=ol_aes(
@@ -599,9 +436,16 @@ user_arcgis_basemap <- function(url,name="",attributions="",toggle.control=FALSE
 #'     polygon.fill.scale +
 #'     polygon.linewidth.scale
 #'
-#' ## Not Run
-#' # ol_map2HTML(polygons.over.miami,'miami_polygons.html')
-#' # browseURL("miami_polygons.html")
+#' \dontrun{
+#' ol_map2HTML(
+#'   polygons.over.miami,
+#'   'miami_polygons.html',
+#'   map.heading="Miami Shapes",
+#'   map.note="Note: Mouseover popup values are
+#'     independent of shape size &amp; color."
+#' )
+#' browseURL("miami_polygons.html")
+#' }
 ol_aes <- function(...){
     z <- eval(substitute(alist(...)))
     return(z)

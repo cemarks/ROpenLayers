@@ -70,10 +70,9 @@
 #' )
 #' miami.gray.basemap <- ol_map(
 #'     center=c(-80.385790,25.782618),
-#'     zoom=9,
-#'     map.heading="Miami Lines"
+#'     zoom=9
 #'     ) + 
-#'    nga_basemap("LightGray") 
+#'    lightgray() 
 #' line.layer <- ol_geom_line(
 #'     line.list,
 #'     mapping=ol_aes(
@@ -101,9 +100,15 @@
 #'     line.layer + 
 #'     line.color.scale +
 #'     line.width.scale
-#' ## Not Run: output to file and view
-#' # ol_map2HTML(line.map.miami,'miami_lines.html')
-#' # browseURL("miami_lines.html")
+#' \dontrun{
+#' # Output to file and view
+#' ol_map2HTML(
+#'   line.map.miami,
+#'   'miami_lines.html',
+#'   map.heading="Miami Lines"
+#' )
+#' browseURL("miami_lines.html")
+#' }
 ol_geom_line <- function(
     line.obj,
     mapping=ol_aes(),
@@ -273,7 +278,7 @@ ol_geom_line <- function(
 }
 
 
-writeLayer.Layer.SpatialLine <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=TRUE,initial.indent=6,...){
+writeLayer.Layer.SpatialLine <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){

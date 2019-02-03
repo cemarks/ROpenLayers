@@ -9,10 +9,10 @@ ol_geom_icon(point.obj, src.img = NULL, mapping = ol_aes(),
   icon.size.scalar = "autoscale", src.img.width = NULL,
   target.icon.width = 30, size.scale.lims = c(0.5, 1.25),
   label = NULL, label.params = list(), tooltip = NULL,
-  tooltip.params = list(), deployment.image.path = NULL)
+  tooltip.params = list())
 }
 \arguments{
-\item{point.obj}{SpatialPointsDataframe, SpatialPoints, or a matrix
+\item{point.obj}{SpatialPointsDataframe, SpatialPoints, or a matrix 
 containing columns of point longitudes and latitudes, respectively.}
 
 \item{src.img}{character vector of image file paths.}
@@ -45,13 +45,10 @@ determined by \code{target.icon.width} or \code{icon.size.scalar}.}
 
 \item{label}{character vector of point feature labels.}
 
-\item{label.params, tooltip.params}{named lists (e.g., \code{list(property=value)}) of
+\item{label.params, tooltip.params}{named lists (e.g., \code{list(property=value)}) of 
 label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation.}
 
 \item{tooltip}{character vector of point feature tooltip popups.}
-
-\item{deployment.image.path}{character giving the path where the icon images will be located on
-the server, if different from the path in \code{img.src}.}
 }
 \value{
 A list object of class \code{Layer.SpatialIcon}.
@@ -60,8 +57,8 @@ A list object of class \code{Layer.SpatialIcon}.
 Function to create a point-icon layer to add to an OpenLayers Map object.
 }
 \details{
-This function stores the data required to generate an OpenLayers
-vector layer with features using \code{Point}
+This function stores the data required to generate an OpenLayers 
+vector layer with features using \code{Point} 
 geometries and user-supplied point icons.
 }
 \section{Aesthetics}{
@@ -118,12 +115,12 @@ r.server.names <- c(
 r.icon <- "https://www.r-project.org/Rlogo.png"
 ## If width is not provided image must be local
 ## and png package must be installed.
-r.icon.width <- 200
+r.icon.width <- 200 
 r.map <- ol_map(
     center=c(-100,30),
-    zoom=3,
-) +
-    nga_basemap("WSM")+
+    zoom=3
+) + 
+    streetmap()+
     ol_geom_icon(
         some.r.servers,
         r.icon,
@@ -132,16 +129,17 @@ r.map <- ol_map(
         src.img.width=r.icon.width,
         toggle.control=TRUE,
         tooltip=r.server.names
-)
-## Not run: save as HTML and open in browser
-# ol_map2HTML(r.map,'R-servers.html')
-# browseURL("R-servers.html")
+) 
+\dontrun{
+# Save as HTML and open in browser
+ol_map2HTML(r.map,'R-servers.html')
+browseURL("R-servers.html")
+}
 }
 \seealso{
-\code{\link{ol_map}},
-\code{\link{ol_geom_polygon}},
+\code{\link{ol_map}}, 
+\code{\link{ol_geom_polygon}}, 
 \code{\link{ol_geom_circle}},
-\code{\link{ol_geom_line}},
-\code{\link{ol_geom_point}},
-\code{\link{geocode}}
+\code{\link{ol_geom_line}}, 
+\code{\link{ol_geom_point}}
 }

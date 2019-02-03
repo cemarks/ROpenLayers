@@ -82,7 +82,7 @@ miami.map <- ol_map(
     center=c(-80.385790,25.782618),
     zoom=9
 ) +
-    nga_basemap("WSM")
+    streetmap()
 miami.points <- ol_geom_point(
     point.matrix,
     df=point.df,
@@ -105,9 +105,14 @@ miami.points.map <- miami.map +
     size.scale +
     fill.scale
 
-## Not Run: output to file and view
-# ol_map2HTML(miami.points.map,'Miami_points.html')
-# browseURL('Miami_points.html')
+\dontrun{
+# Output to file and view
+ol_map2HTML(
+  miami.points.map,
+  'Miami_points.html'
+)
+browseURL('Miami_points.html')
+}
 }
 \seealso{
 \code{\link{ol_aes}},
@@ -115,6 +120,5 @@ miami.points.map <- miami.map +
 \code{\link{ol_geom_polygon}},
 \code{\link{ol_geom_circle}},
 \code{\link{ol_geom_line}},
-\code{\link{ol_geom_icon}},
-\code{\link{geocode}}
+\code{\link{ol_geom_icon}}
 }

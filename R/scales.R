@@ -340,12 +340,9 @@ get_lty_scale_discrete <- function(
 #' polygon.df <- data.frame(shape=c("rectangle","triangle"),no=runif(2))
 #' miami.OSM.basemap <- ol_map(
 #'     center=c(-80.385790,25.782618),
-#'     zoom=9,
-#'     map.heading="Miami Shapes",
-#'     map.note="Note: Mouseover popup values are 
-#'         independent of shape size &amp; color."
+#'     zoom=9
 #'     ) + 
-#'    nga_basemap("WSM") 
+#'    streetmap() 
 #' polygon.layer <- ol_geom_polygon(
 #'     polygon.list,
 #'     mapping=ol_aes(
@@ -370,9 +367,17 @@ get_lty_scale_discrete <- function(
 #'     polygon.layer + 
 #'     polygon.fill.scale
 #'
-#' ## Not Run: output to file and view
-#' # ol_map2HTML(polygons.over.miami,'miami_polygons.html')
-#' # browseURL("miami_polygons.html")
+#' \dontrun{
+#' # Output to file and view
+#' ol_map2HTML(
+#'   polygons.over.miami,
+#'   'miami_polygons.html',
+#'   map.heading="Miami Shapes",
+#'   map.note="Note: Mouseover popup values are 
+#'     independent of shape size &amp; color."
+#' )
+#' browseURL("miami_polygons.html")
+#' }
 ol_scale_fill_continuous <- function(
         low.val,
         high.val,
@@ -482,12 +487,9 @@ ol_scale_fill_continuous <- function(
 #' polygon.df <- data.frame(shape=c("rectangle","triangle"),no=runif(2))
 #' miami.OSM.basemap <- ol_map(
 #'     center=c(-80.385790,25.782618),
-#'     zoom=9,
-#'     map.heading="Miami Shapes",
-#'     map.note="Note: Mouseover popup values are 
-#'         independent of shape size &amp; color."
+#'     zoom=9
 #'     ) + 
-#'    nga_basemap("WSM") 
+#'    streetmap() 
 #' polygon.layer <- ol_geom_polygon(
 #'     polygon.list,
 #'     mapping=ol_aes(
@@ -512,9 +514,17 @@ ol_scale_fill_continuous <- function(
 #'     polygon.layer + 
 #'     polygon.fill.scale
 #'
-#' ## Not Run: output to file and view
-#' # ol_map2HTML(polygons.over.miami,'miami_polygons.html')
-#' # browseURL("miami_polygons.html")
+#' \dontrun{
+#' # Output to file and view
+#' ol_map2HTML(
+#'   polygons.over.miami,
+#'   'miami_polygons.html',
+#'   map.heading="Miami Shapes",
+#'   map.note="Note: Mouseover popup values are 
+#'     independent of shape size &amp; color."
+#' )
+#' browseURL("miami_polygons.html")
+#' }
 ol_scale_fill_discrete <- function(
         color.vector=NULL,
         name=NULL,
@@ -636,10 +646,9 @@ ol_scale_fixed <- function(attribute,values){
 #' )
 #' miami.gray.basemap <- ol_map(
 #'     center=c(-80.385790,25.782618),
-#'     zoom=9,
-#'     map.heading="Miami Lines"
+#'     zoom=9
 #'     ) + 
-#'    nga_basemap("LightGray") 
+#'    lightgray() 
 #' line.layer <- ol_geom_line(
 #'     line.list,
 #'     mapping=ol_aes(
@@ -664,9 +673,16 @@ ol_scale_fixed <- function(attribute,values){
 #' line.map.miami <- miami.gray.basemap + 
 #'     line.layer + 
 #'     line.color.scale
-#' ## Not Run: output to file and view
-#' # ol_map2HTML(line.map.miami,'miami_lines.html')
-#' # browseURL("miami_lines.html")
+#' 
+#' \dontrun{
+#' # Output to file and view
+#' ol_map2HTML(
+#'   line.map.miami,
+#'   'miami_lines.html',
+#'   map.heading="Miami Lines"
+#' )
+#' browseURL("miami_lines.html")
+#' }
 ol_scale_color_continuous <- function(
         low.val,
         high.val,
@@ -774,10 +790,9 @@ ol_scale_color_continuous <- function(
 #' )
 #' miami.gray.basemap <- ol_map(
 #'     center=c(-80.385790,25.782618),
-#'     zoom=9,
-#'     map.heading="Miami Lines"
+#'     zoom=9
 #'     ) + 
-#'    nga_basemap("LightGray") 
+#'    lightgray() 
 #' line.layer <- ol_geom_line(
 #'     line.list,
 #'     mapping=ol_aes(
@@ -799,9 +814,15 @@ ol_scale_color_continuous <- function(
 #' line.map.miami <- miami.gray.basemap + 
 #'     line.layer + 
 #'     line.color.scale
-#' ## Not Run: output to file and view
-#' # ol_map2HTML(line.map.miami,'miami_lines.html')
-#' # browseURL("miami_lines.html")
+#' \dontrun{
+#' # Output to file and view
+#' ol_map2HTML(
+#'   line.map.miami,
+#'   'miami_lines.html',
+#'   map.heading="Miami Lines"
+#' )
+#' browseURL("miami_lines.html")
+#' }
 ol_scale_color_discrete <- function(
         color.vector=NULL,
         name=NULL,
@@ -905,10 +926,9 @@ ol_scale_color_discrete <- function(
 #' )
 #' miami.gray.basemap <- ol_map(
 #'     center=c(-80.385790,25.782618),
-#'     zoom=9,
-#'     map.heading="Miami Lines"
+#'     zoom=9
 #'     ) + 
-#'    nga_basemap("LightGray") 
+#'    lightgray() 
 #' line.layer <- ol_geom_line(
 #'     line.list,
 #'     mapping=ol_aes(
@@ -929,9 +949,15 @@ ol_scale_color_discrete <- function(
 #' line.map.miami <- miami.gray.basemap + 
 #'     line.layer + 
 #'     line.width.scale
-#' ## Not Run: output to file and view
-#' # ol_map2HTML(line.map.miami,'miami_lines.html')
-#' # browseURL("miami_lines.html")
+#' \dontrun{
+#' # Output to file and view
+#' ol_map2HTML(
+#'   line.map.miami,
+#'   'miami_lines.html',
+#'   map.heading="Miami Lines"
+#' )
+#' browseURL("miami_lines.html")
+#' }
 ol_scale_lwd_discrete <- function(
         lwd.vector=NULL,
         name=NULL,
@@ -1026,7 +1052,7 @@ ol_scale_lwd_discrete <- function(
 #'     center=c(-80.385790,25.782618),
 #'     zoom=10
 #' ) + 
-#'     nga_basemap("WSM")+
+#'     streetmap()+
 #'     ol_geom_point(
 #'         point.matrix,
 #'         df=point.df,
@@ -1048,9 +1074,14 @@ ol_scale_lwd_discrete <- function(
 #'     legend.breaks=c(0,3.33,6.67,10),
 #'     display=TRUE
 #' )
-#' ## Not run: save to file and open on browser
-#' # ol_map2HTML(miami.points.map,'pointsizes.html')
-#' # browseURL('pointsizes.html')
+#' \dontrun{
+#' # Oave to file and open on browser
+#' ol_map2HTML(
+#'   miami.points.map,
+#'   'pointsizes.html'
+#' )
+#' browseURL('pointsizes.html')
+#' }
 ol_scale_size_continuous <- function(
         low.val,
         high.val,
@@ -1145,7 +1176,7 @@ ol_scale_size_continuous <- function(
 #'     center=c(-80.385790,25.782618),
 #'     zoom=10
 #' ) + 
-#'     nga_basemap("WSM")+
+#'     streetmap()+
 #'     ol_geom_point(
 #'         point.matrix,
 #'         df=point.df,
@@ -1164,9 +1195,14 @@ ol_scale_size_continuous <- function(
 #'     draw.fill='black',
 #'     display=TRUE
 #' )
-#' ## Not run: save to file and open on browser
-#' # ol_map2HTML(miami.points.map,'pointsizes.html')
-#' # browseURL('pointsizes.html')
+#' \dontrun{
+#' # Oave to file and open on browser
+#' ol_map2HTML(
+#'   miami.points.map,
+#'   'pointsizes.html'
+#' )
+#' browseURL('pointsizes.html')
+#' }
 ol_scale_size_discrete <- function(
         size.vector=NULL,
         name=NULL,
@@ -1294,7 +1330,7 @@ ol_scale_size_discrete <- function(
 #'     center=c(-100,30),
 #'     zoom=3
 #' ) + 
-#'     nga_basemap("WSM")+
+#'     streetmap()+
 #'     ol_geom_icon(
 #'         some.r.servers,
 #'         r.icon,
@@ -1312,9 +1348,14 @@ ol_scale_size_discrete <- function(
 #'     legend.breaks=c(0,2.5,5,7.5,10),
 #'     display=TRUE
 #' )
-#' ## Not run: save as HTML and open in browser
-#' # ol_map2HTML(r.map,'R-servers.html')
-#' # browseURL("R-servers.html")
+#' \dontrun{
+#' # Oave as HTML and open in browser
+#' ol_map2HTML(
+#'   r.map,
+#'   'R-servers.html'
+#' )
+#' browseURL("R-servers.html")
+#' }
 ol_scale_iconsize_continuous <- function(
         low.val,
         high.val,
@@ -1450,7 +1491,7 @@ ol_scale_iconsize_continuous <- function(
 #'     center=c(-100,30),
 #'     zoom=3
 #' ) + 
-#'     nga_basemap("WSM")+
+#'     streetmap()+
 #'     ol_geom_icon(
 #'         some.r.servers,
 #'         r.icon,
@@ -1465,9 +1506,14 @@ ol_scale_iconsize_continuous <- function(
 #'     ol_scale_iconsize_discrete(
 #'     display=TRUE
 #' )
-#' ## Not run: save as HTML and open in browser
-#' # ol_map2HTML(r.map,'R-servers.html')
-#' # browseURL("R-servers.html")
+#' \dontrun{
+#' # Oave as HTML and open in browser
+#' ol_map2HTML(
+#'   r.map,
+#'   'R-servers.html'
+#' )
+#' browseURL("R-servers.html")
+#' }
 ol_scale_iconsize_discrete <- function(
         size.vector=NULL,
         name=NULL,
@@ -1560,7 +1606,7 @@ ol_scale_iconsize_discrete <- function(
 #'     center=c(-75,38),
 #'     zoom=5
 #' ) + 
-#'     nga_basemap("WSM")+
+#'     streetmap()+
 #'     ol_geom_icon(
 #'         loc.df[,1:2],
 #'         c(r.icon,freebsd.icon),
@@ -1575,9 +1621,14 @@ ol_scale_iconsize_discrete <- function(
 #'     c(R=r.icon,BSD=freebsd.icon),
 #'     display=TRUE
 #' )
-#' ## Not run: save as HTML and open in browser
-#' # ol_map2HTML(icon.map,'servers.html')
-#' # browseURL("servers.html")
+#' \dontrun{
+#' # Oave as HTML and open in browser
+#' ol_map2HTML(
+#'   icon.map,
+#'   'servers.html'
+#' )
+#' browseURL("servers.html")
+#' }
 ol_scale_iconimage_discrete <- function(
         icon.img.vector = NULL,
         name=NULL,
@@ -1689,10 +1740,9 @@ ol_scale_iconimage_discrete <- function(
 #' )
 #' miami.gray.basemap <- ol_map(
 #'     center=c(-80.385790,25.782618),
-#'     zoom=9,
-#'     map.heading="Miami Lines"
+#'     zoom=9
 #'     ) + 
-#'    nga_basemap("LightGray") 
+#'    lightgray() 
 #' line.layer <- ol_geom_line(
 #'     line.list,
 #'     mapping=ol_aes(
@@ -1713,9 +1763,15 @@ ol_scale_iconimage_discrete <- function(
 #' line.map.miami <- miami.gray.basemap + 
 #'     line.layer + 
 #'     line.type.scale
-#' ## Not Run: output to file and view
-#' # ol_map2HTML(line.map.miami,'miami_lines.html')
-#' # browseURL("miami_lines.html")
+#' \dontrun{
+#' # Output to file and view
+#' ol_map2HTML(
+#'   line.map.miami,
+#'   'miami_lines.html',
+#'   map.heading="Miami Lines"
+#' )
+#' browseURL("miami_lines.html")
+#' }
 ol_scale_lty_discrete <- function(
         lty.list=NULL,
         name=NULL,

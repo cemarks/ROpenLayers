@@ -12,7 +12,7 @@ ol_geom_circle(circle.obj, mapping = ol_aes(), name = NULL,
 }
 \arguments{
 \item{circle.obj}{matrix containing three columns: center longitude,
-center latitude, and radius respectively.  Each row yields a 
+center latitude, and radius respectively.  Each row yields a
 single \code{circle} feature in the resulting layer.}
 
 \item{mapping}{list created by ol_aes.}
@@ -34,7 +34,7 @@ no opacity provided in \code{fill} or \code{fill} aesthetic.}
 \item{lwd}{numeric circle border width. Used only if no \code{lwd}
 aesthetic is provided in \code{mapping}}
 
-\item{ol.lty}{(experimental) numeric vector with length > 1, or 
+\item{ol.lty}{(experimental) numeric vector with length > 1, or
 \code{list} of such vectors. Used only if no \code{ol.lty} aesthetic is
 provided in \code{mapping}.  See OpenLayers
 \href{https://openlayers.org/en/latest/apidoc/module-ol_style_Stroke-Stroke.html}{ol/style/Stroke Documentation},
@@ -43,13 +43,13 @@ provided in \code{mapping}.  See OpenLayers
 \item{color}{character border color string, or vector of color strings.  Used
 only if no \code{color} aesthetic is provided in \code{mapping}}
 
-\item{label}{character vector of length \code{nrow(circle.obj)} of 
+\item{label}{character vector of length \code{nrow(circle.obj)} of
 feature labels.}
 
-\item{label.params, tooltip.params}{named lists (e.g., \code{list(property=value)}) of 
+\item{label.params, tooltip.params}{named lists (e.g., \code{list(property=value)}) of
 label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation.}
 
-\item{tooltip}{character vector of length \code{nrow(circle.obj)} of 
+\item{tooltip}{character vector of length \code{nrow(circle.obj)} of
 feature tooltip popups.}
 }
 \value{
@@ -59,9 +59,9 @@ A list object of class \code{Layer.Circle}.
 Function to create a circle layer to add to an OpenLayers Map object.
 }
 \details{
-This function stores the data required to generate an OpenLayers 
-vector layer with features using \code{circle} 
-geometries.  
+This function stores the data required to generate an OpenLayers
+vector layer with features using \code{circle}
+geometries.
 See OpenLayers \href{https://openlayers.org/en/latest/apidoc/module-ol_geom_Circle-Circle.html}{Circle Documentation} for details.
 }
 \section{Aesthetics}{
@@ -91,12 +91,9 @@ aesthetic.df <- data.frame(
 )
 miami.OSM.basemap <- ol_map(
     center=c(-80.385790,25.782618),
-    zoom=9,
-    map.heading="Miami Shapes",
-    map.note="Note: Mouseover popup values are 
-        independent of shape size &amp; color."
-    ) + 
-   nga_basemap("WSM") 
+    zoom=9
+    ) +
+   streetmap()
 circle.layer<-ol_geom_circle(
         miami.circles,
         df = aesthetic.df,
@@ -106,19 +103,27 @@ circle.layer<-ol_geom_circle(
         toggle.control=TRUE,
         color="#000000FF",
         tooltip=sprintf("\%1.2f",aesthetic.df$value)
-        ) 
+        )
 circle.fill <- ol_scale_fill_discrete(
         display=TRUE,
         preserve.opacity=TRUE
     )
 circles <- miami.OSM.basemap + circle.layer + circle.fill
 
-## Not Run: output to file and view
-# ol_map2HTML(circles,'miami_circles.html')
-# browseURL("miami_circles.html")
+\dontrun{
+# Output to file and view
+ol_map2HTML(
+  circles,
+  'miami_circles.html',
+  map.heading="Miami Shapes",
+  map.note="Note: Mouseover popup values are
+    independent of shape size &amp; color."
+)
+browseURL("miami_circles.html")
+}
 }
 \seealso{
-\code{\link{ol_aes}}, 
-\code{\link{ol_map}}, 
+\code{\link{ol_aes}},
+\code{\link{ol_map}},
 \code{\link{ol_geom_polygon}}
 }

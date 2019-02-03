@@ -109,12 +109,9 @@
 #' polygon.df <- data.frame(shape=c("rectangle","triangle"),no=c(1,2))
 #' miami.OSM.basemap <- ol_map(
 #'     center=c(-80.385790,25.782618),
-#'     zoom=9,
-#'     map.heading="Miami Shapes",
-#'     map.note="Note: Mouseover popup values are 
-#'         independent of shape size &amp; color."
+#'     zoom=9
 #'     ) + 
-#'    nga_basemap("LightGray") 
+#'    streetmap() 
 #' polygon.layer <- ol_geom_polygon(
 #'     polygon.list,
 #'     mapping=ol_aes(
@@ -130,10 +127,18 @@
 #' polygons.over.miami <- miami.OSM.basemap + 
 #'     polygon.layer + 
 #'     polygon.fill.scale
-#'
-#' ## Not Run: output to file and view
-#' # ol_map2HTML(polygons.over.miami,'miami_polygons.html')
-#' # browseURL("miami_polygons.html")
+#' 
+#' \dontrun{
+#' # Output to file and view
+#' ol_map2HTML(
+#'   polygons.over.miami,
+#'   'miami_polygons.html',
+#'   map.heading="Miami Shapes",
+#'   map.note="Note: Mouseover popup values are 
+#'     independent of shape size &amp; color."
+#' )
+#' browseURL("miami_polygons.html")
+#' }
 ol_geom_polygon <- function(
     polygon.obj,
     mapping=ol_aes(),
@@ -365,7 +370,7 @@ ol_geom_polygon <- function(
     return(o)
 }
 
-writeLayer.Layer.SpatialPolygon <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=TRUE,initial.indent=6,...){
+writeLayer.Layer.SpatialPolygon <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){

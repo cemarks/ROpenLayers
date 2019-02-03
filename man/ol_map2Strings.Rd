@@ -4,28 +4,37 @@
 \alias{ol_map2Strings}
 \title{OpenLayers Map HTML to List}
 \usage{
-ol_map2Strings(ol.map.obj, image.path = "images",
-  self.contained = TRUE, deployment.image.path = NULL)
+ol_map2Strings(ol.map.obj, width = NULL, height = NULL,
+  ol.source.url = NULL, nga.olsource = FALSE, map.heading = NULL,
+  map.note = NULL)
 }
 \arguments{
 \item{ol.map.obj}{Ol.Map object to be exported.}
 
-\item{image.path}{character \emph{relative} path from \code{file.path} to 
-directory that will contain page images.}
+\item{width}{numeric or character CSS value width of map container.}
 
-\item{self.contained}{logical.  If \code{TRUE} images will be converted to 
-64-bit text and embedded in HTML/JavaScript code.  Note: images will still
-be created and saved locally in the \code{image.path} folder.}
+\item{height}{numeric or character CSS value height of map container.}
 
-\item{deployment.image.path}{character path to images on server, if different
-from \code{image.path}.  The \code{image.path} will be replaced with this 
-path in the returned strings.}
+\item{ol.source.url}{character string containing the url to the OpenLayers
+javascript library.  Ignored if nga.olsource is \code{TRUE}.}
+
+\item{nga.olsource}{logical.  \code{TRUE} will use the OpenLayers 3.16.0 javascript
+library from \url{https://home.gvs.nga.mil} (requires authentication);
+\code{FALSE} uses the sources the \code{ol.source.url}, if provided, or embeds
+the OpenLayers 3.21.1 JavaScript code in the HTML head.
+Only used if \code{ol.source.url} is missing or \code{NULL}.}
+
+\item{map.heading}{character heading to be placed over map in html h1 tag.}
+
+\item{map.note}{character note placed in html paragraph (<p>) tag centered
+under map container.}
 }
 \value{
 list object with the following character elements:
 \tabular{ll}{
 \code{$head.meta.IE.compatibility} \tab HTML meta tag for IE compatability viewing.\cr
-\code{$head.script} \tab HTML script block sourcing the OpenLayers javascript library identify in \code{ol.map.obj}.\cr
+\code{$head.script} \tab HTML script block including or sourcing the OpenLayers 
+Javascript library (see \code{ol.map.obj}).\cr
 \code{$style} \tab  CSS code for styling the map and legends. \cr
 \code{$body.html} \tab HTML map and legend containers, and associated elements. \cr
 \code{$body.script} \tab Javascript code writing the layer and map objects. \cr
@@ -37,8 +46,7 @@ Assigns Ol.Map HTML content to list.
 \details{
 Ol.Map object HTML is exported to a list object that can be deployed in a 
 variety of applications or server environments.  See exmaples for a minimal
-example using RShiny.  This method writes image files to the directory specified
-in \code{image.path} if they are needed for any layers in \code{ol.map.obj}.  
+example using RShiny.   
 This method does not currently support adding multiple maps to the same 
 web page, as javascript variable names would be replicated.
 }
@@ -53,9 +61,9 @@ heatmap.pts <- matrix(
 )
 mymap <- ol_map(
     center=c(-98.5,28.5),
-    zoom=4,
-    map.note="Heatmap of random points centered on Miami and San Diego.") + 
-    nga_basemap("WSM") +
+    zoom=4
+ ) + 
+    streetmap() +
     ol_geom_heatmap(
         heatmap.pts,
         name="Random Heatmap",
@@ -65,28 +73,33 @@ mymap <- ol_map(
 ## The following line will create image files
 ## as needed for point layers and legends.
 ## None are required in this example.
-HTML.strings <- ol_map2Strings(mymap)
+HTML.strings <- ol_map2Strings(
+  mymap,
+  nga.olsource=FALSE,
+  map.note="Heatmap of random points centered on Miami and San Diego."
+)
 ## Minimal shiny example
-## Not Run
-# library(shiny)
-# ui <- shinyUI(
-#     fluidPage(
-#         ## Add OpenLayers Javascript source & CSS to head
-#         tags$head(
-#             HTML(HTML.strings[[1]])
-#             HTML(HTML.strings[[2]]),
-#             tags$style(HTML(HTML.strings[[3]]))
-#         ),
-#         titlePanel("Random Heatmap"),
-#         mainPanel(
-#             tags$div(HTML(HTML.strings[[4]]))
-#         ),
-#         tags$script(HTML(HTML.strings[[5]]))
-#     )
-# )
-# server <- function(input,output){
-# }
-# shinyApp(ui=ui,server)
+\dontrun{
+library(shiny)
+ui <- shinyUI(
+    fluidPage(
+        #Add OpenLayers Javascript source & CSS to head
+        tags$head(
+            HTML(HTML.strings[[1]])
+            HTML(HTML.strings[[2]]),
+            tags$style(HTML(HTML.strings[[3]]))
+        ),
+        titlePanel("Random Heatmap"),
+        mainPanel(
+            tags$div(HTML(HTML.strings[[4]]))
+        ),
+        tags$script(HTML(HTML.strings[[5]]))
+    )
+)
+server <- function(input,output){
+}
+shinyApp(ui=ui,server)
+}
 }
 \seealso{
 \code{\link{ol_map}}, 
