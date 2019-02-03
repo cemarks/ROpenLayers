@@ -9,7 +9,7 @@ ol_geom_icon(point.obj, src.img = NULL, mapping = ol_aes(),
   icon.size.scalar = "autoscale", src.img.width = NULL,
   target.icon.width = 30, size.scale.lims = c(0.5, 1.25),
   label = NULL, label.params = list(), tooltip = NULL,
-  tooltip.params = list(), deployment.image.path = NULL)
+  tooltip.params = list())
 }
 \arguments{
 \item{point.obj}{SpatialPointsDataframe, SpatialPoints, or a matrix 
@@ -49,9 +49,6 @@ determined by \code{target.icon.width} or \code{icon.size.scalar}.}
 label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation.}
 
 \item{tooltip}{character vector of point feature tooltip popups.}
-
-\item{deployment.image.path}{character giving the path where the icon images will be located on 
-the server, if different from the path in \code{img.src}.}
 }
 \value{
 A list object of class \code{Layer.SpatialIcon}.
@@ -121,9 +118,9 @@ r.icon <- "https://www.r-project.org/Rlogo.png"
 r.icon.width <- 200 
 r.map <- ol_map(
     center=c(-100,30),
-    zoom=3,
+    zoom=3
 ) + 
-    public_OSM_basemap()+
+    streetmap()+
     ol_geom_icon(
         some.r.servers,
         r.icon,
@@ -133,9 +130,11 @@ r.map <- ol_map(
         toggle.control=TRUE,
         tooltip=r.server.names
 ) 
-## Not run: save as HTML and open in browser
-# ol_map2HTML(r.map,'R-servers.html')
-# browseURL("R-servers.html")
+\dontrun{
+# Save as HTML and open in browser
+ol_map2HTML(r.map,'R-servers.html')
+browseURL("R-servers.html")
+}
 }
 \seealso{
 \code{\link{ol_map}}, 

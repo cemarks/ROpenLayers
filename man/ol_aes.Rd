@@ -8,7 +8,7 @@ ol_aes(...)
 }
 \arguments{
 \item{...}{comma-separated mappings of the form 'aesthetic=variable'.  Available aesthetics for mapping
-are layer specific and are listed in the documentation for each layer type.  Unavailable or 
+are layer specific and are listed in the documentation for each layer type.  Unavailable or
 unrecognized aesthetics are ignored.  Variables must correspond to names in the layer's input data.frame,
 otherwise an error is thrown.}
 }
@@ -42,12 +42,9 @@ polygon.list<-list(polygon.matrix1,polygon.matrix2)
 polygon.df <- data.frame(shape=c("rectangle","triangle"),no=c(1,2))
 miami.OSM.basemap <- ol_map(
     center=c(-80.385790,25.782618),
-    zoom=9,
-    map.heading="Miami Shapes",
-    map.note="Note: Mouseover popup values are 
-        independent of shape size &amp; color."
-    ) + 
-   public_OSM_basemap() 
+    zoom=9
+    ) +
+   streetmap()
 polygon.layer <- ol_geom_polygon(
     polygon.list,
     mapping=ol_aes(
@@ -69,19 +66,26 @@ polygon.linewidth.scale <- ol_scale_lwd_discrete(
     display=TRUE,
     name="Shape"
 )
-polygons.over.miami <- miami.OSM.basemap + 
-    polygon.layer + 
+polygons.over.miami <- miami.OSM.basemap +
+    polygon.layer +
     polygon.fill.scale +
     polygon.linewidth.scale
 
-## Not Run
-# ol_map2HTML(polygons.over.miami,'miami_polygons.html')
-# browseURL("miami_polygons.html")
+\dontrun{
+ol_map2HTML(
+  polygons.over.miami,
+  'miami_polygons.html',
+  map.heading="Miami Shapes",
+  map.note="Note: Mouseover popup values are
+    independent of shape size &amp; color."
+)
+browseURL("miami_polygons.html")
+}
 }
 \seealso{
-\code{\link{ol_geom_polygon}}, 
-\code{\link{ol_geom_line}}, 
-\code{\link{ol_geom_point}}, 
-\code{\link{ol_geom_icon}}, 
+\code{\link{ol_geom_polygon}},
+\code{\link{ol_geom_line}},
+\code{\link{ol_geom_point}},
+\code{\link{ol_geom_icon}},
 \code{\link{ol_geom_circle}}
 }

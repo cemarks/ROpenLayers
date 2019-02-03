@@ -10,16 +10,20 @@
 #' be placed directly into a directory hosted by a minimal http server.      
 #' 
 #' @param ol.map.obj Ol.Map object to be exported.
-#' @param file.name character output HTML file name.  This name will be appended
-#' to the \code{file.path}.
-#' @param file.path character output HTML file path.  The output HTML file and
-#' supporting directories (e.g., 'images') will be in this path.
+#' @param file.name character output HTML file name.  
 #' @param page.name character page title to be included in the HTML head section.
-#' @param image.path character \emph{relative} path from \code{file.path} to 
-#' directory that will contain page images. 
-#' @param self.contained logical.  If \code{TRUE} images will be converted to 
-#' 64-bit text and embedded in HTML/JavaScript code.  Note: images will still
-#' be created and saved locally in the \code{image.path} folder. 
+#' @param width numeric or character CSS value width of map container.
+#' @param height numeric or character CSS value height of map container.
+#' @param ol.source.url character string containing the url to the OpenLayers
+#' javascript library.  Ignored if nga.olsource is \code{TRUE}.
+#' @param nga.olsource logical.  \code{TRUE} will use the OpenLayers 3.16.0 javascript
+#' library from \url{https://home.gvs.nga.mil} (requires authentication);
+#' \code{FALSE} uses the sources the \code{ol.source.url}, if provided, or embeds
+#' the OpenLayers 5.3.0 JavaScript code in the HTML head.
+#' Only used if \code{ol.source.url} is missing or \code{NULL}.
+#' @param map.heading character heading to be placed over map in html h1 tag.
+#' @param map.note character note placed in html paragraph (<p>) tag centered
+#' under map container. 
 #' @param nice.format logical.  If \code{TRUE}, output file will be formated with
 #' new lines and indentation for human readability.
 #' @param IE.compatability.view logical.  If \code{TRUE}, the statement\cr
@@ -37,41 +41,29 @@
 #'
 #' @examples
 #' mymap <- ol_map()
-#' base.layer <- public_arcgis_basemap('LightGray')
+#' base.layer <- lightgray()
 #' mymap <- mymap + base.layer
-#' ## The following writes HTML and needed images (not run)
-#' # ol_map2HTML(mymap,"SanDiego.html", nice.format=TRUE)
-#' ## Open in browser (not run)
-#' # browseURL("SanDiego.html")
+#' \dontrun{
+#' # The following writes HTML and needed images
+#' ol_map2HTML(mymap,"SanDiego.html", nice.format=TRUE)
+#' # Open in browser
+#' browseURL("SanDiego.html")
+#' }
 ol_map2HTML <- function(
     ol.map.obj,
     file.name,
-    file.path=".",
     page.name="ROpenLayers Map",
-    image.path="images",
-    self.contained=TRUE,
+    width=NULL,
+    height=NULL,
+    ol.source.url=NULL,
+    nga.olsource = FALSE,
+    map.heading = NULL,
+    map.note=NULL,
     nice.format=FALSE,
     IE.compatability.view=TRUE
 ){
-    if(grepl("/",file.name)){
-        warning("File name string contains path identifier.  This could result in broken image links.")
-        str.sp <- strsplit(file.name,"/")[[1]]
-        partial.path <- paste(file.path,paste(str.sp[1:(length(str.sp)-1)],collapse="/"),sep="/")
-        if(!dir.exists(partial.path)){
-            stop(sprintf("Directory does not exist! %s",partial.path))
-        }
-    }
-    if(!dir.exists(paste(file.path,image.path,sep="/"))){
-        image.dir.exists <- FALSE
-    } else {
-        image.dir.exists <- TRUE
-    }
-    ###### CHECK FOR IMAGES & DRAW SCALES
-    if(any(sapply(ol.map.obj[['layers']],function(x) if(class(x)=="Layer.SpatialPoint") return(TRUE) else return(FALSE)))){
-        if(!image.dir.exists){
-            dir.create(paste(file.path,image.path,sep="/"))
-            image.dir.exists <- TRUE
-        }
+    if(nga.olsource){
+        ol.source.url <- "https://home.gvs.nga.mil/libs/openlayers/3.16.0/build/ol.js"
     }
     scale.div.vector <- NULL
     display.scale <- FALSE
@@ -79,11 +71,7 @@ ol_map2HTML <- function(
         if(length(ol.map.obj[['layers']][[i]][['scale']])>0){
             for(j in 1:length(ol.map.obj[['layers']][[i]][['scale']])){
                 if(ol.map.obj[['layers']][[i]][['scale']][[j]][["type"]]!="fixed" && ol.map.obj[['layers']][[i]][['scale']][[j]][['display']]){
-                    if(!image.dir.exists){
-                        dir.create(paste(file.path,image.path,sep="/"))
-                        image.dir.exists <- TRUE
-                    }
-                    new.scale.html <- draw_scale(ol.map.obj[['layers']][[i]][['scale']][[j]],image.path,nice.format=nice.format,self.contained=self.contained,initial.indent=8)
+                    new.scale.html <- draw_scale(ol.map.obj[['layers']][[i]][['scale']][[j]],nice.format=nice.format,initial.indent=8)
                     display.scale<-TRUE
                     scale.div.vector<-c(scale.div.vector,new.scale.html)
                 }
@@ -115,7 +103,7 @@ ol_map2HTML <- function(
         }
     }
     warnings <- NULL
-    sink(paste(file.path,file.name,sep="/"))
+    sink(file.name)
     tryCatch({
         write_function("<!DOCTYPE html>")
         write_function("<html>")
@@ -126,15 +114,16 @@ ol_map2HTML <- function(
             write_function("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"/>")
         }
         write_function(sprintf("<title>%s</title>",page.name))
-        write_headscript(ol.map.obj[['ol.source.url']],nice.format,inid)
+        write_headscript(ol.source.url,nice.format,inid)
         write_function("<style>")
         inid <- inid + 2
         write_style(
-            width=ol.map.obj[['map.width']],
-            height=ol.map.obj[['map.height']],
+            width=width,
+            height=height,
             display.scale=display.scale,
             layer.control=layer.control,
             tooltips.param.vector=ol.map.obj[['tooltips.param.vector']],
+            nga.olsource = nga.olsource,
             nice.format = nice.format,
             initial.indent=inid
         )
@@ -150,8 +139,8 @@ ol_map2HTML <- function(
             layer.control.df=ol.map.obj[['layer.control.df']],
             tooltips.bool=ol.map.obj[['tooltips']],
             tooltips.param.vector=ol.map.obj[['tooltips.param.vector']],
-            map.heading=ol.map.obj[['map.heading']],
-            map.note=ol.map.obj[['map.note']],
+            map.heading=map.heading,
+            map.note=map.note,
             nice.format=nice.format,
             initial.indent = inid
         )
@@ -160,9 +149,7 @@ ol_map2HTML <- function(
         write_body_script(
             ol.map.obj,
             layer.control,
-            image.path,
             nice.format=nice.format,
-            self.contained=self.contained,
             initial.indent=inid
         )
         inid <- inid - 2
@@ -191,20 +178,23 @@ ol_map2HTML <- function(
 #'
 #' Ol.Map object HTML is exported to a list object that can be deployed in a 
 #' variety of applications or server environments.  See exmaples for a minimal
-#' example using RShiny.  This method writes image files to the directory specified
-#' in \code{image.path} if they are needed for any layers in \code{ol.map.obj}.  
+#' example using RShiny.   
 #' This method does not currently support adding multiple maps to the same 
 #' web page, as javascript variable names would be replicated.
 #' 
 #' @param ol.map.obj Ol.Map object to be exported.
-#' @param image.path character \emph{relative} path from \code{file.path} to 
-#' directory that will contain page images. 
-#' @param self.contained logical.  If \code{TRUE} images will be converted to 
-#' 64-bit text and embedded in HTML/JavaScript code.  Note: images will still
-#' be created and saved locally in the \code{image.path} folder. 
-#' @param deployment.image.path character path to images on server, if different
-#' from \code{image.path}.  The \code{image.path} will be replaced with this 
-#' path in the returned strings.
+#' @param width numeric or character CSS value width of map container.
+#' @param height numeric or character CSS value height of map container.
+#' @param ol.source.url character string containing the url to the OpenLayers
+#' javascript library.  Ignored if nga.olsource is \code{TRUE}.
+#' @param nga.olsource logical.  \code{TRUE} will use the OpenLayers 3.16.0 javascript
+#' library from \url{https://home.gvs.nga.mil} (requires authentication);
+#' \code{FALSE} uses the sources the \code{ol.source.url}, if provided, or embeds
+#' the OpenLayers 3.21.1 JavaScript code in the HTML head.
+#' Only used if \code{ol.source.url} is missing or \code{NULL}.
+#' @param map.heading character heading to be placed over map in html h1 tag.
+#' @param map.note character note placed in html paragraph (<p>) tag centered
+#' under map container. 
 #'
 #' @return list object with the following character elements:
 #' \tabular{ll}{
@@ -233,10 +223,9 @@ ol_map2HTML <- function(
 #' )
 #' mymap <- ol_map(
 #'     center=c(-98.5,28.5),
-#'     zoom=4,
-#'     nga.olsource=FALSE,
-#'     map.note="Heatmap of random points centered on Miami and San Diego.") + 
-#'     public_OSM_basemap() +
+#'     zoom=4
+#'  ) + 
+#'     streetmap() +
 #'     ol_geom_heatmap(
 #'         heatmap.pts,
 #'         name="Random Heatmap",
@@ -246,53 +235,50 @@ ol_map2HTML <- function(
 #' ## The following line will create image files
 #' ## as needed for point layers and legends.
 #' ## None are required in this example.
-#' HTML.strings <- ol_map2Strings(mymap)
+#' HTML.strings <- ol_map2Strings(
+#'   mymap,
+#'   nga.olsource=FALSE,
+#'   map.note="Heatmap of random points centered on Miami and San Diego."
+#' )
 #' ## Minimal shiny example
-#' ## Not Run
-#' # library(shiny)
-#' # ui <- shinyUI(
-#' #     fluidPage(
-#' #         ## Add OpenLayers Javascript source & CSS to head
-#' #         tags$head(
-#' #             HTML(HTML.strings[[1]])
-#' #             HTML(HTML.strings[[2]]),
-#' #             tags$style(HTML(HTML.strings[[3]]))
-#' #         ),
-#' #         titlePanel("Random Heatmap"),
-#' #         mainPanel(
-#' #             tags$div(HTML(HTML.strings[[4]]))
-#' #         ),
-#' #         tags$script(HTML(HTML.strings[[5]]))
-#' #     )
-#' # )
-#' # server <- function(input,output){
-#' # }
-#' # shinyApp(ui=ui,server)
-ol_map2Strings <- function(ol.map.obj,image.path="images",self.contained=TRUE,deployment.image.path=NULL){
+#' \dontrun{
+#' library(shiny)
+#' ui <- shinyUI(
+#'     fluidPage(
+#'         #Add OpenLayers Javascript source & CSS to head
+#'         tags$head(
+#'             HTML(HTML.strings[[1]])
+#'             HTML(HTML.strings[[2]]),
+#'             tags$style(HTML(HTML.strings[[3]]))
+#'         ),
+#'         titlePanel("Random Heatmap"),
+#'         mainPanel(
+#'             tags$div(HTML(HTML.strings[[4]]))
+#'         ),
+#'         tags$script(HTML(HTML.strings[[5]]))
+#'     )
+#' )
+#' server <- function(input,output){
+#' }
+#' shinyApp(ui=ui,server)
+#' }
+ol_map2Strings <- function(
+    ol.map.obj,
+    width=NULL,
+    height=NULL,
+    ol.source.url=NULL,
+    nga.olsource = FALSE,
+    map.heading = NULL,
+    map.note=NULL
+){
     nice.format=FALSE
-    if(!dir.exists(image.path)){
-        image.dir.exists <- FALSE
-    } else {
-        image.dir.exists <- TRUE
-    }
-    ###### CHECK FOR IMAGES & DRAW SCALES
-    if(any(sapply(ol.map.obj[['layers']],function(x) if(class(x)=="Layer.SpatialPoint") return(TRUE) else return(FALSE)))){
-        if(!image.dir.exists){
-            dir.create(image.path)
-            image.dir.exists <- TRUE
-        }
-    }
     scale.div.vector <- NULL
     display.scale <- FALSE
     for(i in 1:length(ol.map.obj[['layers']])){
         if(length(ol.map.obj[['layers']][[i]][['scale']])>0){
             for(j in 1:length(ol.map.obj[['layers']][[i]][['scale']])){
                 if(ol.map.obj[['layers']][[i]][['scale']][[j]][["type"]]!="fixed" && ol.map.obj[['layers']][[i]][['scale']][[j]][['display']]){
-                    if(!image.dir.exists){
-                        dir.create(image.path)
-                        image.dir.exists <- TRUE
-                    }
-                    new.scale.html <- draw_scale(ol.map.obj[['layers']][[i]][['scale']][[j]],image.path,nice.format=nice.format,self.contained=self.contained,initial.indent=8)
+                    new.scale.html <- draw_scale(ol.map.obj[['layers']][[i]][['scale']][[j]],nice.format=nice.format,initial.indent=8)
                     display.scale<-TRUE
                     scale.div.vector<-c(scale.div.vector,new.scale.html)
                 }
@@ -307,14 +293,14 @@ ol_map2Strings <- function(ol.map.obj,image.path="images",self.contained=TRUE,de
     head.meta.IE.compatibility <- "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"/>"
     head.script <- paste(
         utils::capture.output(
-            write_headscript(ol.map.obj[['ol.source.url']],nice.format,0)
+            write_headscript(ol.source.url,nice.format,0)
         ),
         collapse="\n"
     )
     style <- utils::capture.output(
         write_style(
-            width=ol.map.obj[['map.width']],
-            height=ol.map.obj[['map.height']],
+            width=width,
+            height=height,
             display.scale=display.scale,
             layer.control=layer.control,
             tooltips.param.vector=ol.map.obj[['tooltips.param.vector']],
@@ -330,7 +316,7 @@ ol_map2Strings <- function(ol.map.obj,image.path="images",self.contained=TRUE,de
             tooltips.bool=ol.map.obj[['tooltips']],
             tooltips.param.vector=ol.map.obj[['tooltips.param.vector']],
             map.heading=ol.map.obj[['map.heading']],
-            map.note=ol.map.obj[['map.note']],
+            map.note=map.note,
             nice.format=nice.format,
             initial.indent = 0
         )
@@ -339,26 +325,10 @@ ol_map2Strings <- function(ol.map.obj,image.path="images",self.contained=TRUE,de
         write_body_script(
             ol.map.obj,
             layer.control,
-            image.path,
             nice.format=nice.format,
-            self.contained=self.contained,
             initial.indent=0
         )        
     )
-    if(!is.null(deployment.image.path)){
-        body.html <- gsub(
-            paste(image.path,"/",sep=""),
-            paste(deployment.image.path,"/",sep=""),
-            body.html,
-            fixed=TRUE
-        )
-        body.script <- gsub(
-            paste(image.path,"/",sep=""),
-            paste(deployment.image.path,"/",sep=""),
-            body.script,
-            fixed=TRUE
-        )
-    }
     return(
         list(
             head.meta.IE.compatibility = head.meta.IE.compatibility,
@@ -387,14 +357,14 @@ write_headscript <- function(ol.source.url,nice.format=TRUE,initial.indent=4){
     }
     if(is.null(ol.source.url)){
         write_function("<script>")
-        cat(readLines(system.file("extdata","ol_3.20.1.js",package="ROpenLayers")),sep="\n")
+        cat(readLines(system.file("extdata","ol_5.3.0.js",package="ROpenLayers")),sep="\n")
         write_function("</script>")
     } else {
         write_function(sprintf("<script type=\"text/javascript\" src=\"%s\"></script>",ol.source.url))
     }
 }
 
-write_style <- function(width,height,display.scale=FALSE,layer.control=FALSE,scale.width="200px",tooltips.param.vector,nice.format=TRUE,initial.indent=6){
+write_style <- function(width,height,display.scale=FALSE,layer.control=FALSE,scale.width="200px",tooltips.param.vector,nga.olsource=FALSE,nice.format=TRUE,initial.indent=6){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){
@@ -410,7 +380,11 @@ write_style <- function(width,height,display.scale=FALSE,layer.control=FALSE,sca
     } else {
         lw <- as.character(scale.width)
     }
-    cat(ol.stylesheet)
+    if(nga.olsource){
+        cat(ol.stylesheet)
+    } else {
+        cat(readLines(system.file("extdata","ol_5.3.0.css",package="ROpenLayers")),sep="\n")
+    }
     write_function("a.skiplink {")
     inid <- inid + 2
     write_function("position: absolute;")
@@ -627,9 +601,7 @@ write_body_html <- function(display.scale=FALSE,
 write_body_script <- function(
     ol.map.obj,
     layer.control,
-    image.path,
     nice.format=TRUE,
-    self.contained=TRUE,
     initial.indent=6
 ){
     inid <- initial.indent
@@ -645,7 +617,7 @@ write_body_script <- function(
     nl <- length(ol.map.obj[['layers']])
     if(nl >= 1){
         for(i in 1:nl){
-            writeLayer(ol.map.obj[['layers']][[names(ol.map.obj[['layers']])[i]]],names(ol.map.obj[['layers']][i]),nice.format=nice.format,self.contained=self.contained,initial.indent = inid,image.path=image.path)
+            writeLayer(ol.map.obj[['layers']][[names(ol.map.obj[['layers']])[i]]],names(ol.map.obj[['layers']][i]),nice.format=nice.format,initial.indent = inid)
         }
     }
     if(nice.format) cat("\n\n")
@@ -735,9 +707,9 @@ write_body_script <- function(
     }
 }
 
-writeLayer <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=self.contained,initial.indent=6,...) UseMethod("writeLayer")
-writeLayer.default <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=self.contained,initial.indent=6,...) return(0)
-writeLayer.Layer.ArcGIS <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=self.contained,initial.indent=6,...){
+writeLayer <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...) UseMethod("writeLayer")
+writeLayer.default <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...) return(0)
+writeLayer.Layer.ArcGIS <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){
@@ -762,7 +734,7 @@ writeLayer.Layer.ArcGIS <- function(layer,suffix="basemap",nice.format=TRUE,self
     if(nice.format) cat("\n")
 }
 
-writeLayer.Layer.OSM <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=self.contained,initial.indent=6,...){
+writeLayer.Layer.OSM <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){

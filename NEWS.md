@@ -1,3 +1,9 @@
+# ROpenLayers 1.0.0
+
+* Updated Javascript to OL5.  There is still an option to link to a URL.
+* Removed option for non-stand alone pages, i.e., all pages are self-contained.
+* Moved the HTML page options from the `ol_map` function to the HTML production functions.
+
 # ROpenLayers 0.0.11
 
 * Fixed continuous color scale so that rotate.clockwise has an effect and na.col.val is correctly interpreted (#10)

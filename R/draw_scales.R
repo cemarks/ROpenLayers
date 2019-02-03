@@ -1,10 +1,3 @@
-
-scale2HTML <- function(scale.obj,image.path=".",scale.count){
-    html.types <- c("size")
-    image.types <- c("")
-}
-
-
 # Draw a Legend
 
 # Generic method for drawing legends.
@@ -42,8 +35,8 @@ scale2HTML <- function(scale.obj,image.path=".",scale.count){
 ### @export ## Not ready for export
 
 # @examples
-draw_scale <- function(scale.obj,image.path=".",scale.count=sample(1:100000,1),nice.format=TRUE,self.contained=TRUE,initial.indent=6) UseMethod("draw_scale")
-draw_scale.default <- function(scale.obj,image.path=".",scale.count=sample(1:100000,1),nice.format=TRUE,self.contained=TRUE,initial.indent=6) return(NULL)
+draw_scale <- function(scale.obj,scale.count=sample(1:100000,1),nice.format=TRUE,initial.indent=6) UseMethod("draw_scale")
+draw_scale.default <- function(scale.obj,scale.count=sample(1:100000,1),nice.format=TRUE,initial.indent=6) return(NULL)
 
 plot_color_scale_continuous <- function(
     scale.obj,
@@ -69,7 +62,7 @@ plot_color_scale_continuous <- function(
 }
 
 
-draw_scale.Scale.Fill.Continuous <- function(scale.obj,image.path=".",scale.count=sample(1:100000,1),nice.format=TRUE,self.contained=TRUE,initial.indent=6){
+draw_scale.Scale.Fill.Continuous <- function(scale.obj,scale.count=sample(1:100000,1),nice.format=TRUE,initial.indent=6){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s,inid.t){
@@ -80,24 +73,14 @@ draw_scale.Scale.Fill.Continuous <- function(scale.obj,image.path=".",scale.coun
             return(s)
         }
     }
-    file.name <- paste(
-        image.path,
-        paste(
-            format(Sys.time(),"%Y%m%d%H%M%S_scale"),
-            as.character(scale.count),
-            sep=""),
-        sep="/"
-    )
+    file.name <- tempfile()
     file.name <- paste(file.name,"png",sep=".")
     plot_color_scale_continuous(
             scale.obj,
             file.name
     )
-    if(self.contained){
-        image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
-    } else {
-        image.str <- file.name
-    }
+    image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
+    zzz <- file.remove(file.name)
     o <- paste(
         write_function("<div class=\"single-scale\">",inid),
         write_function(sprintf("<img class=\"scale\" src=\"%s\" alt=\"scale_png\" width=\"200px\"/>",image.str),inid+2),
@@ -106,7 +89,7 @@ draw_scale.Scale.Fill.Continuous <- function(scale.obj,image.path=".",scale.coun
     )
     return(o)
 }
-draw_scale.Scale.Color.Continuous <- function(scale.obj,image.path=".",scale.count=sample(1:100000,1),nice.format=TRUE,self.contained=TRUE,initial.indent=6){
+draw_scale.Scale.Color.Continuous <- function(scale.obj,scale.count=sample(1:100000,1),nice.format=TRUE,initial.indent=6){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s,inid.t){
@@ -117,24 +100,14 @@ draw_scale.Scale.Color.Continuous <- function(scale.obj,image.path=".",scale.cou
             return(s)
         }
     }
-    file.name <- paste(
-        image.path,
-        paste(
-            format(Sys.time(),"%Y%m%d%H%M%S_scale"),
-            as.character(scale.count),
-            sep=""),
-        sep="/"
-    )
+    file.name <- tempfile()
     file.name <- paste(file.name,"png",sep=".")
     plot_color_scale_continuous(
         scale.obj,
         file.name
     )
-    if(self.contained){
-        image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
-    } else {
-        image.str <- file.name
-    }
+    image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
+    zzz <- file.remove(file.name)
     o <- paste(
         write_function("<div class=\"single-scale\">",inid),
         write_function(sprintf("<img class=\"scale\" src=\"%s\" alt=\"scale_png\" width=\"200px\"/>",image.str),inid+2),
@@ -267,7 +240,7 @@ plot_fill_scale_discrete <- function(
     }
 }
 
-draw_scale.Scale.Fill.Discrete <- function(scale.obj,image.path=".",scale.count=sample(1:100000,1),nice.format=TRUE,self.contained=TRUE,initial.indent=6){
+draw_scale.Scale.Fill.Discrete <- function(scale.obj,scale.count=sample(1:100000,1),nice.format=TRUE,initial.indent=6){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s,inid.t){
@@ -278,24 +251,14 @@ draw_scale.Scale.Fill.Discrete <- function(scale.obj,image.path=".",scale.count=
             return(s)
         }
     }
-    file.name <- paste(
-        image.path,
-        paste(
-            format(Sys.time(),"%Y%m%d%H%M%S_scale"),
-            as.character(scale.count),
-            sep=""),
-        sep="/"
-    )
+    file.name <- tempfile()
     file.name <- paste(file.name,"png",sep=".")
     plot_fill_scale_discrete(
         scale.obj,
         file.name
     )
-    if(self.contained){
-        image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
-    } else {
-        image.str <- file.name
-    }
+    image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
+    zzz <- file.remove(file.name)
     o <- paste(
         write_function("<div class=\"single-scale\">",inid),
         write_function(sprintf("<img class=\"scale\" src=\"%s\" alt=\"scale_png\" width=\"200px\"/>",image.str),inid+2),
@@ -380,7 +343,7 @@ plot_line_scale_discrete <- function(
 }
 
 
-draw_scale.Scale.Color.Discrete <- function(scale.obj,image.path=".",scale.count=sample(1:100000,1),nice.format=TRUE,self.contained=TRUE,initial.indent=6){
+draw_scale.Scale.Color.Discrete <- function(scale.obj,scale.count=sample(1:100000,1),nice.format=TRUE,initial.indent=6){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s,inid.t){
@@ -391,20 +354,13 @@ draw_scale.Scale.Color.Discrete <- function(scale.obj,image.path=".",scale.count
             return(s)
         }
     }
-    file.name <- paste(
-        image.path,
-        paste(
-            format(Sys.time(),"%Y%m%d%H%M%S_scale"),
-            as.character(scale.count),
-            sep=""),
-        sep="/"
-    )
     if(is.null(scale.obj[['vector']])){
         scale.obj[['vector']] <- get_default_color_vec_discrete(
             scale.obj[['variable.values']],
             opacity=1
         )
     }
+    file.name <- tempfile()
     file.name <- paste(file.name,"png",sep=".")
     plot_line_scale_discrete(    
         color.vector=scale.obj[['vector']],
@@ -416,11 +372,8 @@ draw_scale.Scale.Color.Discrete <- function(scale.obj,image.path=".",scale.count
         lwd=scale.obj[['draw.lwd']],
         file.name=file.name
     )
-    if(self.contained){
-        image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
-    } else {
-        image.str <- file.name
-    }
+    image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
+    zzz <- file.remove(file.name)
     o <- paste(
         write_function("<div class=\"single-scale\">",inid),
         write_function(sprintf("<img class=\"scale\" src=\"%s\" alt=\"scale_png\" width=\"200px\"/>",image.str),inid+2),
@@ -431,7 +384,7 @@ draw_scale.Scale.Color.Discrete <- function(scale.obj,image.path=".",scale.count
 }
 
 
-draw_scale.Scale.Lwd.Discrete <- function(scale.obj,image.path=".",scale.count=sample(1:100000,1),nice.format=TRUE,self.contained=TRUE,initial.indent=6){
+draw_scale.Scale.Lwd.Discrete <- function(scale.obj,scale.count=sample(1:100000,1),nice.format=TRUE,initial.indent=6){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s,inid.t){
@@ -442,20 +395,13 @@ draw_scale.Scale.Lwd.Discrete <- function(scale.obj,image.path=".",scale.count=s
             return(s)
         }
     }
-    file.name <- paste(
-        image.path,
-        paste(
-            format(Sys.time(),"%Y%m%d%H%M%S_scale"),
-            as.character(scale.count),
-            sep=""),
-        sep="/"
-    )
     if(is.null(scale.obj[['vector']])){
         scale.obj[['vector']] <- get_default_num_vec_discrete(
             scale.obj[['variable.values']],
             c(1,5)
         )
     }
+    file.name <- tempfile()
     file.name <- paste(file.name,"png",sep=".")
     plot_line_scale_discrete(    
         width.vector=scale.obj[['vector']],
@@ -467,11 +413,8 @@ draw_scale.Scale.Lwd.Discrete <- function(scale.obj,image.path=".",scale.count=s
         lwd=scale.obj[['draw.lwd']],
         file.name=file.name
     )
-    if(self.contained){
-        image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
-    } else {
-        image.str <- file.name
-    }
+    image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
+    zzz <- file.remove(file.name)
     o <- paste(
         write_function("<div class=\"single-scale\">",inid),
         write_function(sprintf("<img class=\"scale\" src=\"%s\" alt=\"scale_png\" width=\"200px\"/>",image.str),inid+2),
@@ -481,7 +424,7 @@ draw_scale.Scale.Lwd.Discrete <- function(scale.obj,image.path=".",scale.count=s
     return(o)
 }
 
-draw_scale.Scale.Lty.Discrete <- function(scale.obj,image.path=".",scale.count=sample(1:100000,1),nice.format=TRUE,self.contained=TRUE,initial.indent=6){
+draw_scale.Scale.Lty.Discrete <- function(scale.obj,scale.count=sample(1:100000,1),nice.format=TRUE,initial.indent=6){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s,inid.t){
@@ -492,14 +435,7 @@ draw_scale.Scale.Lty.Discrete <- function(scale.obj,image.path=".",scale.count=s
             return(s)
         }
     }
-    file.name <- paste(
-        image.path,
-        paste(
-            format(Sys.time(),"%Y%m%d%H%M%S_scale"),
-            as.character(scale.count),
-            sep=""),
-        sep="/"
-    )
+    file.name <- tempfile()
     file.name <- paste(file.name,"png",sep=".")
     plot_line_scale_discrete(    
         lty.list=scale.obj[['vector']],
@@ -511,11 +447,8 @@ draw_scale.Scale.Lty.Discrete <- function(scale.obj,image.path=".",scale.count=s
         lwd=scale.obj[['draw.lwd']],
         file.name=file.name
     )
-    if(self.contained){
-        image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
-    } else {
-        image.str <- file.name
-    }
+    image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
+    zzz <- file.remove(file.name)
     o <- paste(
         write_function("<div class=\"single-scale\">",inid),
         write_function(sprintf("<img class=\"scale\" src=\"%s\" alt=\"scale_png\" width=\"200px\"/>",image.str),inid+2),
@@ -526,7 +459,7 @@ draw_scale.Scale.Lty.Discrete <- function(scale.obj,image.path=".",scale.count=s
 }
 
 
-html_table_size_scale <- function(scale.obj,file.name,nice.format=TRUE,self.contained=TRUE,initial.indent=6){
+html_table_size_scale <- function(scale.obj,file.name,nice.format=TRUE,initial.indent=6){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s,inid.t){
@@ -566,11 +499,7 @@ html_table_size_scale <- function(scale.obj,file.name,nice.format=TRUE,self.cont
         return(base.img.width*scale.size)
     }
     table.rows <- NULL
-    if(self.contained){
-        image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
-    } else {
-        image.str <- file.name
-    }
+    image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
     if(is.numeric(legend.breaks)){
         for(i in 1:length(legend.breaks)){
             table.rows <- c(
@@ -612,36 +541,24 @@ html_table_size_scale <- function(scale.obj,file.name,nice.format=TRUE,self.cont
     return(o)
 }
 
-draw_scale.Scale.Size.Discrete <- function(scale.obj,image.path=".",scale.count=sample(1:100000,1),nice.format=TRUE,self.contained=TRUE,initial.indent=6){
-    file.name <- paste(
-        image.path,
-        paste(
-            format(Sys.time(),"%Y%m%d%H%M%S_sizescale"),
-            as.character(scale.count),
-            sep=""),
-        sep="/"
-    )
+draw_scale.Scale.Size.Discrete <- function(scale.obj,scale.count=sample(1:100000,1),nice.format=TRUE,initial.indent=6){
+    file.name <- tempfile()
     file.name <- paste(file.name,"png",sep=".")
-    o <- html_table_size_scale(scale.obj,file.name,nice.format=nice.format,self.contained=self.contained,initial.indent=initial.indent)
+    o <- html_table_size_scale(scale.obj,file.name,nice.format=nice.format,initial.indent=initial.indent)
+    zzz <- file.remove(file.name)
     return(o)
 }
 
-draw_scale.Scale.Size.Continuous <- function(scale.obj,image.path=".",scale.count=sample(1:100000,1),nice.format=TRUE,self.contained=TRUE,initial.indent=6){
-    file.name <- paste(
-        image.path,
-        paste(
-            format(Sys.time(),"%Y%m%d%H%M%S_sizescale"),
-            as.character(scale.count),
-            sep=""),
-        sep="/"
-    )
+draw_scale.Scale.Size.Continuous <- function(scale.obj,scale.count=sample(1:100000,1),nice.format=TRUE,initial.indent=6){
+    file.name <- tempfile()
     file.name <- paste(file.name,"png",sep=".")
-    o <- html_table_size_scale(scale.obj,file.name,nice.format=nice.format,self.contained=self.contained,initial.indent=initial.indent)
+    o <- html_table_size_scale(scale.obj,file.name,nice.format=nice.format,initial.indent=initial.indent)
+    zzz <- file.remove(file.name)
     return(o)
 }
 
 
-html_table_iconsize_scale <- function(scale.obj,nice.format=TRUE,self.contained=TRUE,initial.indent=6){
+html_table_iconsize_scale <- function(scale.obj,nice.format=TRUE,initial.indent=6){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s,inid.t){
@@ -710,22 +627,7 @@ html_table_iconsize_scale <- function(scale.obj,nice.format=TRUE,self.contained=
         return(image.width*scale.size)
     }
     table.rows <- NULL
-    if(self.contained){
-        image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
-    }
-    if(!is.null(scale.obj[['deployment.image.path']]) && !is.null(file.name)){
-        dip <- scale.obj[['deployment.image.path']]
-        file.name.split <- strsplit(file.name,"/")[[1]]
-        image.name <- file.name.split[length(file.name.split)]
-        if(substr(dip,start=nchar(dip),stop=nchar(dip))=="/"){
-            file.name <- paste(dip,image.name,sep="")
-        } else {
-            file.name <- paste(dip,image.name,sep="/")
-        }
-    }
-    if(!self.contained){
-        image.str <- file.name
-    }
+    image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
     if(is.numeric(legend.breaks)){
         for(i in 1:length(legend.breaks)){
             table.rows <- c(
@@ -767,18 +669,18 @@ html_table_iconsize_scale <- function(scale.obj,nice.format=TRUE,self.contained=
     return(o)
 }
 
-draw_scale.Scale.IconSize.Discrete <- function(scale.obj,image.path=".",scale.count=sample(1:100000,1),nice.format=TRUE,self.contained=TRUE,initial.indent=6){
-    o <- html_table_iconsize_scale(scale.obj,nice.format=nice.format,self.contained=self.contained,initial.indent=initial.indent)
+draw_scale.Scale.IconSize.Discrete <- function(scale.obj,scale.count=sample(1:100000,1),nice.format=TRUE,initial.indent=6){
+    o <- html_table_iconsize_scale(scale.obj,nice.format=nice.format,initial.indent=initial.indent)
     return(o)
 }
 
-draw_scale.Scale.IconSize.Continuous <- function(scale.obj,image.path=".",scale.count=sample(1:100000,1),nice.format=TRUE,self.contained=TRUE,initial.indent=6){
-    o <- html_table_iconsize_scale(scale.obj,nice.format=nice.format,self.contained=self.contained,initial.indent=initial.indent)
+draw_scale.Scale.IconSize.Continuous <- function(scale.obj,scale.count=sample(1:100000,1),nice.format=TRUE,initial.indent=6){
+    o <- html_table_iconsize_scale(scale.obj,nice.format=nice.format,initial.indent=initial.indent)
     return(o)
 }
 
 
-html_table_iconimage_scale <- function(scale.obj,nice.format=TRUE,self.contained=TRUE,initial.indent=6){
+html_table_iconimage_scale <- function(scale.obj,nice.format=TRUE,initial.indent=6){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s,inid.t){
@@ -808,24 +710,8 @@ html_table_iconimage_scale <- function(scale.obj,nice.format=TRUE,self.contained
     table.rows <- NULL
     if(length(scale.obj[['vector']])>0){
         for(i in 1:length(scale.obj[['vector']])){
-            if(self.contained){
-                image.str <- paste("data:image/png;base64,",base64enc::base64encode(scale.obj[['vector']][i]))
-            }
-            if(!is.null(scale.obj[['deployment.image.path']])){
-                dip <- scale.obj[['deployment.image.path']]
-                file.name.split <- strsplit(scale.obj[['vector']][i],"/")[[1]]
-                image.name <- file.name.split[length(file.name.split)]
-                if(substr(dip,start=nchar(dip),stop=nchar(dip))=="/"){
-                    file.name <- paste(dip,image.name,sep="")
-                } else {
-                    file.name <- paste(dip,image.name,sep="/")
-                }
-            } else {
-                file.name <- scale.obj[['vector']][i]
-            }
-            if(!self.contained){
-                image.str <- file.name
-            }
+            image.str <- paste("data:image/png;base64,",base64enc::base64encode(scale.obj[['vector']][i]))
+            file.name <- scale.obj[['vector']][i]
             table.rows <- c(
                 table.rows,
                 paste(
@@ -853,7 +739,7 @@ html_table_iconimage_scale <- function(scale.obj,nice.format=TRUE,self.contained
 }
 
 
-draw_scale.Scale.IconImage.Discrete <- function(scale.obj,image.path=".",scale.count=sample(1:100000,1),nice.format=TRUE,self.contained=TRUE,initial.indent=6){
-    o <- html_table_iconimage_scale(scale.obj,nice.format=nice.format,self.contained=self.contained,initial.indent=initial.indent)
+draw_scale.Scale.IconImage.Discrete <- function(scale.obj,scale.count=sample(1:100000,1),nice.format=TRUE,initial.indent=6){
+    o <- html_table_iconimage_scale(scale.obj,nice.format=nice.format,initial.indent=initial.indent)
     return(o)
 }

@@ -14,19 +14,19 @@ and web-based Mapservers to enable informative visualization.
 The purpose of this package is to make it easy for a user to visualize
 geo-spatial data and analyses using the open source
 \href{https://openlayers.org/}{OpenLayers} javascript library and
-online map servers.  The process for creating a visualization 
-imitates the process of creating a plot in R package 
-\href{https://ggplot2.tidyverse.org/}{\code{ggplot2}}.  
+online map servers.  The process for creating a visualization
+imitates the process of creating a plot in R package
+\href{https://ggplot2.tidyverse.org/}{\code{ggplot2}}.
 \enumerate{
-\item First, an OpenLayers Map object is created with a 
-call to the \code{\link{ol_map}} method.  
+\item First, an OpenLayers Map object is created with a
+call to the \code{\link{ol_map}} method.
 \item Next, layers and scales are created and added.  Layers can reference
-map servers to provide underlying base maps or vector features 
+map servers to provide underlying base maps or vector features
 (polygons, lines, or points) created or imported in R.  These capabilities
 are described in the following sections.
 \item Finally, the updated map object is exported to HTML/javascript for
-viewing in a browser, hosting on a server, or embedding into another 
-application or format.  Export methods are \code{\link{ol_map2HTML}} and 
+viewing in a browser, hosting on a server, or embedding into another
+application or format.  Export methods are \code{\link{ol_map2HTML}} and
 \code{\link{ol_map2Strings}}.
 }
 }
@@ -43,17 +43,17 @@ contain any of the OpenLayers javascript source code; rather, it exports
 HTML code that source these libraries when loaded.  Therefore, these
 products will not render without network access to the OpenLayers
 javascript library.  By default, the products exported by this package
-source OpenLayers 3.16.0, but the user has the option to set the 
+source OpenLayers 3.16.0, but the user has the option to set the
 source URL (see \code{\link{ol_map}}).
 }
 
 \section{Public ArcGIS Servers}{
 
-\href{https://www.arcgis.com}{ESRI ArcGIS} hosts several 
-publicly available map servers at 
+\href{https://www.arcgis.com}{ESRI ArcGIS} hosts several
+publicly available map servers at
 \href{https://server.arcgisonline.com/arcgis/rest/services}{arcgisonline.com},
  which can accessed via REST APIs and rendered using OpenLayers javascript methods.
-A subset of these are made available in this package through the 
+A subset of these are made available in this package through the
 \code{\link{public_arcgis_basemap}} method.  Alternatively, a user can
 specify any ArcGIS map server using the \code{\link{user_arcgis_basemap}}
 method.  Note that while these maps servers are publicly available, they are
@@ -80,7 +80,7 @@ at the time of access (i.e., when the HTML page is opened in a browser).
 
 \section{Vector Layers}{
 
-This package enables users to rapidly access and write OpenLayers 
+This package enables users to rapidly access and write OpenLayers
 vector layers in javascript.  The following methods enable that functionality.
 \itemize{
 \item \code{\link{ol_geom_polygon}}
@@ -100,13 +100,9 @@ quakes$long[which(quakes$long>180)]<-quakes$long[which(quakes$long>180)]-360
 tooltips <- paste("Depth",quakes$depth,sep=": ")
 mymap <- ol_map(
     zoom = 5,
-    center = center,
-    map.heading = "Earthquake Data Visualization"
+    center = center
 )
-basemap.layer <- public_arcgis_basemap(
-    "OceanBase",
-    toggle.control=FALSE
-)
+basemap.layer <- oceanbase()
 point.layer <- ol_geom_point(
     quakes[,c("long","lat")],
     mapping = ol_aes(fill=mag),
@@ -127,7 +123,13 @@ mymap <- mymap +
     point.layer +
     ol_scale_fill_continuous(name="Magnitude",display=TRUE) +
     heatmap.layer
-## Not run: save to file and open in browser
-# ol_map2HTML(mymap,"Quakes.html")
-# browseURL("Quakes.html")
+\dontrun{
+# Save to file and open in browser
+ol_map2HTML(
+  mymap,
+  "Quakes.html",
+  map.heading = "Earthquake Data Visualization"
+)
+browseURL("Quakes.html")
+}
 }

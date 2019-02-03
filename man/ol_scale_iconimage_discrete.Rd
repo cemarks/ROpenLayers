@@ -70,7 +70,7 @@ icon.map <- ol_map(
     center=c(-75,38),
     zoom=5
 ) + 
-    public_OSM_basemap()+
+    streetmap()+
     ol_geom_icon(
         loc.df[,1:2],
         c(r.icon,freebsd.icon),
@@ -85,9 +85,14 @@ icon.map <- ol_map(
     c(R=r.icon,BSD=freebsd.icon),
     display=TRUE
 )
-## Not run: save as HTML and open in browser
-# ol_map2HTML(icon.map,'servers.html')
-# browseURL("servers.html")
+\dontrun{
+# Oave as HTML and open in browser
+ol_map2HTML(
+  icon.map,
+  'servers.html'
+)
+browseURL("servers.html")
+}
 }
 \seealso{
 \code{\link{ol_map}},

@@ -4,33 +4,13 @@
 \alias{ol_map}
 \title{OpenLayers Map}
 \usage{
-ol_map(zoom = 10, center = c(-117.1611, 32.7157), width = NULL,
-  height = NULL, ol.source.url = NULL, nga.olsource = FALSE,
-  map.heading = NULL, map.note = NULL)
+ol_map(zoom = 10, center = c(-117.1611, 32.7157))
 }
 \arguments{
 \item{zoom}{integer map initial zoom level.}
 
 \item{center}{numeric vector of length 2 containing decimal longitude and
 latitude coordinates for initial map center.}
-
-\item{width}{numeric or character CSS value width of map container.}
-
-\item{height}{numeric or character CSS value height of map container.}
-
-\item{ol.source.url}{character string containing the url to the OpenLayers
-javascript library.  Ignored if nga.olsource is \code{TRUE}.}
-
-\item{nga.olsource}{logical.  \code{TRUE} will use the OpenLayers 3.16.0 javascript
-library from \url{https://home.gvs.nga.mil} (requires authentication);
-\code{FALSE} uses the sources the \code{ol.source.url}, if provided, or embeds
-the OpenLayers 3.21.1 JavaScript code in the HTML head.
-Only used if \code{ol.source.url} is missing or \code{NULL}.}
-
-\item{map.heading}{character heading to be placed over map in html h1 tag.}
-
-\item{map.note}{character note placed in html paragraph (<p>) tag centered
-under map container.}
 }
 \value{
 A list object of class \code{Ol.Map}.
@@ -40,32 +20,34 @@ Create an OpenLayers Map Object.
 }
 \details{
 This function creates a new S3 OpenLayers Map object with no layers.
-If \code{ol.source.url} is \code{NULL} and \code{nga.olsource} is 
+If \code{ol.source.url} is \code{NULL} and \code{nga.olsource} is
 \code{FALSE}, OpenLayers Javascript source will be embedded directly
-into the HTML when \code{\link{ol_map2HTML}} or 
+into the HTML when \code{\link{ol_map2HTML}} or
 \code{\link{ol_map2Strings}} is called.
 Otherwise, the output HTML/Javascript with source the OpenLayers library
-according to the value of \code{ol.source.url}, or the NGA hosted 
+according to the value of \code{ol.source.url}, or the NGA hosted
 OpenLayers library if \code{nga.olsource} is \code{TRUE}.
 }
 \examples{
 miami.OSM.basemap <- ol_map(
     center=c(-80.385790,25.782618),
-    zoom=9,
-    map.heading="Miami Shapes",
-    map.note="Note: Mouseover popup values are 
-        independent of shape size &amp; color."
-    ) + 
-   public_OSM_basemap() 
-## Not Run
-# ol_map2HTML(miami.OSM.basemap,'miami.html')
-# browseURL("miami.html")
+    zoom=9
+    ) +
+   streetmap()
+\dontrun{
+ol_map2HTML(
+  miami.OSM.basemap,
+  'miami.html',
+  map.heading="Miami, FL"
+)
+browseURL("miami.html")
+}
 }
 \seealso{
-\code{\link{ol_map2HTML}}, 
-\code{\link{ol_map2Strings}}, 
-\code{\link{public_OSM_basemap}}, 
-\code{\link{nga_basemap}}, 
-\code{\link{public_arcgis_basemap}}, 
+\code{\link{ol_map2HTML}},
+\code{\link{ol_map2Strings}},
+\code{\link{public_OSM_basemap}},
+\code{\link{nga_basemap}},
+\code{\link{public_arcgis_basemap}},
 \code{\link{user_arcgis_basemap}}
 }

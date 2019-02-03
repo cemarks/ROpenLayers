@@ -100,8 +100,7 @@ quakes$long[which(quakes$long>180)] <- quakes$long[which(quakes$long>180)]-360
 tooltips <- paste("Depth",quakes$depth,sep=": ")
 mymap <- ol_map(
 	zoom = 5,
-	center = center,
-	map.heading = "Earthquake Data Visualization"
+	center = center
 )
 basemap.layer <- public_arcgis_basemap(
 	"OceanBase",
@@ -128,7 +127,11 @@ mymap <- mymap +
 	ol_scale_fill_continuous(name="Magnitude",display=TRUE) +
 	heatmap.layer 
 ## Save to file (requires write permission)
-ol_map2HTML(mymap,"Quakes.html")
+ol_map2HTML(
+	mymap,
+	"Quakes.html",
+	map.heading = "Earthquake Data Visualization"
+)
 ## Open in browser
 browseURL("Quakes.html") 
 ```
@@ -153,8 +156,7 @@ cat(
 	tooltips <- paste('Depth',quakes$depth,sep=': ')
 	mymap <- ol_map(
 		zoom = 5,
-		center = center,
-		map.heading = 'Earthquake Data Visualization'
+		center = center
 	)
 	basemap.layer <- public_arcgis_basemap(
 		'OceanBase',
@@ -181,7 +183,10 @@ cat(
 		ol_scale_fill_continuous(name='Magnitude',display=TRUE) +
 		heatmap.layer 
 	## Save to file (requires write permission)
-	HTML.strings <- ol_map2Strings(mymap,image.path='www')
+	HTML.strings <- ol_map2Strings(
+		mymap,
+		map.heading = 'Earthquake Data Visualization'
+	)
 	### Shiny integration ---
 	### replace www with current working directory 
 	HTML.strings[[3]] <- gsub('www','.',HTML.strings[[3]],fixed=TRUE)

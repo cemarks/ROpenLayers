@@ -68,19 +68,24 @@ heatmap.pts <- matrix(
 )
 mymap <- ol_map(
     center=c(-98.5,28.5),
-    zoom=4,
-    map.note="Heatmap of random points centered on Miami and San Diego."
+    zoom=4
 ) + 
-    public_OSM_basemap() +
+    streetmap() +
     ol_geom_heatmap(
         heatmap.pts,
         name="Random Heatmap",
         toggle.control=TRUE,
         opacity=0.25
         )
-## Not run: write to file and view in browser
-# ol_map2HTML(mymap, "heatmap.html")
-# browseURL("heatmap.html")
+\dontrun{
+# Write to file and view in browser
+ol_map2HTML(
+  mymap,
+  "heatmap.html",
+  map.note="Heatmap of random points centered on Miami and San Diego."
+)
+browseURL("heatmap.html")
+}
 }
 \seealso{
 \code{\link{ol_map}}, 

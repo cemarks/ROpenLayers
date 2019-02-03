@@ -108,7 +108,7 @@ r.map <- ol_map(
     center=c(-100,30),
     zoom=3
 ) + 
-    public_OSM_basemap()+
+    streetmap()+
     ol_geom_icon(
         some.r.servers,
         r.icon,
@@ -126,9 +126,14 @@ r.map <- ol_map(
     legend.breaks=c(0,2.5,5,7.5,10),
     display=TRUE
 )
-## Not run: save as HTML and open in browser
-# ol_map2HTML(r.map,'R-servers.html')
-# browseURL("R-servers.html")
+\dontrun{
+# Oave as HTML and open in browser
+ol_map2HTML(
+  r.map,
+  'R-servers.html'
+)
+browseURL("R-servers.html")
+}
 }
 \seealso{
 \code{\link{ol_map}},

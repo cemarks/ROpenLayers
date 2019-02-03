@@ -4,28 +4,35 @@
 \alias{ol_map2HTML}
 \title{Export OpenLayers Map to file.}
 \usage{
-ol_map2HTML(ol.map.obj, file.name, file.path = ".",
-  page.name = "ROpenLayers Map", image.path = "images",
-  self.contained = TRUE, nice.format = FALSE,
-  IE.compatability.view = TRUE)
+ol_map2HTML(ol.map.obj, file.name, page.name = "ROpenLayers Map",
+  width = NULL, height = NULL, ol.source.url = NULL,
+  nga.olsource = FALSE, map.heading = NULL, map.note = NULL,
+  nice.format = FALSE, IE.compatability.view = TRUE)
 }
 \arguments{
 \item{ol.map.obj}{Ol.Map object to be exported.}
 
-\item{file.name}{character output HTML file name.  This name will be appended
-to the \code{file.path}.}
-
-\item{file.path}{character output HTML file path.  The output HTML file and
-supporting directories (e.g., 'images') will be in this path.}
+\item{file.name}{character output HTML file name.}
 
 \item{page.name}{character page title to be included in the HTML head section.}
 
-\item{image.path}{character \emph{relative} path from \code{file.path} to 
-directory that will contain page images.}
+\item{width}{numeric or character CSS value width of map container.}
 
-\item{self.contained}{logical.  If \code{TRUE} images will be converted to 
-64-bit text and embedded in HTML/JavaScript code.  Note: images will still
-be created and saved locally in the \code{image.path} folder.}
+\item{height}{numeric or character CSS value height of map container.}
+
+\item{ol.source.url}{character string containing the url to the OpenLayers
+javascript library.  Ignored if nga.olsource is \code{TRUE}.}
+
+\item{nga.olsource}{logical.  \code{TRUE} will use the OpenLayers 3.16.0 javascript
+library from \url{https://home.gvs.nga.mil} (requires authentication);
+\code{FALSE} uses the sources the \code{ol.source.url}, if provided, or embeds
+the OpenLayers 5.3.0 JavaScript code in the HTML head.
+Only used if \code{ol.source.url} is missing or \code{NULL}.}
+
+\item{map.heading}{character heading to be placed over map in html h1 tag.}
+
+\item{map.note}{character note placed in html paragraph (<p>) tag centered
+under map container.}
 
 \item{nice.format}{logical.  If \code{TRUE}, output file will be formated with
 new lines and indentation for human readability.}
@@ -48,12 +55,14 @@ be placed directly into a directory hosted by a minimal http server.
 }
 \examples{
 mymap <- ol_map()
-base.layer <- public_arcgis_basemap('LightGray')
+base.layer <- lightgray()
 mymap <- mymap + base.layer
-## The following writes HTML and needed images (not run)
-# ol_map2HTML(mymap,"SanDiego.html", nice.format=TRUE)
-## Open in browser (not run)
-# browseURL("SanDiego.html")
+\dontrun{
+# The following writes HTML and needed images
+ol_map2HTML(mymap,"SanDiego.html", nice.format=TRUE)
+# Open in browser
+browseURL("SanDiego.html")
+}
 }
 \seealso{
 \code{\link{ol_map}}, 

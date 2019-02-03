@@ -2,9 +2,9 @@
 #'
 #' Function to create a points layer to add to an OpenLayers Map object.
 #'
-#' This function stores the data required to generate an OpenLayers 
-#' vector layer with features using \code{Point} 
-#' geometries.  
+#' This function stores the data required to generate an OpenLayers
+#' vector layer with features using \code{Point}
+#' geometries.
 #' See OpenLayers \href{https://openlayers.org/en/latest/apidoc/module-ol_geom_Point-Point.html}{Point Documentation}
 #' for details.
 #'
@@ -13,10 +13,10 @@
 #' \item \code{fill}
 #' \item \code{size}
 #' }
-#' 
-#' @param point.obj SpatialPointsDataframe, SpatialPoints, or a matrix 
-#' containing columns of point longitudes and latitudes, respectively. 
-#' @param mapping list created by ol_aes. Used for aestheic mapping. 
+#'
+#' @param point.obj SpatialPointsDataframe, SpatialPoints, or a matrix
+#' containing columns of point longitudes and latitudes, respectively.
+#' @param mapping list created by ol_aes. Used for aestheic mapping.
 #' @param name character Layer name.
 #' @param df data.frame with same number of rows as \code{point.obj} coordinate
 #' matrix.
@@ -35,18 +35,18 @@
 #' "dot" markers.
 #' @param label character vector of point feature labels.
 #' @param tooltip character vector of point feature tooltip popups.
-#' @param label.params,tooltip.params named lists (e.g., \code{list(property=value)}) of 
-#' label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation. 
+#' @param label.params,tooltip.params named lists (e.g., \code{list(property=value)}) of
+#' label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation.
 #'
 #' @return A list object of class \code{Layer.SpatialPoint}.
 #'
-#' @seealso \code{\link{ol_aes}}, 
-#' \code{\link{ol_map}}, 
-#' \code{\link{ol_geom_polygon}}, 
+#' @seealso \code{\link{ol_aes}},
+#' \code{\link{ol_map}},
+#' \code{\link{ol_geom_polygon}},
 #' \code{\link{ol_geom_circle}},
 #' \code{\link{ol_geom_line}},
 #' \code{\link{ol_geom_icon}}
-#' 
+#'
 #' @export
 #'
 #' @examples
@@ -64,8 +64,8 @@
 #' miami.map <- ol_map(
 #'     center=c(-80.385790,25.782618),
 #'     zoom=9
-#' ) + 
-#'     public_OSM_basemap()
+#' ) +
+#'     streetmap()
 #' miami.points <- ol_geom_point(
 #'     point.matrix,
 #'     df=point.df,
@@ -74,7 +74,7 @@
 #'     marker="pin",
 #'     toggle.control=TRUE,
 #'     tooltip=point.df$pt.type
-#' ) 
+#' )
 #' size.scale <- ol_scale_size_continuous(
 #'     display=TRUE,
 #'     draw.fill='green'
@@ -87,10 +87,15 @@
 #'     miami.points +
 #'     size.scale +
 #'     fill.scale
-#' 
-#' ## Not Run: output to file and view
-#' # ol_map2HTML(miami.points.map,'Miami_points.html')
-#' # browseURL('Miami_points.html')
+#'
+#' \dontrun{
+#' # Output to file and view
+#' ol_map2HTML(
+#'   miami.points.map,
+#'   'Miami_points.html'
+#' )
+#' browseURL('Miami_points.html')
+#' }
 ol_geom_point <- function(
     point.obj,
     mapping=ol_aes(),
@@ -231,7 +236,7 @@ ol_geom_point <- function(
     return(o)
 }
 
-writeLayer.Layer.SpatialPoint <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=TRUE,initial.indent=6,image.path=".",...){
+writeLayer.Layer.SpatialPoint <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){
@@ -248,13 +253,6 @@ writeLayer.Layer.SpatialPoint <- function(layer,suffix="basemap",nice.format=TRU
     } else {
         marker.width <- 20
     }
-    filename.prefix <- paste(image.path,
-        paste(format(Sys.time(),"%Y%m%d%H%M%S"),
-            sample(1:1000,1),
-            sep=""
-        ),
-        sep="/"
-    )
     pts.df <- data.frame(x=layer[['features']][,1],y=layer[['features']][,2])
     for(s in 1:length(layer[['scale']])){
         s.attr <- layer[['scale']][[s]][['attribute']]
@@ -274,39 +272,29 @@ writeLayer.Layer.SpatialPoint <- function(layer,suffix="basemap",nice.format=TRU
     inid <- inid + 2
     write_function("features: [")
     inid <- inid + 2
-    plotted.colors <- NULL
+    plotted.colors <- list()
     for(i in 1:nrow(pts.df)){
         point.color <- substr(pts.df$fill[i],start=1,stop=7)
         point.opacity <- as.numeric(as.hexmode(substr(pts.df$fill[i],start=8,stop=9)))/255
-        file.name <- paste(
-            paste(
-                filename.prefix,
-                substr(
-                    point.color,
-                    start=2,
-                    stop=7
-                ),
-                sep="_"
-            ),
-            "png",
-            sep="."
-        )
-        if(!(point.color %in% plotted.colors)){
+        if(!(point.color %in% names(plotted.colors))){
+            file.name <- paste(
+                tempfile(),
+                "png",
+                sep="."
+            )
             draw_marker(
                 marker,
                 file.name,
                 point.color,
                 w=marker.width
             )
-            plotted.colors <- c(plotted.colors,point.color)
+            plotted.colors[[point.color]] <- file.name
+        } else {
+            file.name <- plotted.colors[[point.color]]
         }
         write_function("new ol.Feature({")
         inid <- inid + 2
-        if(self.contained){
-            image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
-        } else {
-            image.str <- file.name
-        }
+        image.str <- paste("data:image/png;base64,",base64enc::base64encode(file.name))
         write_function(sprintf("img: \"%s\",",image.str))
         write_function(sprintf("name: \"Point%i\",",i))
         write_function(sprintf("scale: %1.2f,",pts.df$size[i]))
@@ -329,6 +317,9 @@ writeLayer.Layer.SpatialPoint <- function(layer,suffix="basemap",nice.format=TRU
         } else {
             write_function("})")
         }
+    }
+    for(nn in names(plotted.colors)){
+        zz <- file.remove(plotted.colors[[nn]])
     }
     inid <- inid - 2
     write_function("]")

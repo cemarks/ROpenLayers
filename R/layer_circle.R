@@ -2,10 +2,10 @@
 #'
 #' Function to create a circle layer to add to an OpenLayers Map object.
 #'
-#' This function stores the data required to generate an OpenLayers 
-#' vector layer with features using \code{circle} 
-#' geometries.  
-#' See OpenLayers \href{https://openlayers.org/en/latest/apidoc/module-ol_geom_Circle-Circle.html}{Circle Documentation} for details. 
+#' This function stores the data required to generate an OpenLayers
+#' vector layer with features using \code{circle}
+#' geometries.
+#' See OpenLayers \href{https://openlayers.org/en/latest/apidoc/module-ol_geom_Circle-Circle.html}{Circle Documentation} for details.
 #' @section Aesthetics:
 #' \itemize{
 #' \item \code{fill}
@@ -17,12 +17,12 @@
 #' }
 #'
 #' @param circle.obj matrix containing three columns: center longitude,
-#' center latitude, and radius respectively.  Each row yields a 
+#' center latitude, and radius respectively.  Each row yields a
 #' single \code{circle} feature in the resulting layer.
 #' @param mapping list created by ol_aes.
 #' @param name character Layer name.
 #' @param df data.frame with same number of rows as \code{circle.obj}.
-#' Used for aestheic mapping. 
+#' Used for aestheic mapping.
 #' @param toggle.control logical indicating whether this layer will have
 #' a visibility toggle.
 #' @param fill character color string, or vector of color strings.  Used
@@ -31,26 +31,26 @@
 #' no opacity provided in \code{fill} or \code{fill} aesthetic.
 #' @param lwd numeric circle border width. Used only if no \code{lwd}
 #' aesthetic is provided in \code{mapping}
-#' @param ol.lty (experimental) numeric vector with length > 1, or 
+#' @param ol.lty (experimental) numeric vector with length > 1, or
 #' \code{list} of such vectors. Used only if no \code{ol.lty} aesthetic is
 #' provided in \code{mapping}.  See OpenLayers
 #' \href{https://openlayers.org/en/latest/apidoc/module-ol_style_Stroke-Stroke.html}{ol/style/Stroke Documentation},
 #' 'lineDash' property for more information.
 #' @param color character border color string, or vector of color strings.  Used
 #' only if no \code{color} aesthetic is provided in \code{mapping}
-#' @param label character vector of length \code{nrow(circle.obj)} of 
+#' @param label character vector of length \code{nrow(circle.obj)} of
 #' feature labels.
-#' @param tooltip character vector of length \code{nrow(circle.obj)} of 
+#' @param tooltip character vector of length \code{nrow(circle.obj)} of
 #' feature tooltip popups.
-#' @param label.params,tooltip.params named lists (e.g., \code{list(property=value)}) of 
-#' label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation. 
+#' @param label.params,tooltip.params named lists (e.g., \code{list(property=value)}) of
+#' label and tooltip position and format parameters.  See \link{ol_geom_polygon} documentation.
 #'
 #' @return A list object of class \code{Layer.Circle}.
 #'
-#' @seealso \code{\link{ol_aes}}, 
-#' \code{\link{ol_map}}, 
-#' \code{\link{ol_geom_polygon}} 
-#' 
+#' @seealso \code{\link{ol_aes}},
+#' \code{\link{ol_map}},
+#' \code{\link{ol_geom_polygon}}
+#'
 #' @export
 #'
 #' @examples
@@ -68,12 +68,9 @@
 #' )
 #' miami.OSM.basemap <- ol_map(
 #'     center=c(-80.385790,25.782618),
-#'     zoom=9,
-#'     map.heading="Miami Shapes",
-#'     map.note="Note: Mouseover popup values are 
-#'         independent of shape size &amp; color."
-#'     ) + 
-#'    public_OSM_basemap() 
+#'     zoom=9
+#'     ) +
+#'    streetmap()
 #' circle.layer<-ol_geom_circle(
 #'         miami.circles,
 #'         df = aesthetic.df,
@@ -83,16 +80,24 @@
 #'         toggle.control=TRUE,
 #'         color="#000000FF",
 #'         tooltip=sprintf("%1.2f",aesthetic.df$value)
-#'         ) 
+#'         )
 #' circle.fill <- ol_scale_fill_discrete(
 #'         display=TRUE,
 #'         preserve.opacity=TRUE
 #'     )
 #' circles <- miami.OSM.basemap + circle.layer + circle.fill
-#' 
-#' ## Not Run: output to file and view
-#' # ol_map2HTML(circles,'miami_circles.html')
-#' # browseURL("miami_circles.html")
+#'
+#' \dontrun{
+#' # Output to file and view
+#' ol_map2HTML(
+#'   circles,
+#'   'miami_circles.html',
+#'   map.heading="Miami Shapes",
+#'   map.note="Note: Mouseover popup values are
+#'     independent of shape size &amp; color."
+#' )
+#' browseURL("miami_circles.html")
+#' }
 ol_geom_circle <- function(
     circle.obj,
     mapping=ol_aes(),
@@ -276,7 +281,7 @@ ol_geom_circle <- function(
     return(o)
 }
 
-writeLayer.Layer.Circle <- function(layer,suffix="basemap",nice.format=TRUE,self.contained=TRUE,initial.indent=6,...){
+writeLayer.Layer.Circle <- function(layer,suffix="basemap",nice.format=TRUE,initial.indent=6,...){
     inid <- initial.indent
     if(nice.format){
         write_function <- function(s){
