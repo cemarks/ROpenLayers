@@ -3,7 +3,7 @@
 #' Get Lat/Lon Cooridinates for an Address.
 #'
 #' This function uses the \code{findAddressCandidates} utility at
-#' \href{http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer}{Arcgis.com}
+#' \href{https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer}{Arcgis.com}
 #' to get coordinates for a single address.
 #'
 #' @param address.string character vector of addresses to geocode.
@@ -49,7 +49,7 @@
 #' }
 geocode <- function(address.string){
   if(requireNamespace("httr",quietly=TRUE)){
-    url <- "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates"
+    url <- "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates"
     query.url <- paste(
       url,
       sprintf(
