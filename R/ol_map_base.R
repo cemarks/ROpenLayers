@@ -38,7 +38,7 @@
 #' source URL (see \code{\link{ol_map}}).
 #'
 #' @section Public ArcGIS Servers:
-#' \href{https://www.arcgis.com}{ESRI ArcGIS} hosts several
+#' \href{https://www.arcgis.com/index.html}{ESRI ArcGIS} hosts several
 #' publicly available map servers at
 #' \href{https://server.arcgisonline.com/arcgis/rest/services}{arcgisonline.com},
 #'  which can accessed via REST APIs and rendered using OpenLayers javascript methods.

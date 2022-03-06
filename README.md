@@ -17,7 +17,7 @@ The purpose of this package is to make it easy for a user to visualize geo-spati
 
 ## Public ArcGIS Servers
 
-[ESRI ArcGIS](https://www.arcgis.com) hosts several publicly available map servers at [arcgisonline.com](https://server.arcgisonline.com/arcgis/rest/services), which can accessed via REST APIs and rendered using OpenLayers JavaScript methods. A subset of these are made available in this package through the `public_arcgis_basemap` method. Alternatively, a user can specify any ArcGIS map server using the `user_arcgis_basemap` method. Note that while these maps servers are publicly available, they are not necessarily open-licensed. Users must ensure they comply with each map server's license and terms of use. 
+[ESRI ArcGIS](https://www.arcgis.com/index.html) hosts several publicly available map servers at [arcgisonline.com](https://server.arcgisonline.com/arcgis/rest/services), which can accessed via REST APIs and rendered using OpenLayers JavaScript methods. A subset of these are made available in this package through the `public_arcgis_basemap` method. Alternatively, a user can specify any ArcGIS map server using the `user_arcgis_basemap` method. Note that while these maps servers are publicly available, they are not necessarily open-licensed. Users must ensure they comply with each map server's license and terms of use. 
 
 ## OpenStreetMap
 

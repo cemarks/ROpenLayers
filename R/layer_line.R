@@ -138,19 +138,19 @@ ol_geom_line <- function(
     if('ol.lty' %in% names(mapping)){
         mapping[['lty']]<-mapping[['ol.lty']]
     }
-    if(class(line.obj)=="SpatialLinesDataFrame"){
+    if(any(class(line.obj)=="SpatialLinesDataFrame")){
         sp.line <- sp::spTransform(line.obj,wgs84.proj4str)
         if(is.null(df)){
             df <- sp.line@data
         }
-    } else if(class(line.obj)=="SpatialLines"){
+    } else if(any(class(line.obj)=="SpatialLines")){
         sp.line <- sp::spTransform(line.obj,wgs84.proj4str)
     } else {
         if(!is.list(line.obj)){
             line.obj <- list(line.obj)
         }
         for(i in 1:length(line.obj)){
-            if(class(line.obj[[i]]) != 'Lines'){
+            if(all(class(line.obj[[i]]) != 'Lines')){
                 line.obj[[i]] <- sp::Lines(list(sp::Line(as.matrix(line.obj[[i]]))),i-1)
             }
         }

@@ -113,7 +113,7 @@ user_arcgis_vectortile <- function(url,name="",attributions="",toggle.control=FA
 #' Create a basemap layer linking to an Public ArcGIS mapserver.
 #' 
 #' Creates and returns an OpenLayers ArcGIS Tile layer that sources a
-#' map server hosted at \url{http://server.arcgisonline.com}.  If the 
+#' map server hosted at \url{http://server.arcgisonline.com/arcgis/rest/services}.  If the 
 #' \code{basemap.identifier} parameter is unrecognized the function will
 #' default to the \href{http://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer}{DeLorme} map server.
 #' 

@@ -84,12 +84,12 @@ ol_geom_heatmap <- function(
     shadow=250,
     weight.values=NULL
 ){
-    if(class(point.obj)=="SpatialPointsDataFrame"){
+    if(any(class(point.obj)=="SpatialPointsDataFrame")){
         sp.point <- sp::spTransform(point.obj,wgs84.proj4str)
         if(is.null(df)){
             df <- sp.point@data
         }
-    } else if(class(point.obj)=="SpatialPoints"){
+    } else if(any(class(point.obj)=="SpatialPoints")){
         sp.point <- sp::spTransform(point.obj,wgs84.proj4str)
     } else {
         sp.point <- sp::SpatialPoints(point.obj,proj4string=wgs84.proj4str)

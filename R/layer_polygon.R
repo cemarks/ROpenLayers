@@ -185,19 +185,19 @@ ol_geom_polygon <- function(
     if('ol.lty' %in% names(mapping)){
         mapping[['lty']]<-mapping[['ol.lty']]
     }
-    if(class(polygon.obj)=="SpatialPolygonsDataFrame"){
+    if(any(class(polygon.obj)=="SpatialPolygonsDataFrame")){
         sp.poly <- sp::spTransform(polygon.obj,wgs84.proj4str)
         if(is.null(df)){
             df <- sp.poly@data
         }
-    } else if(class(polygon.obj)=="SpatialPolygons"){
+    } else if(any(class(polygon.obj)=="SpatialPolygons")){
         sp.poly <- sp::spTransform(polygon.obj,wgs84.proj4str)
     } else {
         if(!is.list(polygon.obj)){
             polygon.obj <- list(polygon.obj)
         }
         for(i in 1:length(polygon.obj)){
-            if(class(polygon.obj[[i]]) != 'Polygons'){
+            if(all(class(polygon.obj[[i]]) != 'Polygons')){
                 polygon.obj[[i]] <- sp::Polygons(list(sp::Polygon(as.matrix(polygon.obj[[i]]))),i-1)
             }
         }
