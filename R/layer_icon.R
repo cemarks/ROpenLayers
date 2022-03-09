@@ -159,12 +159,12 @@ ol_geom_icon <- function(
             icons<- rbind(icons, data.frame(src=src.img[i],scalar=s, width=w,stringsAsFactors=FALSE))
         }
     }
-    if(class(point.obj)=="SpatialPointsDataFrame"){
+    if(any(class(point.obj)=="SpatialPointsDataFrame")){
         sp.point <- sp::spTransform(point.obj,wgs84.proj4str)
         if(is.null(df)){
             df <- sp.point@data
         }
-    } else if(class(point.obj)=="SpatialPoints"){
+    } else if(any(class(point.obj)=="SpatialPoints")){
         sp.point <- sp::spTransform(point.obj,wgs84.proj4str)
     } else {
         sp.point <- sp::SpatialPoints(point.obj,proj4string=wgs84.proj4str)
